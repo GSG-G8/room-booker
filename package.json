@@ -1,0 +1,17 @@
+{
+  "name": "room",
+  "version": "1.0.0",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSG-G8/room-booker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GSG-G8/room-booker/issues"
+  },
+  "homepage": "https://github.com/GSG-G8/room-booker#readme",
+  "dependencies": {}
+}
