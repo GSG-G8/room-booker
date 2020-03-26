@@ -1,7 +1,9 @@
 {
   "name": "room-booker",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "lint-fix": "cd client && npm run lint-fix && cd ../server && npm run lint-fix"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GSG-G8/room-booker.git"
@@ -12,5 +14,11 @@
   "bugs": {
     "url": "https://github.com/GSG-G8/room-booker/issues"
   },
-  "homepage": "https://github.com/GSG-G8/room-booker#readme"
+  "homepage": "https://github.com/GSG-G8/room-booker#readme",
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "lint-fix"
+  ]
 }
