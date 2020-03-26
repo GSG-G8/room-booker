@@ -1,26 +1,28 @@
 module.exports = {
   env: {
-    browser: true,
+    commonjs: true,
     es6: true,
+    node: true
   },
-  extends: [
-    'plugin:react/recommended',
-    'airbnb',
-  ],
+  root: true,
+  extends: ["airbnb-base", "prettier"],
   globals: {
-    Atomics: 'readonly',
-    SharedArrayBuffer: 'readonly',
+    Atomics: "readonly",
+    SharedArrayBuffer: "readonly"
   },
   parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-    ecmaVersion: 2018,
-    sourceType: 'module',
+    ecmaVersion: 2018
   },
-  plugins: [
-    'react',
-  ],
   rules: {
+    "arrow-body-style": ["error", "as-needed"],
+    // configure the prettier plugin
+    "prettier/prettier": [
+      "error",
+      {
+        trailingComma: "es5",
+        singleQuote: true
+      }
+    ]
   },
+  plugins: ["prettier"]
 };
