@@ -1,7 +1,17 @@
 {
   "name": "room-booker",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "init": "cd client && npm i && cd ../server && npm i",
+    "lint-fix": "cd client && npm run lint-fix && cd ../server && npm run lint-fix",
+    "test": "cd server && npm t",
+    "start": "NODE_ENV=production node ./server/src",
+    "heroku-postbuild": "NODE_ENV=production cd client && npm install && npm run build",
+    "kill": "fuser -k 5000/tcp",
+    "kill-run": "npm run kill && npm run server"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/GSG-G8/room-booker.git"
@@ -12,5 +22,12 @@
   "bugs": {
     "url": "https://github.com/GSG-G8/room-booker/issues"
   },
-  "homepage": "https://github.com/GSG-G8/room-booker#readme"
+  "homepage": "https://github.com/GSG-G8/room-booker#readme",
+  "devDependencies": {
+    "pre-commit": "^1.2.2"
+  },
+  "pre-commit": [
+    "test",
+    "lint-fix"
+  ]
 }
