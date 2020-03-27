@@ -1,8 +1,8 @@
 BEGIN;
 
-DROP TABLE IF EXISTS users , booking , rooms CASCADE;
+DROP TABLE IF EXISTS "user" , "booking" , "room" CASCADE;
 
-CREATE TABLE users (
+CREATE TABLE "user" (
 	id SERIAL PRIMARY KEY,
 	name VARCHAR(255) NOT NULL,
 	password VARCHAR(255) NOT NULL,
@@ -11,15 +11,15 @@ CREATE TABLE users (
 	is_active BOOLEAN NOT NULL DEFAULT FALSE
 );
 
-CREATE TABLE rooms (
+CREATE TABLE "room" (
 	id SERIAL PRIMARY KEY ,
 	name VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE booking (
+CREATE TABLE "booking" (
 	id SERIAL PRIMARY KEY ,
-	room_id INTEGER NOT NULL REFERENCES rooms(id),
-	user_id INTEGER NOT NULL REFERENCES users(id),
+	room_id INTEGER NOT NULL REFERENCES "room"(id),
+	user_id INTEGER NOT NULL REFERENCES "user"(id),
 	start_time TIMESTAMP NOT NULL,
 	end_time TIMESTAMP NOT NULL,
 	description TEXT NOT NULL
