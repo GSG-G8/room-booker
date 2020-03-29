@@ -1,25 +1,34 @@
-const express = require('express');
-const { join } = require('path');
-const compression = require('compression');
-const cookieParser = require('cookie-parser');
+const express = require("express");
+const { join } = require("path");
+const compression = require("compression");
+const cookieParser = require("cookie-parser");
 
-const router = require('./router');
+const router = require("./router");
 
 const app = express();
 
-app.disabled('x-powered-by');
+app.disabled("x-powered-by");
 
-app.set('port', process.env.PORT || 5000);
+app.set("port", process.env.PORT || 5000);
 
 const middlewares = [
   compression(),
   cookieParser(),
   express.json(),
-  express.urlencoded({ extended: false }),
+  express.urlencoded({ extended: false })
 ];
 
 app.use(middlewares);
 
-app.use(express.static(join(__dirname, '..', '..', 'client', 'public')));
+app.use(express.static(join(__dirname, "..", "..", "client", "public")));
 app.use(router);
+
+app.use((req, res) => {
+  res.status(404).send({ message: "Page Not Found", statusCode: 404 });
+});
+
+// eslint-disable-next-line no-unused-vars
+app.use((err, req, res, next) => {
+  res.status(500).send({ message: "Internal Server Error", statusCode: 500 });
+});
 module.exports = app;
