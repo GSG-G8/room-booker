@@ -20,7 +20,9 @@ const middlewares = [
 
 app.use(middlewares);
 
-app.use(express.static(join(__dirname, '..', '..', 'client', 'public')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(join(__dirname, '..', '..', 'client', 'build')));
+}
 app.use(router);
 
 module.exports = app;
