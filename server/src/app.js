@@ -16,11 +16,13 @@ app.set('port', process.env.PORT || 5000);
 const middlewares = [
   compression(),
   cookieParser(),
-  express.json(),
   express.urlencoded({ extended: false }),
+  express.json(),
 ];
 
 app.use(middlewares);
+
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
 
