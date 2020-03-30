@@ -1,7 +1,6 @@
 const router = require('express').Router();
-const { clientError, serverError } = require('./controllers');
+const loginValidation = require('./controllers/validation/loginValidation');
 
-router.use(clientError);
-router.use(serverError);
-
+router.post('/login', loginValidation);
+module.exports = router;
 module.exports = router;
