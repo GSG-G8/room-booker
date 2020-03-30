@@ -2,6 +2,8 @@ const express = require('express');
 const { join } = require('path');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
+// eslint-disable-next-line import/no-extraneous-dependencies
+const morgan = require('morgan');
 
 const router = require('./router');
 
@@ -21,6 +23,8 @@ const middlewares = [
 app.use(middlewares);
 
 app.use('/api/v1/', router);
+
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '..', '..', 'client', 'build')));
