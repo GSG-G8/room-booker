@@ -15,3 +15,10 @@ env:
 test:
   adapter: postgresql
   database: roombtest
+
+install:
+  - npm ci
+# keep the npm cache around to speed up installs
+cache:
+  directories:
+    - "$HOME/.npm"
