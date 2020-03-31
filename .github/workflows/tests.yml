@@ -35,17 +35,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm i
+      - run: npm ci
+      - run: node client.js
+        working-directory: ./postgres
+        env:
+          # use localhost for the host here because we are running the job on the VM.
+          # If we were running the job on in a container this would be postgres
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
       - run: npm t
         env:
           # use localhost for the host here because we are running the job on the VM.
           # If we were running the job on in a container this would be postgres
           POSTGRES_HOST: localhost
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
-      # - run: node client.js
-      #   working-directory: ./postgres
-      #   env:
-      #     # use localhost for the host here because we are running the job on the VM.
-      #     # If we were running the job on in a container this would be postgres
-      #     POSTGRES_HOST: localhost
-      #     POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
