@@ -16,7 +16,7 @@ if (!dbUrl) throw new Error('No Database FOUND');
 
 const options = {
   connectionString: dbUrl,
-  ssl: { rejectUnauthorized: false },
+  ssl: true,
 };
 
 module.exports = new Pool(options);
