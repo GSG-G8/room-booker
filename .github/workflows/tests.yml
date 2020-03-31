@@ -24,6 +24,5 @@ jobs:
       - run: npm ci
       - run: npm t
         env:
+          NODE_ENV: test
           TEST_DB_URL: ${{ secrets.TEST_DB_URL }}
-      - name: Test printing your secret (Remove this step in production)
-        run: cat $HOME/secrets/my_secret.json
