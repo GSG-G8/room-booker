@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'test') {
 } else if (process.env.NODE_ENV === 'production') {
   dbUrl = process.env.DATABASE_URL;
 } else {
-  dbUrl = process.env.DB_URLLL;
+  dbUrl = process.env.DB_URL;
 }
 
 if (!dbUrl) throw new Error('No Database FOUND');
