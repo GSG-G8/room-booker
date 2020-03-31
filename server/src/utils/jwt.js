@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const sendCookies = (payload) =>
+const sign = (payload) =>
   new Promise((resolve, reject) => {
     jwt.sign(payload, process.env.SECRET_KEY, (error, token) => {
       if (error) {
@@ -11,4 +11,4 @@ const sendCookies = (payload) =>
     });
   });
 
-module.exports = { sendCookies };
+module.exports = { sign };
