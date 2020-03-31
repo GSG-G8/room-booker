@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
       if (result.rows.length === 0) {
         return bcrypt.hash(req.body.password, 10);
       }
-      const err = Boom.badRequest(`${result.rows[0].email} already exists`);
+      const err = Boom.badRequest(`${result.rows[0].email} not avaliable!!`);
       return next(err);
     })
     .then((hashedPassword) => {
@@ -29,6 +29,7 @@ module.exports = (req, res, next) => {
         password: hashedPassword,
         email: req.body.email,
       };
+
       return createUser(newUser);
     })
 

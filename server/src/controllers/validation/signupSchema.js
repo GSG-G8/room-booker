@@ -1,5 +1,4 @@
 const joi = require('@hapi/joi');
-// const Boom = require('@hapi/boom');
 
 module.exports = joi.object({
   name: joi.string().required(),
