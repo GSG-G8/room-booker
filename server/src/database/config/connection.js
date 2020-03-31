@@ -5,6 +5,7 @@ const { Pool } = require('pg');
 let dbUrl = '';
 
 if (process.env.NODE_ENV === 'test') {
+  console.log(process.env.TEST_DB_URL);
   dbUrl = process.env.TEST_DB_URL;
 } else if (process.env.NODE_ENV === 'production') {
   dbUrl = process.env.DATABASE_URL;
