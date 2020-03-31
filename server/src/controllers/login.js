@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 require('env2')('./config.env');
@@ -26,7 +27,6 @@ const login = (req, res, next) => {
       return next(Boom.unauthorized('Your email not authorized yet'));
     })
     .then((hashedPassword) => bcrypt.compare(password, hashedPassword))
-    // eslint-disable-next-line consistent-return
     .then((result) => {
       if (result) {
         return sign({
@@ -34,12 +34,12 @@ const login = (req, res, next) => {
           role: tokenData.is_Admin,
         });
       }
+      return next(Boom.unauthorized('invalid password'));
     })
     .then((token) => {
       if (token) {
         return res.cookie('token', token).status(200).end();
       }
-      return next(Boom.unauthorized('invalid password'));
     })
     .catch((error) =>
       next(Boom.badRequest(error.details.map((e) => e.message).join('\n')))
