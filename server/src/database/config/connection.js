@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 
 let dbUrl = '';
 
-console.log(process.env.NODE_ENV, process.env.TEST_DB_URL);
+console.log();
 if (process.env.NODE_ENV === 'test') {
   dbUrl = process.env.TEST_DB_URL;
 } else if (process.env.NODE_ENV === 'production') {
