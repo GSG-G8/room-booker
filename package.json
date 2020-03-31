@@ -2,13 +2,14 @@
   "name": "room-booker",
   "version": "1.0.0",
   "scripts": {
-    "server": "cd server && npm run dev",
+    "server": "cross-env NODE_ENV=development PGSSLMODE=disable cd server && npm run dev",
     "client": "cd client && npm start",
     "init": "cd client && npm i && cd ../server && npm i",
     "lint-fix": "cd client && npm run lint-fix && cd ../server && npm run lint-fix",
-    "test": "cd server && npm t",
-    "start": "NODE_ENV=production node ./server/src",
+    "test": "cd server && cross-env NODE_ENV=test npm t",
+    "start": "cross-env NODE_ENV=production node ./server/src",
     "heroku-postbuild": "NODE_ENV=production cd client && npm install && npm run build",
+    "build:db": "NODE_ENV=test node server/src/database/config/build.js",
     "install": "npm run init",
     "kill": "fuser -k 5000/tcp",
     "kill-run": "npm run kill && npm run server"
@@ -30,5 +31,8 @@
   "pre-commit": [
     "lint-fix",
     "test"
-  ]
+  ],
+  "dependencies": {
+    "cross-env": "^7.0.2"
+  }
 }
