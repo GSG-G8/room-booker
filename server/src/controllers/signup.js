@@ -1,28 +1,39 @@
-const boom = require('@hapi/boom');
+const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
-const { checkEmailExist, signup } = require('../database/queries');
+const schema = require('./validation/signupSchema');
+const { checkEmailExist, createUser } = require('../database/queries');
 
 module.exports = (req, res, next) => {
-  checkEmailExist(req.body.email)
+  const userData = {
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    confirmpassword: req.body.confirmpassword,
+  };
+
+  schema
+    .validateAsync(userData, { abortEarly: false })
+
+    .then(() => checkEmailExist(req.body.email))
+
     .then((result) => {
       if (result.rows.length === 0) {
-        // next();
-        bcrypt.hash(req.body.password, 10).then((hashedPassword) => {
-          const newUser = {
-            name: req.body.name,
-            password: hashedPassword,
-            email: req.body.email,
-          };
-          signup(newUser)
-            .then(() =>
-              res.status(200).json({ message: 'signed up successfully' })
-            )
-            .catch((error) => next(error));
-        });
-      } else {
-        const err = boom.badRequest(`${result.rows[0].email} already exists`);
-        next(err);
+        return bcrypt.hash(req.body.password, 10);
       }
+      const err = Boom.badRequest(`${result.rows[0].email} already exists`);
+      return next(err);
     })
-    .catch(next);
+    .then((hashedPassword) => {
+      const newUser = {
+        name: req.body.name,
+        password: hashedPassword,
+        email: req.body.email,
+      };
+      return createUser(newUser);
+    })
+
+    .then(() => res.status(200).json({ message: 'signed up successfully' }))
+    .catch((error) =>
+      next(Boom.badRequest(error.details.map((e) => e.message).join('\n')))
+    );
 };

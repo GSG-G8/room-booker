@@ -1,5 +1,4 @@
 const checkEmailExist = require('./checkEmailExist');
-const signup = require('./signup');
-// const checkEmail = require('./checkEmail');
+const createUser = require('./createUser');
 
-module.exports = { checkEmailExist, signup };
+module.exports = { checkEmailExist, createUser };
