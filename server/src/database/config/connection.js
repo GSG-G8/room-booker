@@ -12,22 +12,10 @@ if (process.env.NODE_ENV === 'test') {
   dbUrl = process.env.DB_URL;
 }
 
-const isConnectionString = dbUrl;
-const isCI = process.env.POSTGRES_PORT && process.env.POSTGRES_HOST;
+if (!dbUrl) throw new Error('No Database FOUND');
 
-if (!isConnectionString && isCI) throw new Error('No Database FOUND');
-
-const options = isConnectionString
-  ? {
-      connectionString: dbUrl,
-      ssl: false,
-    }
-  : {
-      user: 'postgres',
-      database: 'postgres',
-      password: 'postgres',
-      port: process.env.POSTGRES_PORT,
-      host: process.env.POSTGRES_HOST,
-    };
-
+const options = {
+  connectionString: dbUrl,
+  ssl: false,
+};
 module.exports = new Pool(options);
