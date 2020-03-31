@@ -31,6 +31,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - run: ls
+      - run: node -v && npm -v
+      - run: npm run init
+      - run: npm test -- --ci
       - run: npm ci
         working-directory: ./postgres
       - run: node client.js
@@ -40,7 +44,4 @@ jobs:
           # If we were running the job on the VM this would be localhost
           POSTGRES_HOST: postgres
           POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-      - run: ls
-      - run: node -v && npm -v
-      - run: npm run init
       - run: npm test -- --ci
