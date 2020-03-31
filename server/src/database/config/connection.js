@@ -4,7 +4,6 @@ const { Pool } = require('pg');
 
 let dbUrl = '';
 
-console.log();
 if (process.env.NODE_ENV === 'test') {
   dbUrl = process.env.TEST_DB_URL;
 } else if (process.env.NODE_ENV === 'production') {
@@ -18,4 +17,5 @@ if (!dbUrl) throw new Error('No Database FOUND');
 const options = {
   connectionString: dbUrl,
 };
+
 module.exports = new Pool(options);
