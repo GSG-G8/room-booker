@@ -1,11 +1,8 @@
 const { clientError, serverError } = require('./error');
-const validateLogin = require('./validation/loginValidation');
-const { checkEmailExist, checkPassword } = require('./login');
+const { login } = require('./login');
 
 module.exports = {
   clientError,
   serverError,
-  validateLogin,
-  checkEmailExist,
-  checkPassword,
+  login,
 };

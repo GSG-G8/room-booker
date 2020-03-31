@@ -1,11 +1,7 @@
 const router = require('express').Router();
 
-const {
-  validateLogin,
-  checkEmailExist,
-  checkPassword,
-} = require('./controllers');
+const { login } = require('./controllers');
 
-router.post('/login', validateLogin, checkEmailExist, checkPassword);
+router.post('/login', login);
 
 module.exports = router;

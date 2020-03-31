@@ -1,59 +1,44 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 require('env2')('./config.env');
 
 const { checkEmail } = require('../database/queries');
+const { sendCookies } = require('../utils/jwt');
+const schema = require('./validation/loginSchema');
 
-const sendCookies = (payload) =>
-  new Promise((resolve, reject) => {
-    jwt.sign(payload, process.env.SECRET_KEY, (error, token) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(token);
-      }
-    });
-  });
-
-const checkEmailExist = (req, res, next) => {
-  checkEmail(req.body.email)
-    // eslint-disable-next-line consistent-return
+const login = (req, res, next) => {
+  const { email, password } = req.body;
+  schema
+    .validateAsync({ email, password }, { abortEarly: false })
+    .then(() => checkEmail(email))
     .then(({ rows }) => {
-      if (rows.length === 1) {
+      if (rows.length > 0) {
         return rows[0];
       }
-      next(Boom.unauthorized('You need to signup first'));
+      return next(Boom.unauthorized('You need to signup first'));
     })
     .then((userData) => {
       if (userData.is_active) {
         req.userID = userData.id;
         req.isAdmin = userData.is_Admin;
-        next();
-      } else {
-        next(Boom.unauthorized('Your email not authorized yet'));
+        return userData.password;
       }
+      return next(Boom.unauthorized('Your email not authorized yet'));
     })
-    .catch((error) => next(error));
-};
-
-const checkPassword = (req, res, next) => {
-  checkEmail(req.body.email)
-    .then(({ rows }) => rows[0].password)
-    .then((hashedPassword) => bcrypt.compare(req.body.password, hashedPassword))
+    .then((hashedPassword) => bcrypt.compare(password, hashedPassword))
     .then((result) => {
       if (result) {
         sendCookies({ userID: req.userID, role: req.isAdmin }).then((token) =>
-          res.cookie('token', token)
+          res.cookie('token', token).status(200).json('good job')
         );
-      } else {
-        next(Boom.unauthorized('invalid password'));
       }
+      return next(Boom.unauthorized('invalid password'));
     })
-    .catch((error) => next(error));
+    .catch((error) =>
+      next(Boom.badRequest(error.details.map((e) => e.message).join('\n')))
+    );
 };
 
 module.exports = {
-  checkEmailExist,
-  checkPassword,
+  login,
 };
