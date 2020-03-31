@@ -12,20 +12,13 @@ if (process.env.NODE_ENV === 'test') {
   dbUrl = process.env.DB_URL;
 }
 
-// eslint-disable-next-line no-console
-console.log({
-  dbUrl,
-  POSTGRES_PORT: process.env.POSTGRES_PORT,
-  POSTGRES_HOST: process.env.POSTGRES_HOST,
-});
-
 if (!(dbUrl || process.env.POSTGRES_PORT || process.env.POSTGRES_HOST))
   throw new Error('No Database FOUND');
 
 const options = dbUrl
   ? {
       connectionString: dbUrl,
-      ssl: true,
+      ssl: false,
     }
   : {
       user: 'postgres',
@@ -33,6 +26,7 @@ const options = dbUrl
       password: 'postgres',
       port: process.env.POSTGRES_PORT,
       host: process.env.POSTGRES_HOST,
+      ssl: false,
     };
 
 module.exports = new Pool(options);
