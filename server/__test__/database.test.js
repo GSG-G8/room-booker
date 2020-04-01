@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
-const { checkEmail } = require('../src/database/queries');
+const { checkEmail, addNewRoom, getRoom } = require('../src/database/queries');
 
 beforeAll(() => dbBuild());
 
@@ -13,5 +13,18 @@ test('testing checkemail query so it expect to return the row from userbooking b
     );
     expect(name).toEqual('Lina');
   }));
+
+test('test get room query to get the row by given name', () =>
+  getRoom('Tokyo').then((result) => {
+    const { name } = result.rows[0];
+    expect(name).toEqual('Tokyo');
+  }));
+
+test('add room query', () => {
+  addNewRoom('Cairo').then((result) => {
+    const { name } = result.rows[5];
+    expect(name).toEqual('Cairo');
+  });
+});
 
 afterAll(() => connection.end());
