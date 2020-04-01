@@ -1,7 +1,12 @@
-const { getUsers } = require('../database/queries/get_users');
+const Boom = require('@hapi/boom');
+const { getUsers } = require('../database/queries/getUsers');
 
-exports.getUsers = (req, res) => {
-  getUsers().then((users) => {
-    res.json(users.rows);
-  });
+module.exports = (req, res, next) => {
+  getUsers()
+    .then((users) => {
+      res.status(200).json(users.rows);
+    })
+    .catch((error) => {
+      next(Boom.badImplementation(error.message));
+    });
 };
