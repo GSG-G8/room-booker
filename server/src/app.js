@@ -4,8 +4,8 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
+
 const router = require('./router');
-const { clientError, serverError } = require('./controllers');
 
 const app = express();
 
@@ -33,6 +33,4 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-app.use(clientError);
-app.use(serverError);
 module.exports = app;
