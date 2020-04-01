@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
-const { checkEmail } = require('../src/database/queries');
+const { checkEmail, deleteUser } = require('../src/database/queries');
 
 beforeAll(() => dbBuild());
 
@@ -14,4 +14,9 @@ test('testing checkemail query so it expect to return the row from userbooking b
     expect(name).toEqual('Lina');
   }));
 
+test('deleteUserById query', () => {
+  deleteUser('3').then(() => {
+    expect(response.ok).toBe(1);
+  });
+});
 afterAll(() => connection.end());
