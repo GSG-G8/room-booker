@@ -11,4 +11,15 @@ const sign = (payload) =>
     });
   });
 
-module.exports = { sign };
+const verifyCookie = (cookie) =>
+  new Promise((resolve, reject) => {
+    jwt.verify(cookie, process.env.SECRET_KEY, (error, decoded) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(decoded);
+      }
+    });
+  });
+
+module.exports = { sign, verifyCookie };
