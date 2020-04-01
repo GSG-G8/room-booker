@@ -1,7 +1,8 @@
 const checkEmail = require('./checkEmail');
-const addRoomQuery = require('./addRoom');
+const { addNewRoom, getRoom } = require('./addRoom');
 
 module.exports = {
   checkEmail,
-  addRoomQuery,
+  addNewRoom,
+  getRoom,
 };

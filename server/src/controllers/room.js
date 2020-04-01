@@ -2,7 +2,7 @@ const Boom = require('@hapi/boom');
 
 const { verifyCookie } = require('../utils/jwt');
 const { roomSchema } = require('./validation/roomSchema');
-const { addRoomQuery } = require('../database/queries');
+const { addNewRoom, getRoom } = require('../database/queries');
 
 const addRoom = (req, res, next) => {
   const { name } = req.body;
@@ -14,12 +14,19 @@ const addRoom = (req, res, next) => {
     .then(() => verifyCookie(req.cookies.token))
     .then(({ role }) => {
       if (role) {
-        addRoomQuery(name);
+        return getRoom(name);
+      }
+      throw Boom.unauthorized('This action just for admin');
+    })
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        addNewRoom(name);
       } else {
-        throw Boom.unauthorized('This action just for admin');
+        throw Boom.badRequest(`${name} not avaliable!!`);
       }
     })
-    .then(() => res.status(200).json('room added succesfilly'))
+    .then(() => res.status(200).json('room added successfully'))
+
     .catch(next);
 };
 
