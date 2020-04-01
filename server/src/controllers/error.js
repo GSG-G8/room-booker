@@ -4,7 +4,7 @@ exports.clientError = (req, res) => {
 // eslint-disable-next-line no-unused-vars
 exports.serverError = (err, req, res, next) => {
   // eslint-disable-next-line no-console
-  if (process.env.NODE_ENV === 'development') console.error(err);
+  if (process.env.NODE_ENV !== 'production') console.error(err);
 
   // boom error
   const {
