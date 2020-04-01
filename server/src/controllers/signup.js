@@ -10,18 +10,17 @@ module.exports = (req, res, next) => {
     password: req.body.password,
     confirmpassword: req.body.confirmpassword,
   };
-
   schema
     .validateAsync(userData, { abortEarly: false })
-
+    .catch((err) => {
+      throw Boom.badRequest(err.details.map((e) => e.message).join('\n'));
+    })
     .then(() => checkEmailExist(req.body.email))
-
     .then((result) => {
       if (result.rows.length === 0) {
         return bcrypt.hash(req.body.password, 10);
       }
-      const err = Boom.badRequest(`${result.rows[0].email} not avaliable!!`);
-      return next(err);
+      throw Boom.badRequest(`${result.rows[0].email} not avaliable!!`);
     })
     .then((hashedPassword) => {
       const newUser = {
@@ -29,12 +28,9 @@ module.exports = (req, res, next) => {
         password: hashedPassword,
         email: req.body.email,
       };
-
       return createUser(newUser);
     })
 
     .then(() => res.status(200).json({ message: 'signed up successfully' }))
-    .catch((error) =>
-      next(Boom.badRequest(error.details.map((e) => e.message).join('\n')))
-    );
+    .catch(next);
 };
