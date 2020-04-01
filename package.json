@@ -2,7 +2,7 @@
   "name": "room-booker",
   "version": "1.0.0",
   "scripts": {
-    "server": "cross-env NODE_ENV=development PGSSLMODE=disable cd server && npm run dev",
+    "server": "cd server && cross-env NODE_ENV=development npm run dev",
     "client": "cd client && npm start",
     "init": "cd client && npm i && cd ../server && npm i",
     "lint-fix": "cd client && npm run lint-fix && cd ../server && npm run lint-fix",
