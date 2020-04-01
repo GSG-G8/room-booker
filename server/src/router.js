@@ -6,8 +6,7 @@ const {
   login,
   getUsers,
 } = require('./controllers');
-const { checkAdmin } = require('./controllers/checkAdmin');
-const verifyUser = require('./controllers/verifyUser');
+const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
 router.post('/signup', signup);
 router.post('/login', login);

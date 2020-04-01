@@ -1,6 +1,6 @@
 const Boom = require('@hapi/boom');
 
-exports.checkAdmin = (req, res, next) => {
+module.exports = (req, res, next) => {
   if (req.user.role) {
     next();
   } else {
