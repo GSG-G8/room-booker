@@ -16,7 +16,7 @@ test('/signup  with correct data', (done) => {
     .send(
       JSON.stringify({
         name: 'lina',
-        email: 'lina@gazaskygeeks.com',
+        email: 'lina123@gazaskygeeks.com',
         password: '123456',
         confirmpassword: '123456',
       })

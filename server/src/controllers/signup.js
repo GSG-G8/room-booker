@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const schema = require('./validation/signupSchema');
-const { checkEmailExist, createUser } = require('../database/queries');
+const { checkEmail, createUser } = require('../database/queries');
 
 module.exports = (req, res, next) => {
   const userData = {
@@ -15,7 +15,7 @@ module.exports = (req, res, next) => {
     .catch((err) => {
       throw Boom.badRequest(err.details.map((e) => e.message).join('\n'));
     })
-    .then(() => checkEmailExist(req.body.email))
+    .then(() => checkEmail(req.body.email))
     .then((result) => {
       if (result.rows.length === 0) {
         return bcrypt.hash(req.body.password, 10);

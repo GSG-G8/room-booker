@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest",
     "lint-fix": "eslint ./src --fix",
-    "dev": "NODE_ENV=development nodemon ./src",
+    "dev": "nodemon ./src",
     "start": "node ./src"
   },
   "keywords": [],
