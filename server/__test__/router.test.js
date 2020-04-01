@@ -88,4 +88,43 @@ test('/signup with not valid email ', (done) => {
       return done();
     });
 });
+
+test('rooms endpoint with existing room name', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .send(JSON.stringify({ name: 'Tokyo' }))
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc1MzcyM30.qr-jbnkhJp4PfNJq9nwkrZjFucJoN-0zuhfNSJ_cbVI',
+    ])
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Tokyo not avaliable!!');
+      return done();
+    });
+});
+
+test('Adding new room', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc1MzcyM30.qr-jbnkhJp4PfNJq9nwkrZjFucJoN-0zuhfNSJ_cbVI',
+    ])
+    .send(JSON.stringify({ name: 'Cairo' }))
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body).toBe('room added successfully');
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
