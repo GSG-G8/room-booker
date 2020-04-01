@@ -4,8 +4,8 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const morgan = require('morgan');
+
 const router = require('./router');
-const { clientError, serverError } = require('./controllers');
 
 const app = express();
 
@@ -26,6 +26,8 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
 
+if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '..', '..', 'client', 'build')));
   app.all('*', (req, res) =>
@@ -33,6 +35,4 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-app.use(clientError);
-app.use(serverError);
 module.exports = app;

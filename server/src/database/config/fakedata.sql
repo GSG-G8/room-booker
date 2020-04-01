@@ -1,10 +1,10 @@
 INSERT INTO bookinguser
  (name, password, email, is_admin, is_active)
  VALUES
-  ('Lina', '$2y$12$hHCpGzmqS58reqfbYa3gAOW/ilMl4kqGTV2rhtkf89ppdjC.p1BpG', 'lina@gazaskygeeks.com', False, True),
-  ('Imad', '$2y$12$hHCpGzmqS58reqfbYa3gAOW/ilMl4kqGTV2rhtkf89ppdjC.p1BpG', 'amoodaa@gazaskygeeks.com', True, True),
-  ('Alaa','$2y$12$hHCpGzmqS58reqfbYa3gAOW/ilMl4kqGTV2rhtkf89ppdjC.p1BpG', 'alaa@gazaskygeeks.com', False, True),
-  ('Omar', '$2y$12$hHCpGzmqS58reqfbYa3gAOW/ilMl4kqGTV2rhtkf89ppdjC.p1BpG', 'omar@gazaskygeeks.com', False, False)
+  ('Lina', '$2b$10$lT17vapkQ4VF1BRSMnfSDuHTfdO7wCCnhVwpeyZklQcNkicGQiz/C', 'lina@gazaskygeeks.com', False, True),
+  ('Imad', '$2b$10$lT17vapkQ4VF1BRSMnfSDuHTfdO7wCCnhVwpeyZklQcNkicGQiz/C', 'amoodaa@gazaskygeeks.com', True, True),
+  ('Alaa','$2b$10$lT17vapkQ4VF1BRSMnfSDuHTfdO7wCCnhVwpeyZklQcNkicGQiz/C', 'alaa@gazaskygeeks.com', False, True),
+  ('Omar', '$2b$10$lT17vapkQ4VF1BRSMnfSDuHTfdO7wCCnhVwpeyZklQcNkicGQiz/C', 'omar@gazaskygeeks.com', False, False)
 ;
 
 INSERT INTO room
