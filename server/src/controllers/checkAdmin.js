@@ -1,8 +1,9 @@
+const Boom = require('@hapi/boom');
+
 exports.checkAdmin = (req, res, next) => {
-  next();
-  //   if (req.user.is_admin) {
-  //     next();
-  //   } else {
-  //     res.status(403).send();
-  //   }
+  if (req.user && req.user.is_admin) {
+    next();
+  } else {
+    next(Boom.unauthorized('You are not admin'));
+  }
 };
