@@ -3,7 +3,7 @@ const request = require('supertest');
 const app = require('../../src/app');
 const dbBuild = require('../../src/database/config/build');
 
-const connection = request('../../src/database/config/connection.js');
+const connection = require('../../src/database/config/connection.js');
 
 beforeAll(() => dbBuild());
 
@@ -54,4 +54,4 @@ test('/signup with not valid email ', (done) => {
       return done();
     });
 });
-// afterAll(() => connection.end());
+afterAll(() => connection.end());
