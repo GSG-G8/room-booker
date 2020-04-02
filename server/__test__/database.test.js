@@ -6,6 +6,7 @@ const {
   deleteUser,
   addNewRoom,
   getRoom,
+  deleteBookingById,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -38,4 +39,8 @@ test('deleteUserById query', () =>
     expect(result.rowCount).toBe(1);
   }));
 
+test('deleteBookingById query', () =>
+  deleteBookingById('1').then((result) => {
+    expect(result.rowCount).toBe(1);
+  }));
 afterAll(() => connection.end());

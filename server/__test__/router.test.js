@@ -41,6 +41,7 @@ test('login endpoint with wrong password', (done) => {
       return done();
     });
 });
+
 test('/signup  with correct data', (done) => {
   request(app)
     .post('/api/v1/signUp')
@@ -103,6 +104,39 @@ test('delete user by id 3 ', (done) => {
     .end((err, res) => {
       if (err) return done(err);
       expect(res.body.msg).toBe('The user has delete successfully');
+      return done();
+    });
+});
+
+test('delete booking by id "1" from authorized user ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjMsInJvbGUiOmZhbHNlLCJpYXQiOjE1ODU4MzAzOTR9.QPIsE3DNDVkbjeB5ZNBHMIPY6lUhCJYmfkLmVs7xZFM',
+    ])
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.msg).toBe('The Booking has delete successfully');
+      return done();
+    });
+});
+
+test('delete booking by id 1 from un authorized user ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .expect(401)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Unauthorized');
       return done();
     });
 });
