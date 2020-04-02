@@ -1,7 +1,8 @@
 const { clientError, serverError } = require('./error');
 const signup = require('./signup');
 const login = require('./login');
-const deleteUser = require('./Admin/deleteUser');
+const deleteUser = require('./deleteUser');
+const getUsers = require('./getUsers');
 
 module.exports = {
   clientError,
@@ -9,4 +10,5 @@ module.exports = {
   login,
   signup,
   deleteUser,
+  getUsers,
 };
