@@ -3,6 +3,7 @@ const signup = require('./signup');
 
 const login = require('./login');
 const { getRBookingbyDate } = require('./booking');
+const getUsers = require('./getUsers');
 
 module.exports = {
   clientError,
@@ -10,4 +11,5 @@ module.exports = {
   login,
   signup,
   getRBookingbyDate,
+  getUsers,
 };
