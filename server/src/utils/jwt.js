@@ -17,4 +17,5 @@ const verify = (token) =>
       else resolve(decoded);
     });
   });
+
 module.exports = { sign, verify };

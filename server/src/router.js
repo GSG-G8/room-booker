@@ -5,6 +5,7 @@ const {
   signup,
   login,
   getRBookingbyDate,
+  deleteUser,
   getUsers,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
@@ -19,6 +20,7 @@ router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 // logged in + admin only acess routes:
 router.use(checkAdmin);
 
+router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 
 router.use(clientError);
