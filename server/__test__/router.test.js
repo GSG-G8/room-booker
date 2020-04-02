@@ -5,7 +5,7 @@ const dbBuild = require('../src/database/config/build');
 
 const connection = require('../src/database/config/connection.js');
 
-beforeAll(() => dbBuild());
+beforeEach(() => dbBuild());
 
 test('login endpoint with correct data', (done) => {
   request(app)
@@ -98,7 +98,6 @@ test('delete user by id 3 ', (done) => {
     .set('Cookie', [
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc2ODUyN30.RTKSH_6Jp-rl5bzYbAZ24OosxW-a8lVDac39fDr1u7E',
     ])
-    .send(JSON.stringify({ id: '3' }))
     .expect(200)
     .expect('Content-Type', /json/)
     .end((err, res) => {

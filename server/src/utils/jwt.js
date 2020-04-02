@@ -10,7 +10,6 @@ const sign = (payload) =>
       }
     });
   });
-
 const verify = (token) =>
   new Promise((resolve, reject) => {
     jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
