@@ -3,7 +3,7 @@ const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
 const { checkEmail, deleteUser } = require('../src/database/queries');
 
-beforeAll(() => dbBuild());
+beforeEach(() => dbBuild());
 
 test('testing checkemail query so it expect to return the row from userbooking by the email given', () =>
   checkEmail('lina@gazaskygeeks.com').then((result) => {
