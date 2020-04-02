@@ -5,7 +5,6 @@ const getUserById = require('./getUserById');
 const getUsers = require('./getUsers');
 const getUser = require('./getUser');
 
-
 module.exports = {
   checkEmail,
   createUser,

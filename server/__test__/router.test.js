@@ -107,36 +107,41 @@ test('delete user by id 3 ', (done) => {
     });
 });
 
-test('getProfile endpoint with Check Active user ', (done) => {
+test('GET /Profile with Check Active user', (done) => {
   request(app)
-    .get('/api/v1/getProfile')
+    .get('/api/v1/Profile')
+    .set('Content-Type', 'application/json')
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc1Njk3OH0.KslFtCQbzhtakHYZU_q1Pid-QuLlEMRwJ3dCWKG4lDk',
+    ])
     .expect(200)
-    .expect('Content-type', /json/)
+    .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) return done(err);
-      const { data } = res.body;
-      expect(data.id).toBe(1);
-      expect(data.name).toBe('Lina');
-      expect(data.email).toBe('lina@gazaskygeeks.com');
-      expect(data.is_admin).toBe('False');
-      expect(data.active).toBe('True');
+      const data = res.body;
+      expect(data.id).toBe(2);
+      expect(data.name).toBe('Imad');
+      expect(data.email).toBe('amoodaa@gazaskygeeks.com');
+      expect(data.is_admin).toBeTruthy();
+      expect(data.is_active).toBeTruthy();
       return done();
     });
 });
 
-test('getProfile endpoint with Check not Active user', (done) => {
+test('GET /Profile with Check not Active user', (done) => {
   request(app)
-    .get('/api/v1/getProfile')
+    .get('/api/v1/Profile')
+    .set('Content-Type', 'application/json')
     .expect(401)
     .expect('Content-type', /json/)
-    .end((err, res) => {
+    .end((err) => {
       if (err) return done(err);
-      const { data } = res.body;
-      expect(data.id).toBe(1);
-      expect(data.name).toBe('Lina');
-      expect(data.email).toBe('lina@gazaskygeeks.com');
-      expect(data.is_admin).toBe('False');
-      expect(data.active).toBe('False');
+      // const data = res.body;
+      // expect(data.id).toBe(2);
+      // expect(data.name).toBe('Imad');
+      // expect(data.email).toBe('amoodaa@gazaskygeeks.com');
+      // expect(data.is_admin).toBeFalsy();
+      // expect(data.active).toBeFalsy();
       return done();
     });
 });
