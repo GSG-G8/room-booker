@@ -4,6 +4,7 @@ const {
   serverError,
   signup,
   login,
+  deleteUser,
   getUsers,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
@@ -17,6 +18,7 @@ router.use(verifyUser);
 // logged in + admin only acess routes:
 router.use(checkAdmin);
 
+router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 
 router.use(clientError);

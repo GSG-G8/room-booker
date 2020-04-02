@@ -33,7 +33,7 @@ module.exports = (req, res, next) => {
       if (result) {
         return sign({
           userID: tokenData.id,
-          role: tokenData.is_Admin,
+          role: tokenData.is_admin,
         });
       }
       throw Boom.unauthorized('invalid password');
