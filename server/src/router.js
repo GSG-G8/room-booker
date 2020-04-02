@@ -4,6 +4,7 @@ const {
   serverError,
   signup,
   login,
+  addRoom,
   deleteUser,
   getUsers,
 } = require('./controllers');
@@ -18,6 +19,7 @@ router.use(verifyUser);
 // logged in + admin only acess routes:
 router.use(checkAdmin);
 
+router.post('/rooms', addRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 

@@ -106,4 +106,43 @@ test('delete user by id 3 ', (done) => {
       return done();
     });
 });
+
+test('rooms endpoint with existing room name', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(JSON.stringify({ name: 'Tokyo' }))
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Tokyo already exist');
+      return done();
+    });
+});
+
+test('Adding new room', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .send(JSON.stringify({ name: 'Cairo' }))
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body).toBe('room added successfully');
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
