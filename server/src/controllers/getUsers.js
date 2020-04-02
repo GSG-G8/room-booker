@@ -1,9 +1,12 @@
-const { getUsers } = require('../database/queries/get_users');
+const Boom = require('@hapi/boom');
+const { getUsers } = require('../database/queries/getUsers');
 
-exports.getUser = (req, res) => {
-  getUsers('amoodaa@gazaskygeeks.com').then((users) => {
-    if (users.rowCount === 0) {
-      res.status(404).json([]);
-    } else res.json(users.rows[0]);
-  });
+module.exports = (req, res, next) => {
+  getUsers()
+    .then((users) => {
+      res.json(users.rows);
+    })
+    .catch((error) => {
+      next(Boom.badImplementation(error.message));
+    });
 };

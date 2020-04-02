@@ -1,9 +1,27 @@
 const router = require('express').Router();
-const { checkActive } = require('./controllers/checkActive');
-const { getUser } = require('./controllers/getUsers');
-const { clientError, serverError } = require('./controllers');
+const {
+  clientError,
+  serverError,
+  signup,
+  login,
+  deleteUser,
+  getUsers,
+  getProfile,
+} = require('./controllers');
+const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
-router.get('/getProfile', checkActive, getUser);
+router.post('/signup', signup);
+router.post('/login', login);
+
+// only logged in access under this:
+router.use(verifyUser);
+router.get('/profile', getProfile);
+
+// logged in + admin only acess routes:
+router.use(checkAdmin);
+
+router.delete('/users/:id', deleteUser);
+router.get('/getUsers', getUsers);
 
 router.use(clientError);
 router.use(serverError);
