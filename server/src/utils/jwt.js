@@ -10,16 +10,12 @@ const sign = (payload) =>
       }
     });
   });
-
-const verifyCookie = (cookie) =>
+const verify = (token) =>
   new Promise((resolve, reject) => {
-    jwt.verify(cookie, process.env.SECRET_KEY, (error, decoded) => {
-      if (error) {
-        reject(error);
-      } else {
-        resolve(decoded);
-      }
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+      if (err) reject(err);
+      else resolve(decoded);
     });
   });
 
-module.exports = { sign, verifyCookie };
+module.exports = { sign, verify };

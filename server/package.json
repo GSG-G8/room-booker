@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
     "lint-fix": "eslint ./src --fix",
     "dev": "nodemon ./src",
     "start": "node ./src"

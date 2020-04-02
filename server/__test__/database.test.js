@@ -1,9 +1,14 @@
 /* eslint-disable no-undef */
 const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
-const { checkEmail, addNewRoom, getRoom } = require('../src/database/queries');
+const {
+  checkEmail,
+  deleteUser,
+  addNewRoom,
+  getRoom,
+} = require('../src/database/queries');
 
-beforeAll(() => dbBuild());
+beforeEach(() => dbBuild());
 
 test('testing checkemail query so it expect to return the row from userbooking by the email given', () =>
   checkEmail('lina@gazaskygeeks.com').then((result) => {
@@ -27,4 +32,4 @@ test('add room query', () => {
   });
 });
 
-afterAll(() => connection.end());
+test('deleteUserById query', (done) => deleteUser('3').then(done));
