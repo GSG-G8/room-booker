@@ -32,4 +32,10 @@ test('add room query', () => {
   });
 });
 
-test('deleteUserById query', (done) => deleteUser('3').then(done));
+test('deleteUserById query', () => {
+  deleteUser('3').then(() => {
+    expect(response.ok).toBe(1);
+  });
+});
+
+afterAll(() => connection.end());
