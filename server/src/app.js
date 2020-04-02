@@ -26,8 +26,6 @@ if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
 
 app.use('/api/v1/', router);
 
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(join(__dirname, '..', '..', 'client', 'build')));
   app.all('*', (req, res) =>
