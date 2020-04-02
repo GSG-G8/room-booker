@@ -109,17 +109,20 @@ test('delete user by id 3 ', (done) => {
 
 test('getProfile endpoint with Check Active user ', (done) => {
   request(app)
-    .get('/api/v1/getProfile')
+    .get('/api/v1/profile')
     .expect(200)
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc2ODUyN30.RTKSH_6Jp-rl5bzYbAZ24OosxW-a8lVDac39fDr1u7E',
+    ])
     .expect('Content-type', /json/)
     .end((err, res) => {
       if (err) return done(err);
       const { data } = res.body;
-      expect(data.id).toBe(1);
-      expect(data.name).toBe('Lina');
-      expect(data.email).toBe('lina@gazaskygeeks.com');
-      expect(data.is_admin).toBe('False');
-      expect(data.active).toBe('True');
+      expect(data.id).toBe(2);
+      expect(data.name).toBe('Imad');
+      expect(data.email).toBe('amoodaa@gazaskygeeks.com');
+      expect(data.is_admin).toBeTruthy();
+      expect(data.is_active).toBeTruthy();
       return done();
     });
 });
@@ -127,16 +130,19 @@ test('getProfile endpoint with Check Active user ', (done) => {
 test('getProfile endpoint with Check not Active user', (done) => {
   request(app)
     .get('/api/v1/getProfile')
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc2ODUyN30.RTKSH_6Jp-rl5bzYbAZ24OosxW-a8lVDac39fDr1u7E',
+    ])
     .expect(401)
     .expect('Content-type', /json/)
     .end((err, res) => {
       if (err) return done(err);
       const { data } = res.body;
-      expect(data.id).toBe(1);
-      expect(data.name).toBe('Lina');
-      expect(data.email).toBe('lina@gazaskygeeks.com');
-      expect(data.is_admin).toBe('False');
-      expect(data.active).toBe('False');
+      expect(data.id).toBe(2);
+      expect(data.name).toBe('Imad');
+      expect(data.email).toBe('amoodaa@gazaskygeeks.com');
+      expect(data.is_admin).toBeFalsy();
+      expect(data.is_active).toBeFalsy(); //  ('Imad', 'amoodaa@gazaskygeeks.com', True, True),
       return done();
     });
 });
