@@ -13,10 +13,9 @@ const addRoom = (req, res, next) => {
     .then(() => getRoom(name))
     .then(({ rows }) => {
       if (rows.length === 0) {
-        addNewRoom(name);
-      } else {
-        throw Boom.badRequest(`${name} already exist`);
+        return addNewRoom(name);
       }
+      throw Boom.badRequest(`${name} already exist`);
     })
     .then(() => res.status(201).json('room added successfully'))
 

@@ -25,17 +25,17 @@ test('test get room query to get the row by given name', () =>
     expect(name).toEqual('Tokyo');
   }));
 
-test('add room query', () => {
-  addNewRoom('Cairo').then((result) => {
-    const { name } = result.rows[5];
-    expect(name).toEqual('Cairo');
-  });
-});
+test('add room query', () =>
+  addNewRoom('Cairo')
+    .then(() => getRoom('Cairo'))
+    .then((result) => {
+      const { name } = result.rows[0];
+      expect(name).toEqual('Cairo');
+    }));
 
-test('deleteUserById query', () => {
-  deleteUser('3').then(() => {
-    expect(response.ok).toBe(1);
-  });
-});
+test('deleteUserById query', () =>
+  deleteUser('3').then((result) => {
+    expect(result.rowCount).toBe(1);
+  }));
 
 afterAll(() => connection.end());
