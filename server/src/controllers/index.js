@@ -4,6 +4,7 @@ const { addRoom } = require('./room');
 const signup = require('./signup');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
+const deleteBooking = require('./deleteBooking');
 
 module.exports = {
   clientError,
@@ -13,4 +14,5 @@ module.exports = {
   signup,
   deleteUser,
   getUsers,
+  deleteBooking,
 };

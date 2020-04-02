@@ -7,6 +7,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  deleteBooking,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -15,6 +16,8 @@ router.post('/login', login);
 
 // only logged in access under this:
 router.use(verifyUser);
+
+router.delete('/booking/:id', deleteBooking);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
