@@ -108,14 +108,14 @@ test('delete user by id 3 ', (done) => {
     });
 });
 
-test('delete booking by id "1" from authorized user ', (done) => {
+test('delete booking by id "1" from admin ', (done) => {
   request(app)
     .delete('/api/v1/booking/1')
     .set({
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjMsInJvbGUiOmZhbHNlLCJpYXQiOjE1ODU4MzAzOTR9.QPIsE3DNDVkbjeB5ZNBHMIPY6lUhCJYmfkLmVs7xZFM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTg3MDgyMH0.DLsC4bCJB61TSmq9dX8wyposTZPUYIG1tDiui4Spo1g',
     ])
     .expect(200)
     .expect('Content-Type', /json/)
