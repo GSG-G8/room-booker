@@ -7,6 +7,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  patchProfile,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -15,6 +16,7 @@ router.post('/login', login);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.patch('/patchProfile', patchProfile);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
