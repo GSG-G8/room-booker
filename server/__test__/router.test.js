@@ -106,4 +106,38 @@ test('delete user by id 3 ', (done) => {
       return done();
     });
 });
+
+test('getProfile endpoint with Check Active user ', (done) => {
+  request(app)
+    .get('/api/v1/getProfile')
+    .expect(200)
+    .expect('Content-type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      const { data } = res.body;
+      expect(data.id).toBe(1);
+      expect(data.name).toBe('Lina');
+      expect(data.email).toBe('lina@gazaskygeeks.com');
+      expect(data.is_admin).toBe('False');
+      expect(data.active).toBe('True');
+      return done();
+    });
+});
+
+test('getProfile endpoint with Check not Active user', (done) => {
+  request(app)
+    .get('/api/v1/getProfile')
+    .expect(401)
+    .expect('Content-type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      const { data } = res.body;
+      expect(data.id).toBe(1);
+      expect(data.name).toBe('Lina');
+      expect(data.email).toBe('lina@gazaskygeeks.com');
+      expect(data.is_admin).toBe('False');
+      expect(data.active).toBe('False');
+      return done();
+    });
+});
 afterAll(() => connection.end());
