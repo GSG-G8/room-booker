@@ -4,6 +4,7 @@ const {
   serverError,
   signup,
   login,
+  addRoom,
   deleteUser,
   getUsers,
   getProfile,
@@ -20,6 +21,7 @@ router.get('/profile', getProfile);
 // logged in + admin only acess routes:
 router.use(checkAdmin);
 
+router.post('/rooms', addRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 
