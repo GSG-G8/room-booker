@@ -7,6 +7,7 @@ const {
   addNewRoom,
   getRoom,
   deleteBookingById,
+  getBookingbydate,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -42,5 +43,11 @@ test('deleteUserById query', () =>
 test('deleteBookingById query', () =>
   deleteBookingById('1').then((result) => {
     expect(result.rowCount).toBe(1);
+  }));
+
+test('test getBookingbydate query to get the booked room at specific date', () =>
+  getBookingbydate('2020-04-05').then(({ rows }) => {
+    expect(rows.length).toBe(4);
+    expect(rows[0].description).toBe('meeting');
   }));
 afterAll(() => connection.end());

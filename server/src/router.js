@@ -4,6 +4,7 @@ const {
   serverError,
   signup,
   login,
+  getRBookingbyDate,
   addRoom,
   deleteUser,
   getUsers,
@@ -16,6 +17,7 @@ router.post('/login', login);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 
 router.delete('/booking/:id', deleteBooking);
 
