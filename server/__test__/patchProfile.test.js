@@ -84,7 +84,7 @@ test('GET /patchProfile, user does not exists', (done) => {
       password: '123456',
     })
     .expect('Content-Type', /json/)
-    .expect(400)
+    .expect(404)
     .end((err) => {
       if (err) return done(err);
       return done();

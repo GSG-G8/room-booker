@@ -10,23 +10,24 @@ module.exports = (req, res, next) => {
 
   profileScema
     .validateAsync({ name, password }, { abortEarly: false })
+    .catch((error) => {
+      throw Boom.badRequest(error);
+    })
     .then(() => getUserById(userID))
     .then((users) => {
       if (users.rows.length === 0) {
-        throw new Error('user does not exists');
+        throw Boom.notFound('user does not exists');
       }
       return users.rows[0].password;
     })
     .then((hashed) => bcrypt.compare(oldPassword, hashed))
     .then((match) => {
       if (!match) {
-        throw new Error('old password is wrong');
+        throw Boom.badRequest('old password is wrong');
       }
     })
     .then(() => bcrypt.hash(password, 10))
     .then((hash) => patchProfile(userID, name, hash))
     .then((results) => res.send(results.rows.length !== 0))
-    .catch((error) => {
-      next(Boom.badRequest(error));
-    });
+    .catch(next);
 };

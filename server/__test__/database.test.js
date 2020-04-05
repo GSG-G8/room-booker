@@ -7,6 +7,7 @@ const {
   addNewRoom,
   getRoom,
   getBookingbydate,
+  getUserById,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -44,4 +45,16 @@ test('test getBookingbydate query to get the booked room at specific date', () =
     expect(rows.length).toBe(4);
     expect(rows[0].description).toBe('meeting');
   }));
+
+test('test getUserById', () =>
+  getUserById('1').then(({ rows }) => {
+    expect(rows.length).toBe(1);
+    expect(rows[0].email).toBe('lina@gazaskygeeks.com');
+  }));
+
+test('test getUserById', () =>
+  getUserById('-1').then(({ rows }) => {
+    expect(rows.length).toBe(0);
+  }));
+
 afterAll(() => connection.end());
