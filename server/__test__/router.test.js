@@ -4,6 +4,7 @@ const app = require('../src/app');
 const dbBuild = require('../src/database/config/build');
 
 const connection = require('../src/database/config/connection.js');
+const { getUserById } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
 
@@ -154,10 +155,11 @@ test('activate user route /users/:id', (done) => {
     .set('Cookie', [
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
     ])
-    .send(JSON.stringify({ admin: false }))
+    .send(JSON.stringify({ admin: true }))
     .expect(200)
     .end((err, res) => {
       if (err) return done(err);
+      getUserById(4).then(({ rows }) => expect(rows[0].is_admin).toBe(true));
       return done();
     });
 });
