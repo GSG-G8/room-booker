@@ -4,20 +4,24 @@ const Joi = require('@hapi/joi');
 const { activeUser, activeAdmin } = require('../database/queries');
 
 const activateSchema = Joi.object({
-  active: Joi.boolean().required(),
+  active: Joi.boolean(),
   admin: Joi.boolean(),
 });
 
 module.exports = (req, res, next) => {
-  const { active, admin } = req.body;
+  const active = req.body.active === 'true';
+  const { admin } = req.body;
+  const { id } = req.params;
+
   activateSchema
     .validateAsync({ active, admin })
-    .then(() => activeUser(req.params.id, active))
+    .catch((error) => {
+      throw Boom.badRequest(error.message);
+    })
     .then(() => {
-      if (active === 'true') {
-        if (admin) activeAdmin(req.params.id, admin);
-      }
+      if (active !== undefined) activeUser(id, active);
+      if (admin !== undefined) activeAdmin(id, admin);
     })
     .then(() => res.status(200).end())
-    .catch((error) => next(Boom.badRequest(error.message)));
+    .catch(next);
 };
