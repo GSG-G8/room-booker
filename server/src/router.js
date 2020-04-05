@@ -8,6 +8,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  getProfile,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -16,6 +17,7 @@ router.post('/login', login);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 
 // logged in + admin only acess routes:
