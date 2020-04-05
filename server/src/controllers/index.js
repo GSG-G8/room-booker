@@ -1,8 +1,9 @@
 const { clientError, serverError } = require('./error');
+const signup = require('./signup');
 const login = require('./login');
+const logout = require('./logout');
 const { getRBookingbyDate } = require('./booking');
 const { addRoom } = require('./room');
-const signup = require('./signup');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
 const getProfile = require('./getProfile');
@@ -13,6 +14,7 @@ module.exports = {
   login,
   addRoom,
   signup,
+  logout,
   getRBookingbyDate,
   deleteUser,
   getUsers,

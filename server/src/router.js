@@ -4,6 +4,7 @@ const {
   serverError,
   signup,
   login,
+  logout,
   getRBookingbyDate,
   addRoom,
   deleteUser,
@@ -14,6 +15,7 @@ const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
 router.post('/signup', signup);
 router.post('/login', login);
+router.get('/logout', logout);
 
 // only logged in access under this:
 router.use(verifyUser);

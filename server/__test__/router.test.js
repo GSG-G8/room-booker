@@ -178,6 +178,15 @@ test('Adding new room', (done) => {
     });
 });
 
+test('testing for /logout ', (done) => {
+  request(app)
+    .get('/api/v1/logout')
+    .expect(200)
+    .end((err, res) => {
+      if (err) done(err);
+      done();
+    });
+});
 test('GET /rooms/:date with date have room booked', (done) => {
   request(app)
     .get('/api/v1/rooms/2020-04-05')
