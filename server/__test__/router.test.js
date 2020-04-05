@@ -155,11 +155,11 @@ test('activate user route /users/:id', (done) => {
     .set('Cookie', [
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
     ])
-    .send(JSON.stringify({ admin: true }))
+    .send(JSON.stringify({ active: true }))
     .expect(200)
     .end((err, res) => {
       if (err) return done(err);
-      getUserById(4).then(({ rows }) => expect(rows[0].is_admin).toBe(true));
+      getUserById(4).then(({ rows }) => expect(rows[0].is_active).toBe(true));
       return done();
     });
 });

@@ -7,6 +7,7 @@ const {
   addNewRoom,
   getRoom,
   activeUser,
+  activeAdmin,
   getUserById,
 } = require('../src/database/queries');
 
@@ -42,6 +43,14 @@ test('deleteUserById query', () =>
 
 test('activate user query', () =>
   activeUser(4, true)
+    .then((result) => {
+      expect(result.rowCount).toBe(1);
+    })
+    .then(() => getUserById(4))
+    .then(({ rows }) => expect(rows[0].is_active).toBe(true)));
+
+test('active admin  query', () =>
+  activeAdmin(4, true)
     .then((result) => {
       expect(result.rowCount).toBe(1);
     })
