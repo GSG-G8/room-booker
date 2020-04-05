@@ -145,4 +145,40 @@ test('Adding new room', (done) => {
     });
 });
 
+test('GET /rooms/:date with date have room booked', (done) => {
+  request(app)
+    .get('/api/v1/rooms/2020-04-05')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body[0].start_time).toBe('2020-04-05T07:00:00.000Z');
+      return done();
+    });
+});
+
+test('GET /rooms/:date with date have not room booked', (done) => {
+  request(app)
+    .get('/api/v1/rooms/2020-04-07')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .expect('Content-Type', /json/)
+    .expect(404)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('no booking rooms for this day');
+      return done();
+    });
+});
 afterAll(() => connection.end());
