@@ -1,9 +1,14 @@
 /* eslint-disable no-undef */
 const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
-const { checkEmail } = require('../src/database/queries');
+const {
+  checkEmail,
+  deleteUser,
+  addNewRoom,
+  getRoom,
+} = require('../src/database/queries');
 
-beforeAll(() => dbBuild());
+beforeEach(() => dbBuild());
 
 test('testing checkemail query so it expect to return the row from userbooking by the email given', () =>
   checkEmail('lina@gazaskygeeks.com').then((result) => {
@@ -12,6 +17,25 @@ test('testing checkemail query so it expect to return the row from userbooking b
       '$2b$10$lT17vapkQ4VF1BRSMnfSDuHTfdO7wCCnhVwpeyZklQcNkicGQiz/C'
     );
     expect(name).toEqual('Lina');
+  }));
+
+test('test get room query to get the row by given name', () =>
+  getRoom('Tokyo').then((result) => {
+    const { name } = result.rows[0];
+    expect(name).toEqual('Tokyo');
+  }));
+
+test('add room query', () =>
+  addNewRoom('Cairo')
+    .then(() => getRoom('Cairo'))
+    .then((result) => {
+      const { name } = result.rows[0];
+      expect(name).toEqual('Cairo');
+    }));
+
+test('deleteUserById query', () =>
+  deleteUser('3').then((result) => {
+    expect(result.rowCount).toBe(1);
   }));
 
 afterAll(() => connection.end());

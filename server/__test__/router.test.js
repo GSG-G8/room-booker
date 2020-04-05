@@ -5,7 +5,7 @@ const dbBuild = require('../src/database/config/build');
 
 const connection = require('../src/database/config/connection.js');
 
-beforeAll(() => dbBuild());
+beforeEach(() => dbBuild());
 
 test('login endpoint with correct data', (done) => {
   request(app)
@@ -88,4 +88,61 @@ test('/signup with not valid email ', (done) => {
       return done();
     });
 });
+
+test('delete user by id 3 ', (done) => {
+  request(app)
+    .delete('/api/v1/users/3')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTc2ODUyN30.RTKSH_6Jp-rl5bzYbAZ24OosxW-a8lVDac39fDr1u7E',
+    ])
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.msg).toBe('The user has delete successfully');
+      return done();
+    });
+});
+
+test('rooms endpoint with existing room name', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(JSON.stringify({ name: 'Tokyo' }))
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Tokyo already exist');
+      return done();
+    });
+});
+
+test('Adding new room', (done) => {
+  request(app)
+    .post('/api/v1/rooms')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .send(JSON.stringify({ name: 'Cairo' }))
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body).toBe('room added successfully');
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
