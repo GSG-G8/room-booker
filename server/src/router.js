@@ -5,6 +5,7 @@ const {
   signup,
   login,
   logout,
+  getRBookingbyDate,
   addRoom,
   deleteUser,
   getUsers,
@@ -17,6 +18,7 @@ router.get('/logout', logout);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
