@@ -6,6 +6,7 @@ const {
   deleteUser,
   addNewRoom,
   getRoom,
+  activeUser,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -35,6 +36,11 @@ test('add room query', () =>
 
 test('deleteUserById query', () =>
   deleteUser('3').then((result) => {
+    expect(result.rowCount).toBe(1);
+  }));
+
+test('activate user query', () =>
+  activeUser(4, true).then((result) => {
     expect(result.rowCount).toBe(1);
   }));
 

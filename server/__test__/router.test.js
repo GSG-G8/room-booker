@@ -145,4 +145,21 @@ test('Adding new room', (done) => {
     });
 });
 
+test('activate user route /users/:id', (done) => {
+  request(app)
+    .patch('/api/v1/users/4')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(JSON.stringify({ admin: false }))
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
