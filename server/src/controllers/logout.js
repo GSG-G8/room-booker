@@ -1,3 +1,3 @@
 module.exports = (req, res) => {
-  res.clearCookie('token').redirect('/');
+  res.clearCookie('token').end();
 };
