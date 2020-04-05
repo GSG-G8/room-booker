@@ -7,6 +7,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  activateAccount,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -22,6 +23,7 @@ router.use(checkAdmin);
 router.post('/rooms', addRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
+router.patch('/users/:id', activateAccount);
 
 router.use(clientError);
 router.use(serverError);
