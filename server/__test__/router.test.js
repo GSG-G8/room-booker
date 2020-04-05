@@ -159,6 +159,7 @@ test('GET /rooms/:date with date have room booked', (done) => {
     .end((err, res) => {
       if (err) return done(err);
       expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body[0].start_time).toBe('2020-04-05T07:00:00.000Z');
       return done();
     });
 });
@@ -173,10 +174,10 @@ test('GET /rooms/:date with date have not room booked', (done) => {
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
     ])
     .expect('Content-Type', /json/)
-    .expect(200)
+    .expect(404)
     .end((err, res) => {
       if (err) return done(err);
-      expect(res.body).toBe('no booking rooms for this day');
+      expect(res.body.message).toBe('no booking rooms for this day');
       return done();
     });
 });
