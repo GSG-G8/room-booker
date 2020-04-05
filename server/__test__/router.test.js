@@ -145,4 +145,13 @@ test('Adding new room', (done) => {
     });
 });
 
+test('testing for /logout ', (done) => {
+  request(app)
+    .get('/api/v1/logout')
+    .expect(200)
+    .end((err, res) => {
+      if (err) done(err);
+      done();
+    });
+});
 afterAll(() => connection.end());
