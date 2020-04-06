@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 function Pages() {
   return (
-    <Switch>
+    <>
       <Route path="/dashboard">
         <h2>dashboard</h2>
       </Route>
@@ -13,7 +13,7 @@ function Pages() {
       <Route path="/">
         <h2>index</h2>
       </Route>
-    </Switch>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Switch } from 'react-router-dom';
 import './App.css';
 import Pages from './pages';
 
@@ -21,7 +21,9 @@ function App() {
               </li>
             </ul>
           </nav>
-          <Pages />
+          <Switch>
+            <Pages />
+          </Switch>
         </div>
       </Router>
     </div>
