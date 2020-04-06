@@ -6,6 +6,7 @@ const { getRBookingbyDate } = require('./booking');
 const { addRoom } = require('./room');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
+const patchProfile = require('./patchProfile');
 const deleteBooking = require('./deleteBooking');
 const getProfile = require('./getProfile');
 
@@ -19,6 +20,7 @@ module.exports = {
   getRBookingbyDate,
   deleteUser,
   getUsers,
+  patchProfile,
   deleteBooking,
   getProfile,
 };

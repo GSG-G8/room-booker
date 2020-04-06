@@ -9,6 +9,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  patchProfile,
   deleteBooking,
   getProfile,
 } = require('./controllers');
@@ -20,6 +21,7 @@ router.get('/logout', logout);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.patch('/patchProfile', patchProfile);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 
