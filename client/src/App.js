@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import './App.css';
+import Pages from './pages';
 
 function App() {
   return (
@@ -20,20 +21,7 @@ function App() {
               </li>
             </ul>
           </nav>
-
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
-          <Switch>
-            <Route path="/dashboard">
-              <h2>dashboard</h2>
-            </Route>
-            <Route path="/profile">
-              <h2>profile</h2>
-            </Route>
-            <Route path="/">
-              <h2>index</h2>
-            </Route>
-          </Switch>
+          <Pages />
         </div>
       </Router>
     </div>
