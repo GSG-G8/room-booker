@@ -2,8 +2,11 @@ const Boom = require('@hapi/boom');
 const { getBookingbydate } = require('../database/queries');
 
 const bookingSchema = require('./validation/bookingSchema');
-// eslint-disable-next-line no-unused-vars
-const { getRoom, bookRoom, getBooking } = require('../database/queries');
+const {
+  getRoom,
+  // bookRoom,
+  getBookingByRoomId,
+} = require('../database/queries');
 
 const bookTime = {
   startHr: '',
@@ -22,18 +25,10 @@ const getRBookingbyDate = (req, res, next) => {
     .catch(next);
 };
 const bookingRoom = (req, res, next) => {
-  // eslint-disable-next-line no-unused-vars
   const { name, description, date, startHr, endHr } = req.body;
-  const bookingData = {
-    name: req.body.name,
-    description: req.body.description,
-    date: req.body.date,
-    startHr: req.body.startHr,
-    endHr: req.body.endHr,
-  };
+  const bookingData = { name, description, date, startHr, endHr };
 
-  // eslint-disable-next-line no-unused-vars
-  const { userID } = req.user;
+  // const { userID } = req.user;
   bookingSchema
     .validateAsync(bookingData, { abortEarly: false })
     .catch((err) => {
@@ -41,7 +36,7 @@ const bookingRoom = (req, res, next) => {
     })
     .then(() => getRoom(name))
     .then(({ rows }) => rows[0].id)
-    .then((romId) => getBooking(romId))
+    .then((romId) => getBookingByRoomId(romId))
     .then(({ rows }) =>
       rows
         .sort()
