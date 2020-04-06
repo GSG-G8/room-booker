@@ -31,7 +31,7 @@ class BookingForm extends Component {
     const { visible, confirmLoading } = this.state;
     return (
       <Modal
-        title="Title"
+        title="Reserve Your room"
         visible={visible}
         onOk={this.handleOk}
         confirmLoading={confirmLoading}
