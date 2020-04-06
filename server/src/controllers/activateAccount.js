@@ -1,7 +1,7 @@
 const Boom = require('@hapi/boom');
 const Joi = require('@hapi/joi');
 
-const { activeUser, activeAdmin } = require('../database/queries');
+const { activateUser, makeAdmin } = require('../database/queries');
 
 const activateSchema = Joi.object({
   active: Joi.boolean(),
@@ -20,8 +20,8 @@ module.exports = (req, res, next) => {
     })
     .then(() => {
       const promiseArray = [];
-      if (active !== undefined) promiseArray.push(activeUser(id, active));
-      if (admin !== undefined) promiseArray.push(activeAdmin(id, admin));
+      if (active !== undefined) promiseArray.push(activateUser(id, active));
+      if (admin !== undefined) promiseArray.push(makeAdmin(id, admin));
       return Promise.all(promiseArray);
     })
     .then(() => res.status(200).end())
