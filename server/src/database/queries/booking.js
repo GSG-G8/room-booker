@@ -33,7 +33,7 @@ const getBooking = (id) => {
 //     or (date = lower_date and time >= lower_time)
 //     or (date = upper_date and time <= upper_time)
 
-const getBookingByTimeRange = ({ startTime, endTime }) => {
+const getBookingByTimeRange = ({ startTime, endTime, roomId }) => {
   /* SELECT time,
   close 
   FROM intraday_values 
@@ -44,9 +44,9 @@ const getBookingByTimeRange = ({ startTime, endTime }) => {
 */
 
   const sql = {
-    text:
-      'SELECT * FROM booking WHERE  $1 BETWEEN start_time AND end_time OR $2 BETWEEN start_time AND end_time;',
-    values: [startTime, endTime],
+    text: `SELECT * FROM booking WHERE $1 >= booking.start_time
+  AND $2 >= booking.end_time AND room_id = $3`,
+    values: [startTime, endTime, roomId],
   };
   return connection.query(sql);
 };

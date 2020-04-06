@@ -5,7 +5,7 @@ const { getBookingbydate } = require('../database/queries');
 const bookingSchema = require('./validation/bookingSchema');
 const {
   getRoom,
-  // bookRoom,
+  bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
 } = require('../database/queries');
@@ -28,48 +28,59 @@ const bookingRoom = (req, res, next) => {
   const { name, description, date, startHr, endHr } = req.body;
   const bookingData = { name, description, date, startHr, endHr };
 
-  // const { userID } = req.user;
+  const { userID } = req.user;
+  let roomId = 0;
+
   bookingSchema
     .validateAsync(bookingData, { abortEarly: false })
     .catch((err) => {
       throw Boom.badRequest(err.details.map((e) => e.message).join('\n'));
     })
     .then(() => getRoom(name))
-    .then(({ rows }) => rows[0].id)
-    .then((romId) => getBookingByRoomId(romId))
+    .then((room) => {
+      roomId = room.rows[0].id;
+      if (room.rows.length !== 0) {
+        return roomId;
+      }
+      throw Boom.badRequest('the room you are trying to book does not exist');
+    })
+
+    .then((roomID) => getBookingByRoomId(roomID))
+
     .then(({ rows }) =>
       rows
         .sort()
         .map((e) => ({ start_time: e.start_time, end_time: e.end_time }))
     )
-    .then((result) => {
-      console.log(result);
+
+    .then(() => {
       const startTime = `${req.body.date} ${req.body.startHr}`;
       const endTime = `${req.body.date} ${req.body.endHr}`;
-      const bookTime = result.map(
-        ({ start_time: startTime1, end_time: endTime1 }) => ({
-          startTime: Date.parse(startTime1),
-          endTime: Date.parse(endTime1),
-        })
-      );
+      // const bookTime = result.map(
+      //   ({ start_time: startTime1, end_time: endTime1 }) => ({
+      //     startTime: Date.parse(startTime1),
+      //     endTime: Date.parse(endTime1),
+      //   })
+      // );
+      console.log(startTime, endTime, roomId);
 
-      console.log(bookTime, {
-        start: Date.parse(startTime),
-        end: Date.parse(endTime),
-      });
-      return getBookingByTimeRange({ startTime, endTime });
+      return getBookingByTimeRange({ startTime, endTime, roomId });
     })
-    .then(({ rows }) => console.log(rows))
-    // .then((roomID) =>
-    //   bookRoom(
-    //     roomID,
-    //     userID,
-    //     `${date} ${startHr}`,
-    //     `${date} ${endHr}`,
-    //     description
-    //   )
-    // )
-    // .then(() => res.status(200).json({ message: 'Booking successfully' }))
+    // .then((e) => console.log(e.rows))
+    .then(({ rows }) => {
+      if (rows.length === 0) {
+        return bookRoom(
+          roomId,
+          userID,
+          `${date} ${startHr}`,
+          `${date} ${endHr}`,
+          description
+        );
+      }
+      throw Boom.badRequest(' not avaliable!!');
+    })
+
+    .then(() => res.status(200).json({ message: 'Booking successfully' }))
     .catch(next);
 };
 
