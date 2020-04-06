@@ -1,8 +1,7 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
-const patchProfile = require('../database/queries/patchProfile');
+const { patchProfile, getUserWithPassword } = require('../database/queries');
 const profileScema = require('./validation/profileSchema');
-const getUserById = require('../database/queries/getUserById');
 
 module.exports = (req, res, next) => {
   const { userID } = req.user;
@@ -13,7 +12,7 @@ module.exports = (req, res, next) => {
     .catch((error) => {
       throw Boom.badRequest(error);
     })
-    .then(() => getUserById(userID))
+    .then(() => getUserWithPassword(userID))
     .then((users) => {
       if (users.rows.length === 0) {
         throw Boom.notFound('user does not exists');
