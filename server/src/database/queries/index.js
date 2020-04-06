@@ -5,6 +5,7 @@ const getBookingbydate = require('./getBookingbydate');
 const deleteUser = require('./deleteUserById');
 const getUserById = require('./getUserById');
 const getUsers = require('./getUsers');
+const { deleteBookingById, getBooking } = require('./Booking');
 const getUser = require('./getUser');
 
 module.exports = {
@@ -15,6 +16,8 @@ module.exports = {
   getUsers,
   getUserById,
   deleteUser,
+  getBooking,
+  deleteBookingById,
   getUser,
   getBookingbydate,
 };

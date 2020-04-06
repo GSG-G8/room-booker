@@ -6,6 +6,7 @@ const {
   deleteUser,
   addNewRoom,
   getRoom,
+  deleteBookingById,
   getBookingbydate,
 } = require('../src/database/queries');
 
@@ -36,6 +37,11 @@ test('add room query', () =>
 
 test('deleteUserById query', () =>
   deleteUser('3').then((result) => {
+    expect(result.rowCount).toBe(1);
+  }));
+
+test('deleteBookingById query', () =>
+  deleteBookingById('1').then((result) => {
     expect(result.rowCount).toBe(1);
   }));
 

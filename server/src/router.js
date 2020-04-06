@@ -9,6 +9,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  deleteBooking,
   getProfile,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
@@ -21,6 +22,8 @@ router.get('/logout', logout);
 router.use(verifyUser);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
+
+router.delete('/booking/:id', deleteBooking);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
