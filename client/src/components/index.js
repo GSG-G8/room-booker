@@ -1,5 +1,3 @@
-import AutoComplete from './FormBooking/AutoComplete';
+import BookingForm from './Form/Reservation';
 
-// eslint-disable-next-line import/prefer-default-export
-export { AutoComplete };
-
+export default BookingForm;
