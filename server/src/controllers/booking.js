@@ -2,7 +2,13 @@ const Boom = require('@hapi/boom');
 const { getBookingbydate } = require('../database/queries');
 
 const bookingSchema = require('./validation/bookingSchema');
-const { getRoom, bookRoom } = require('../database/queries');
+// eslint-disable-next-line no-unused-vars
+const { getRoom, bookRoom, getBooking } = require('../database/queries');
+
+const bookTime = {
+  startHr: '',
+  endHr: '',
+};
 
 const getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
@@ -26,6 +32,7 @@ const bookingRoom = (req, res, next) => {
     endHr: req.body.endHr,
   };
 
+  // eslint-disable-next-line no-unused-vars
   const { userID } = req.user;
   bookingSchema
     .validateAsync(bookingData, { abortEarly: false })
@@ -34,15 +41,32 @@ const bookingRoom = (req, res, next) => {
     })
     .then(() => getRoom(name))
     .then(({ rows }) => rows[0].id)
-    .then((roomID) => bookRoom(roomID, userID, startHr, endHr, description))
+    .then((romId) => getBooking(romId))
+    .then(({ rows }) =>
+      rows
+        .sort()
+        .map((e) => ({ start_time: e.start_time, end_time: e.end_time }))
+    )
+    .then((result) => {
+      const start = `${req.body.date} ${req.body.startHr}`;
+      const end = `${req.body.date} ${req.body.endHr}`;
+      bookTime.startHr = result.map((e) => e.start_time);
+      bookTime.endHr = result.map((e) => e.end_time);
+
+      // eslint-disable-next-line no-console
+      console.log(bookTime, start, end);
+    })
+    // .then((roomID) =>
+    //   bookRoom(
+    //     roomID,
+    //     userID,
+    //     `${date} ${startHr}`,
+    //     `${date} ${endHr}`,
+    //     description
+    //   )
+    // )
+    // .then(() => res.status(200).json({ message: 'Booking successfully' }))
     .catch(next);
 };
-
-// // 1465599344356 timestamp
-// console.log('date herreeeee', Date.parse('08 Dec 2020 00:12:00'));
-// console.log('date herreeeee', Date.parse('08 Dec 2020 01:12:00'));
-// Date.parse('08 Dec 2020 00:12:00 GMT');
-// var datum = new Date(Date.UTC('2009','01','13','23','31','30'));
-// return datum.getTime()/1000;
 
 module.exports = { getRBookingbyDate, bookingRoom };

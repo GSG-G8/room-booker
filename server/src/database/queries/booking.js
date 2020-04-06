@@ -9,4 +9,10 @@ const bookRoom = (roomId, userId, startTime, endTime, description) => {
   return connection.query(sql);
 };
 
-module.exports = bookRoom;
+const getBooking = (roomId) =>
+  connection.query({
+    text: `SELECT id, room_id, user_id, start_time, end_time, description from booking WHERE room_id = $1;`,
+    values: [roomId],
+  });
+
+module.exports = { bookRoom, getBooking };
