@@ -19,8 +19,10 @@ module.exports = (req, res, next) => {
       throw Boom.badRequest(error.message);
     })
     .then(() => {
-      if (active !== undefined) activeUser(id, active);
-      if (admin !== undefined) activeAdmin(id, admin);
+      const promiseArray = [];
+      if (active !== undefined) promiseArray.push(activeUser(id, active));
+      if (admin !== undefined) promiseArray.push(activeAdmin(id, admin));
+      return Promise.all(promiseArray);
     })
     .then(() => res.status(200).end())
     .catch(next);
