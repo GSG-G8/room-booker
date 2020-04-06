@@ -3,7 +3,7 @@ const { deleteBookingById, getBooking } = require('../database/queries');
 
 module.exports = (req, res, next) => {
   const { id } = req.params;
-  const { userID, role } = req.user;
+  const { role } = req.user;
 
   getBooking(id)
     .then(({ rows }) => {
@@ -18,8 +18,8 @@ module.exports = (req, res, next) => {
       if (role) {
         return deleteBookingById(id);
       }
-      const userId = result.user_id;
-      if (userId === userID) {
+      // const userId = result.user_id;
+      if (result.user_id === req.user.userID) {
         return deleteBookingById(id);
       }
       throw Boom.forbidden('sorry , you cant delete this booking!!');
