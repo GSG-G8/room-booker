@@ -9,6 +9,7 @@ const {
   addRoom,
   deleteUser,
   getUsers,
+  activateAccount,
   patchProfile,
   deleteBooking,
   getProfile,
@@ -24,7 +25,6 @@ router.use(verifyUser);
 router.patch('/patchProfile', patchProfile);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
-
 router.delete('/booking/:id', deleteBooking);
 
 // logged in + admin only acess routes:
@@ -33,6 +33,7 @@ router.use(checkAdmin);
 router.post('/rooms', addRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
+router.patch('/users/:id', activateAccount);
 
 router.use(clientError);
 router.use(serverError);

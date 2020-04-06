@@ -9,6 +9,8 @@ const {
   deleteBookingById,
   getBookingbydate,
   getUserById,
+  activateUser,
+  makeAdmin,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -62,5 +64,21 @@ test('test getUserById', () =>
   getUserById('-1').then(({ rows }) => {
     expect(rows.length).toBe(0);
   }));
+
+test('activate user query', () =>
+  activateUser(4, true)
+    .then((result) => {
+      expect(result.rowCount).toBe(1);
+    })
+    .then(() => getUserById(4))
+    .then(({ rows }) => expect(rows[0].is_active).toBe(true)));
+
+test('active admin query', () =>
+  makeAdmin(4, true)
+    .then((result) => {
+      expect(result.rowCount).toBe(1);
+    })
+    .then(() => getUserById(4))
+    .then(({ rows }) => expect(rows[0].is_admin).toBe(true)));
 
 afterAll(() => connection.end());
