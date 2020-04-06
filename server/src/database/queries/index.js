@@ -14,6 +14,7 @@ const {
   getBooking,
   bookRoom,
   getBookingByRoomId,
+  getBookingByTimeRange,
 } = require('./booking');
 
 module.exports = {
@@ -34,4 +35,5 @@ module.exports = {
   getBookingbydate,
   bookRoom,
   getBookingByRoomId,
+  getBookingByTimeRange,
 };

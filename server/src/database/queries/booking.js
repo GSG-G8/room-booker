@@ -27,6 +27,30 @@ const getBooking = (id) => {
   return connection.query(sql);
 };
 
+// select *
+//   from foo
+//  where (date > lower_date and date < upper_date) -- technically this clause isn't needed if they are a day apart
+//     or (date = lower_date and time >= lower_time)
+//     or (date = upper_date and time <= upper_time)
+
+const getBookingByTimeRange = ({ startTime, endTime }) => {
+  /* SELECT time,
+  close 
+  FROM intraday_values 
+   between date="2005-03-01" 
+   and time="15:30" 
+   and date="2005-03-02" 
+  //  and time = "15:14" current_timestamp 
+*/
+
+  const sql = {
+    text:
+      'SELECT * FROM booking WHERE  $1 BETWEEN start_time AND end_time OR $2 BETWEEN start_time AND end_time;',
+    values: [startTime, endTime],
+  };
+  return connection.query(sql);
+};
+
 // module.exports = (id, userid, role) => {
 //   const sql = {
 //     text:
@@ -42,4 +66,5 @@ module.exports = {
   getBooking,
   bookRoom,
   getBookingByRoomId,
+  getBookingByTimeRange,
 };
