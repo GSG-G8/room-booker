@@ -8,6 +8,54 @@ const { getUserById } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
 
+test('make new booking no overlapping', (done) => {
+  request(app)
+    .post('/api/v1/booking')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-14 12:00:00',
+        endTime: '2020-04-14 14:00:00',
+      })
+    )
+    .expect(201)
+    .end((err) => {
+      if (err) return done(err);
+      return done();
+    });
+});
+
+test('make new booking with overlapping', (done) => {
+  request(app)
+    .post('/api/v1/booking')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-14 14:00:00',
+        endTime: '2020-04-14 16:00:00',
+      })
+    )
+    .expect(400)
+    .end((err) => {
+      if (err) return done(err);
+      return done();
+    });
+});
+
 test('login endpoint with correct data', (done) => {
   request(app)
     .post('/api/v1/login')
@@ -18,8 +66,7 @@ test('login endpoint with correct data', (done) => {
       JSON.stringify({ email: 'lina@gazaskygeeks.com', password: '123456' })
     )
     .expect(200)
-    // eslint-disable-next-line no-unused-vars
-    .end((err, res) => {
+    .end((err) => {
       if (err) return done(err);
       return done();
     });
@@ -219,7 +266,7 @@ test('testing for /logout ', (done) => {
   request(app)
     .get('/api/v1/logout')
     .expect(200)
-    .end((err, res) => {
+    .end((err) => {
       if (err) done(err);
       done();
     });
@@ -272,7 +319,7 @@ test('activate user route /users/:id', (done) => {
     ])
     .send(JSON.stringify({ active: true }))
     .expect(200)
-    .end((err, res) => {
+    .end((err) => {
       if (err) return done(err);
       getUserById(4).then(({ rows }) => expect(rows[0].is_active).toBe(true));
       return done();
