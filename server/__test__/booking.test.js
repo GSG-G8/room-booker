@@ -88,39 +88,38 @@ test('make the same booking no overlapping repeated in five day  between 2020-04
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
     ])
     .send(
-      JSON.stringify(
-        {
-          roomId: 1,
-          description: 'New Meeting',
-          startTime: '2020-04-19 14:30:00',
-          endTime: '2020-04-19 16:00:00',
-        },
-        {
-          roomId: 1,
-          description: 'New Meeting',
-          startTime: '2020-04-20 14:30:00',
-          endTime: '2020-04-20 16:00:00',
-        },
-        {
-          roomId: 1,
-          description: 'New Meeting',
-          startTime: '2020-04-21 14:30:00',
-          endTime: '2020-04-21 16:00:00',
-        },
-        {
-          roomId: 1,
-          description: 'New Meeting',
-          startTime: '2020-04-22 14:30:00',
-          endTime: '2020-04-22 16:00:00',
-        },
-        {
-          roomId: 1,
-          description: 'New Meeting',
-          startTime: '2020-04-23 14:30:00',
-          endTime: '2020-04-23 16:00:00',
-        }
-      )
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-19 14:30:00',
+        endTime: '2020-04-19 16:00:00',
+      }),
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-20 14:30:00',
+        endTime: '2020-04-20 16:00:00',
+      }),
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-21 14:30:00',
+        endTime: '2020-04-21 16:00:00',
+      }),
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-22 14:30:00',
+        endTime: '2020-04-22 16:00:00',
+      }),
+      JSON.stringify({
+        roomId: 1,
+        description: 'New Meeting',
+        startTime: '2020-04-23 14:30:00',
+        endTime: '2020-04-23 16:00:00',
+      })
     )
+
     .expect(201)
     .end((err) => {
       if (err) return done(err);
