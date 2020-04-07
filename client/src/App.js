@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Link, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import './App.css';
-import Pages from './pages';
+import { Dashboard, Home, Profile } from './pages';
 
 function App() {
   return (
@@ -22,7 +22,15 @@ function App() {
             </ul>
           </nav>
           <Switch>
-            <Pages />
+            <Route path="/dashboard">
+              <Dashboard />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
           </Switch>
         </div>
       </Router>
