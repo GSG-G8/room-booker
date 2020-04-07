@@ -226,7 +226,7 @@ test('testing for /logout ', (done) => {
 });
 test('GET /rooms/:date with date have room booked', (done) => {
   request(app)
-    .get('/api/v1/rooms/2020-04-05')
+    .get('/api/v1/rooms/2020-04-14')
     .set({
       'Content-Type': 'application/json',
     })
@@ -238,7 +238,7 @@ test('GET /rooms/:date with date have room booked', (done) => {
     .end((err, res) => {
       if (err) return done(err);
       expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body[0].start_time).toBe('2020-04-05T07:00:00.000Z');
+      expect(res.body[0].start_time).toBe('2020-04-14T06:00:00.000Z');
       return done();
     });
 });

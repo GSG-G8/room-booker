@@ -49,7 +49,7 @@ test('deleteBookingById query', () =>
   }));
 
 test('test getBookingbydate query to get the booked room at specific date', () =>
-  getBookingbydate('2020-04-05').then(({ rows }) => {
+  getBookingbydate('2020-04-14').then(({ rows }) => {
     expect(rows.length).toBe(4);
     expect(rows[0].description).toBe('meeting');
   }));
