@@ -42,11 +42,11 @@ const getBookingByTimeRange = ({ startTime, endTime, roomId }) => {
    and date="2005-03-02" 
   //  and time = "15:14" current_timestamp 
 */
-
+  const now = new Date();
   const sql = {
     text: `SELECT * FROM booking WHERE $1 >= booking.start_time
-  AND $2 >= booking.end_time AND room_id = $3`,
-    values: [startTime, endTime, roomId],
+  AND $2 >= booking.end_time AND room_id = $3 AND booking.start_time >= $4 `,
+    values: [startTime, endTime, roomId, now],
   };
   return connection.query(sql);
 };
