@@ -9,8 +9,7 @@ const activateSchema = Joi.object({
 });
 
 module.exports = (req, res, next) => {
-  const active = req.body.active === 'true';
-  const { admin } = req.body;
+  const { admin, active } = req.body;
   const { id } = req.params;
 
   activateSchema
