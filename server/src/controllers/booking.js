@@ -1,14 +1,9 @@
 /* eslint-disable no-console */
 const Boom = require('@hapi/boom');
+const moment = require('../utils/moment-range');
 const { getBookingbydate } = require('../database/queries');
-
 const bookingSchema = require('./validation/bookingSchema');
-const {
-  getRoom,
-  bookRoom,
-  getBookingByRoomId,
-  getBookingByTimeRange,
-} = require('../database/queries');
+const { bookRoom, getBookingByRoomId } = require('../database/queries');
 
 const getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
@@ -21,67 +16,56 @@ const getRBookingbyDate = (req, res, next) => {
     })
     .catch(next);
 };
-const bookingRoom = (req, res, next) => {
-  // body: {
-  // bookings: [ { name, description, date, startHr, endHr } , ...]
-  // }
-  const { name, description, date, startHr, endHr } = req.body;
-  const bookingData = { name, description, date, startHr, endHr };
 
+const checkOverlap = (arrOfIntervals, interval) =>
+  arrOfIntervals.filter(({ interval: existingInterval }) =>
+    existingInterval.overlaps(interval)
+  );
+
+const bookingRoom = (req, res, next) => {
+  const { roomId, description, startTime, endTime } = req.body;
   const { userID } = req.user;
-  let roomId = 0;
+
+  const newBookingInterval = moment.range(startTime, endTime);
 
   bookingSchema
-    .validateAsync(bookingData, { abortEarly: false })
+    .validateAsync(
+      {
+        roomId,
+        description,
+        startTime,
+        endTime,
+      },
+      { abortEarly: false }
+    )
     .catch((err) => {
       throw Boom.badRequest(err.details.map((e) => e.message).join('\n'));
     })
-    .then(() => getRoom(name))
-    .then((room) => {
-      roomId = room.rows[0].id;
-      if (room.rows.length !== 0) {
-        return roomId;
-      }
-      throw Boom.badRequest('the room you are trying to book does not exist');
-    })
-
-    .then((roomID) => getBookingByRoomId(roomID))
-
+    .then(() => getBookingByRoomId(roomId))
     .then(({ rows }) =>
-      rows
-        .sort()
-        .map((e) => ({ start_time: e.start_time, end_time: e.end_time }))
+      rows.map(
+        ({
+          start_time: existingStartTime,
+          end_time: existingEndTime,
+          ...rest
+        }) => ({
+          interval: moment.range(existingStartTime, existingEndTime),
+          ...rest,
+        })
+      )
     )
-
-    .then(() => {
-      const startTime = `${req.body.date} ${req.body.startHr}`;
-      const endTime = `${req.body.date} ${req.body.endHr}`;
-      // const bookTime = result.map(
-      //   ({ start_time: startTime1, end_time: endTime1 }) => ({
-      //     startTime: Date.parse(startTime1),
-      //     endTime: Date.parse(endTime1),
-      //   })
-      // );
-      console.log(startTime, endTime, roomId);
-
-      return getBookingByTimeRange({ startTime, endTime, roomId });
-    })
-    // .then((e) => console.log(e.rows))
-    .then(({ rows }) => {
-      if (rows.length === 0) {
-        return bookRoom(
-          roomId,
-          userID,
-          `${date} ${startHr}`,
-          `${date} ${endHr}`,
-          description
+    .then((arrOfIntervals) => checkOverlap(arrOfIntervals, newBookingInterval))
+    .then((overlapsArr) => {
+      if (overlapsArr.length)
+        throw Boom.badRequest(
+          'Other bookings already exist in the requested interval',
+          overlapsArr
         );
-      }
-      throw Boom.badRequest(' not avaliable!!');
+      return bookRoom(roomId, userID, startTime, endTime, description);
     })
-
-    .then(() => res.status(200).json({ message: 'Booking successfully' }))
+    .then(({ rows: [newBooking] }) => {
+      res.status(201).json({ ...newBooking });
+    })
     .catch(next);
 };
-
 module.exports = { getRBookingbyDate, bookingRoom };

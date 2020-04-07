@@ -1,9 +1,8 @@
 const Joi = require('@hapi/joi');
 
 module.exports = Joi.object({
-  name: Joi.string().alphanum().required(),
+  roomId: Joi.number().required(),
   description: Joi.string().required(),
-  date: Joi.date().greater('now').required(),
-  startHr: Joi.string().required(),
-  endHr: Joi.string().required(),
+  startTime: Joi.date().greater('now').required(),
+  endTime: Joi.date().greater(Joi.ref('startTime')).required(),
 });
