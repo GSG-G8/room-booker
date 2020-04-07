@@ -1,4 +1,4 @@
-import { Button, Checkbox, notification, Popconfirm, Table } from 'antd';
+import { Button, Checkbox, message, Modal, notification, Table } from 'antd';
 import React from 'react';
 
 class App extends React.Component {
@@ -49,19 +49,24 @@ class App extends React.Component {
       colSpan: 0,
       dataIndex: 'id',
       render: (id) => (
-        <Popconfirm
-          placement="left"
-          title="delete user"
-          onConfirm={() => {
-            this.deleteUser(id);
+        <Button
+          danger
+          type="link"
+          onClick={() => {
+            const { deleteUser } = this;
+            Modal.confirm({
+              title: 'delete user',
+              okText: 'Detete',
+              cancelText: 'Cancel',
+              content: 'are you sure ?',
+              onOk() {
+                deleteUser(id);
+              },
+            });
           }}
-          okText="Detete"
-          cancelText="Cancel"
         >
-          <Button type="link" danger>
-            Delete
-          </Button>
-        </Popconfirm>
+          Delete
+        </Button>
       ),
     },
   ];
@@ -75,18 +80,17 @@ class App extends React.Component {
 
     fetch(`/api/v1/getUsers`)
       .then((res) => {
-        if (res.status !== 200) throw res.statusText;
+        if (!res.ok) {
+          message.error('faild to fetch data');
+          throw res.statusText;
+        }
         return res.json();
       })
       .then((results) => {
         const resultsWithKey = results.map((row) => ({ key: row.id, ...row }));
         this.setState({ loading: false, data: resultsWithKey });
       })
-      .catch((error) => {
-        notification.open({
-          message: error,
-          description: 'faild to fetch data',
-        });
+      .catch(() => {
         this.setState({ loading: false });
       });
   };
@@ -95,12 +99,12 @@ class App extends React.Component {
     fetch(`/api/v1/users/${id}`, {
       method: 'delete',
     }).then((res) => {
-      if (res.status !== 200) {
-        notification.open({
-          message: 'message',
-          description: 'failed to delete user',
-        });
+      if (!res.ok) {
+        message.error('failed to delete user');
       } else {
+        notification.success({
+          message: 'user has been deleted',
+        });
         const { data } = this.state;
         this.setState({ data: data.filter((row) => row.id !== id) });
       }
@@ -116,9 +120,10 @@ class App extends React.Component {
       body: JSON.stringify(data),
     }).then((res) => {
       if (!res.ok) {
-        notification.open({
-          message: 'message',
-          description: 'failed to update user',
+        message.error('failed to update user');
+      } else {
+        notification.success({
+          message: 'user has been updated',
         });
       }
     });
