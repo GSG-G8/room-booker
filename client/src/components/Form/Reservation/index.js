@@ -1,4 +1,5 @@
-import { Form, Input, Modal, Radio } from 'antd';
+/* eslint-disable react/no-unused-state */
+import { Form, Input, Modal, Radio, Switch, Button } from 'antd';
 import React, { Component } from 'react';
 import Complete from './AutoComplete';
 import './style.css';
@@ -7,6 +8,8 @@ class BookingForm extends Component {
   state = {
     visible: false,
     confirmLoading: false,
+    repeat: 'once',
+    remind: false,
   };
 
   showModal = () => {
@@ -27,15 +30,39 @@ class BookingForm extends Component {
     });
   };
 
+  repeatOnChange = (e) => {
+    this.setState({
+      repeat: e.target.value,
+    });
+  };
+
+  remindMeOnChange = (checked) => {
+    this.setState({
+      remind: checked,
+    });
+  };
+
   render() {
-    const { visible, confirmLoading } = this.state;
+    const { visible, confirmLoading, repeat } = this.state;
     return (
       <Modal
         title="Reserve Your room"
         visible={visible}
         onOk={this.handleOk}
-        confirmLoading={confirmLoading}
         onCancel={this.handleCancel}
+        footer={[
+          <Button key="back" onClick={this.handleCancel}>
+            Cancel
+          </Button>,
+          <Button
+            key="submit"
+            type="primary"
+            loading={confirmLoading}
+            onClick={this.handleOk}
+          >
+            Confirm
+          </Button>,
+        ]}
       >
         <Form>
           <Form.Item
@@ -65,12 +92,20 @@ class BookingForm extends Component {
               },
             ]}
           >
-            <Radio.Group defaultValue="a">
+            <Radio.Group
+              defaultValue="once"
+              value={repeat}
+              onChange={this.repeatOnChange}
+            >
               <Radio.Button value="once">Once</Radio.Button>
               <Radio.Button value="daily">Daily</Radio.Button>
               <Radio.Button value="weekly">Weekly</Radio.Button>
               <Radio.Button value="custom">Custom</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+
+          <Form.Item>
+            Remind me <Switch defaultChecked onChange={this.remindMeOnChange} />
           </Form.Item>
         </Form>
       </Modal>

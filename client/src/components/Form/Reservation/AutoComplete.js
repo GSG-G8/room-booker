@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import { AutoComplete } from 'antd';
 import React, { Component } from 'react';
 
@@ -8,6 +9,7 @@ const roomsName = ['Tokyo', 'Berlin', 'Roma', 'NewYork', 'Cairo', 'Jerusalim'];
 class Autocomplete extends Component {
   state = {
     rooms: [],
+    selectedRoom: null,
   };
 
   handleSearch = (value) => {
@@ -18,6 +20,10 @@ class Autocomplete extends Component {
     });
   };
 
+  setRoom = (value) => {
+    this.setState({ selectedRoom: value });
+  };
+
   render() {
     const { rooms } = this.state;
     return (
@@ -25,6 +31,7 @@ class Autocomplete extends Component {
         style={{
           width: 200,
         }}
+        onSelect={this.setRoom}
         onSearch={this.handleSearch}
         placeholder="Room Name"
       >
