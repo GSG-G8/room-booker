@@ -1,15 +1,20 @@
 /* eslint-disable react/no-unused-state */
-import { Form, Input, Modal, Radio, Switch, Button } from 'antd';
+import { Button, Form, Input, Modal, Radio, Switch } from 'antd';
 import React, { Component } from 'react';
 import Complete from './AutoComplete';
+import DatePick from './PickDate';
 import './style.css';
 
 class BookingForm extends Component {
   state = {
-    visible: false,
+    visible: true,
     confirmLoading: false,
     repeat: 'once',
-    remind: false,
+    remind: true,
+    desc: null,
+    date: null,
+    startTime: null,
+    endTime: null,
   };
 
   showModal = () => {
@@ -42,8 +47,25 @@ class BookingForm extends Component {
     });
   };
 
+  descOnChange = (e) => {
+    this.setState({
+      desc: e.target.value,
+    });
+  };
+
+  dateOnChange = (value, dateString) => {
+    this.setState({
+      date: dateString,
+    });
+  };
+
+  timeOnChange = (time, value) => {
+    this.setState({ startTime: value[0] });
+    this.setState({ endTime: value[1] });
+  };
+
   render() {
-    const { visible, confirmLoading, repeat } = this.state;
+    const { visible, confirmLoading, desc, repeat } = this.state;
     return (
       <Modal
         title="Reserve Your room"
@@ -81,7 +103,7 @@ class BookingForm extends Component {
             label="description"
             rules={[{ required: true }]}
           >
-            <Input.TextArea />
+            <Input.TextArea value={desc} onChange={this.descOnChange} />
           </Form.Item>
           <Form.Item
             name="repeat"
@@ -102,6 +124,14 @@ class BookingForm extends Component {
               <Radio.Button value="weekly">Weekly</Radio.Button>
               <Radio.Button value="custom">Custom</Radio.Button>
             </Radio.Group>
+          </Form.Item>
+
+          <Form.Item>
+            <DatePick
+              repeatValue={repeat}
+              handleChange={this.dateOnChange}
+              timeHandle={this.timeOnChange}
+            />
           </Form.Item>
 
           <Form.Item>
