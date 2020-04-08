@@ -6,7 +6,11 @@ const {
   deleteUser,
   addNewRoom,
   getRoom,
+  deleteBookingById,
   getBookingbydate,
+  getUserById,
+  activateUser,
+  makeAdmin,
 } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
@@ -39,9 +43,42 @@ test('deleteUserById query', () =>
     expect(result.rowCount).toBe(1);
   }));
 
+test('deleteBookingById query', () =>
+  deleteBookingById('1').then((result) => {
+    expect(result.rowCount).toBe(1);
+  }));
+
 test('test getBookingbydate query to get the booked room at specific date', () =>
   getBookingbydate('2020-04-05').then(({ rows }) => {
     expect(rows.length).toBe(4);
     expect(rows[0].description).toBe('meeting');
   }));
+
+test('test getUserById', () =>
+  getUserById('1').then(({ rows }) => {
+    expect(rows.length).toBe(1);
+    expect(rows[0].email).toBe('lina@gazaskygeeks.com');
+  }));
+
+test('test getUserById', () =>
+  getUserById('-1').then(({ rows }) => {
+    expect(rows.length).toBe(0);
+  }));
+
+test('activate user query', () =>
+  activateUser(4, true)
+    .then((result) => {
+      expect(result.rowCount).toBe(1);
+    })
+    .then(() => getUserById(4))
+    .then(({ rows }) => expect(rows[0].is_active).toBe(true)));
+
+test('active admin query', () =>
+  makeAdmin(4, true)
+    .then((result) => {
+      expect(result.rowCount).toBe(1);
+    })
+    .then(() => getUserById(4))
+    .then(({ rows }) => expect(rows[0].is_admin).toBe(true)));
+
 afterAll(() => connection.end());

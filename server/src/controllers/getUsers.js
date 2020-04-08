@@ -1,5 +1,5 @@
 const Boom = require('@hapi/boom');
-const { getUsers } = require('../database/queries/getUsers');
+const { getUsers } = require('../database/queries');
 
 module.exports = (req, res, next) => {
   getUsers()

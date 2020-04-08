@@ -4,6 +4,7 @@ const app = require('../src/app');
 const dbBuild = require('../src/database/config/build');
 
 const connection = require('../src/database/config/connection.js');
+const { getUserById } = require('../src/database/queries');
 
 beforeEach(() => dbBuild());
 
@@ -41,6 +42,7 @@ test('login endpoint with wrong password', (done) => {
       return done();
     });
 });
+
 test('/signup  with correct data', (done) => {
   request(app)
     .post('/api/v1/signUp')
@@ -107,6 +109,24 @@ test('delete user by id 3 ', (done) => {
     });
 });
 
+test('delete booking by id "1" from admin ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTg3MDgyMH0.DLsC4bCJB61TSmq9dX8wyposTZPUYIG1tDiui4Spo1g',
+    ])
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+
+      expect(res.body.msg).toBe('The Booking has delete successfully');
+      return done();
+    });
+});
 test('GET /Profile with Check Active user', (done) => {
   request(app)
     .get('/api/v1/Profile')
@@ -118,12 +138,29 @@ test('GET /Profile with Check Active user', (done) => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) return done(err);
+
       const data = res.body;
       expect(data.id).toBe(2);
       expect(data.name).toBe('Imad');
       expect(data.email).toBe('amoodaa@gazaskygeeks.com');
       expect(data.is_admin).toBeTruthy();
       expect(data.is_active).toBeTruthy();
+
+      return done();
+    });
+});
+
+test('delete booking by id 1 from un authorized user ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .expect(401)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Unauthorized');
       return done();
     });
 });
@@ -178,6 +215,15 @@ test('Adding new room', (done) => {
     });
 });
 
+test('testing for /logout ', (done) => {
+  request(app)
+    .get('/api/v1/logout')
+    .expect(200)
+    .end((err, res) => {
+      if (err) done(err);
+      done();
+    });
+});
 test('GET /rooms/:date with date have room booked', (done) => {
   request(app)
     .get('/api/v1/rooms/2020-04-05')
@@ -214,4 +260,23 @@ test('GET /rooms/:date with date have not room booked', (done) => {
       return done();
     });
 });
+
+test('activate user route /users/:id', (done) => {
+  request(app)
+    .patch('/api/v1/users/4')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(JSON.stringify({ active: true }))
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      getUserById(4).then(({ rows }) => expect(rows[0].is_active).toBe(true));
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
