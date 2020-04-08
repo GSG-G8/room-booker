@@ -1,147 +1,38 @@
 /* eslint-disable no-underscore-dangle */
-/* eslint-disable react/no-unused-state */
 import { Button, Form, Input, Modal, Radio, Switch } from 'antd';
-import React, { Component } from 'react';
-import moment from 'moment';
+import React from 'react';
 import Complete from './AutoComplete';
 import DatePick from './PickDate';
+import ThemeContext from './Context';
 import './style.css';
 
-const roomsName = ['Tokyo', 'Berlin', 'Roma', 'NewYork', 'Cairo', 'Jerusalim'];
-
-class BookingForm extends Component {
-  state = {
-    rooms: [],
-    selectedRoom: '',
-    visible: true,
-    confirmLoading: false,
-    repeat: 'once',
-    remind: true,
-    desc: null,
-    date: null,
-    startTime: null,
-    endTime: null,
-    startdateRange: null,
-    enddateRange: null,
-    ourDays: [],
-  };
-
-  showModal = () => {
-    this.setState({
-      visible: true,
-    });
-  };
-
-  handleOk = () => {
-    this.setState({
-      confirmLoading: true,
-    });
-  };
-
-  handleCancel = () => {
-    this.setState({
-      visible: false,
-    });
-  };
-
-  handleSearch = (value) => {
-    this.setState({
-      rooms: roomsName.filter((e) =>
-        e.toUpperCase().includes(value.toUpperCase())
-      ),
-    });
-  };
-
-  setRoom = (value) => {
-    this.setState({ selectedRoom: value });
-  };
-
-  repeatOnChange = (e) => {
-    this.setState({
-      repeat: e.target.value,
-    });
-  };
-
-  remindMeOnChange = (checked) => {
-    this.setState({
-      remind: checked,
-    });
-  };
-
-  descOnChange = (e) => {
-    this.setState({
-      desc: e.target.value,
-    });
-  };
-
-  dateOnChange = (value, dateString) => {
-    this.setState({
-      date: dateString,
-    });
-  };
-
-  timeOnChange = (time, value) => {
-    this.setState({ startTime: value[0] });
-    this.setState({ endTime: value[1] });
-  };
-
-  dateRangeOnChange = (time, value) => {
-    this.setState({ startdateRange: value[0] });
-    this.setState({ enddateRange: value[1] });
-  };
-
-  setOurDates = (repeat, start, end) => {
-    const arr = [];
-    if (repeat === 'weekly') {
-      for (let i = moment(start); i <= moment(end); i = i.add(1, 'week')) {
-        arr.push(this.convert(i._d));
-        // this.setState({ourDays: [...this.state.ourDays, i]})
-      }
-    } else if (repeat === 'daily') {
-      for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
-        if (i._d.getDay() !== 5 && i._d.getDay() !== 6) {
-          arr.push(this.convert(i._d));
-        }
-      }
-    }
-    return arr;
-    // this.setState({ourDays: arr})
-  };
-
-  convert = (str) => {
-    const date = new Date(str);
-    const mnth = `0${date.getMonth() + 1}`.slice(-2);
-    const day = `0${date.getDate()}`.slice(-2);
-    return [date.getFullYear(), mnth, day].join('-');
-  };
-
-  render() {
-    const {
-      rooms,
+const BookingForm = () => (
+  <ThemeContext.Consumer>
+    {({
       visible,
+      handleCancel,
+      handleOk,
       confirmLoading,
       desc,
+      descOnChange,
       repeat,
-      startdateRange,
-      enddateRange,
-    } = this.state;
-    this.setOurDates(repeat, startdateRange, enddateRange);
-
-    return (
+      repeatOnChange,
+      remindMeOnChange,
+    }) => (
       <Modal
-        title="Reserve Your room"
+        title="Title"
         visible={visible}
-        onOk={this.handleOk}
-        onCancel={this.handleCancel}
+        onOk={handleOk}
+        onCancel={handleCancel}
         footer={[
-          <Button key="back" onClick={this.handleCancel}>
+          <Button key="back" onClick={handleCancel}>
             Cancel
           </Button>,
           <Button
             key="submit"
             type="primary"
             loading={confirmLoading}
-            onClick={this.handleOk}
+            onClick={handleOk}
           >
             Confirm
           </Button>,
@@ -157,18 +48,14 @@ class BookingForm extends Component {
               },
             ]}
           >
-            <Complete
-              rooms={rooms}
-              setRoom={this.setRoom}
-              handleSearch={this.handleSearch}
-            />
+            <Complete />
           </Form.Item>
           <Form.Item
             name="description"
             label="description"
             rules={[{ required: true }]}
           >
-            <Input.TextArea value={desc} onChange={this.descOnChange} />
+            <Input.TextArea value={desc} onChange={descOnChange} />
           </Form.Item>
           <Form.Item
             name="repeat"
@@ -182,32 +69,24 @@ class BookingForm extends Component {
             <Radio.Group
               defaultValue="once"
               value={repeat}
-              onChange={this.repeatOnChange}
+              onChange={repeatOnChange}
             >
               <Radio.Button value="once">Once</Radio.Button>
               <Radio.Button value="daily">Daily</Radio.Button>
               <Radio.Button value="weekly">Weekly</Radio.Button>
-              <Radio.Button value="custom">Custom</Radio.Button>
             </Radio.Group>
           </Form.Item>
-
           <Form.Item>
-            <DatePick
-              repeatValue={repeat}
-              handleChange={this.dateOnChange}
-              dateROnChange={this.dateRangeOnChange}
-              timeHandle={this.timeOnChange}
-            />
+            <DatePick />
           </Form.Item>
-
           <Form.Item>
-            Remind me <Switch defaultChecked onChange={this.remindMeOnChange} />
+            Remind me <Switch defaultChecked onChange={remindMeOnChange} />
           </Form.Item>
         </Form>
       </Modal>
-    );
-  }
-}
+    )}
+  </ThemeContext.Consumer>
+);
 
 export default BookingForm;
 
