@@ -91,31 +91,50 @@ class App extends React.Component {
     this.setState({ enddateRange: value[1] });
   };
 
-  setOurDates = (repeat, start, end) => {
+  setOurDates = (repeat, start, end, startTime, endTime, date) => {
     const arr = [];
     if (repeat === 'weekly') {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'week')) {
-        arr.push(this.convert(i._d));
+        arr.push({
+          startTime: `${this.convert(i._d)} ${startTime}`,
+          endTime: `${this.convert(i._d)} ${endTime}`,
+        });
         // this.setState({ourDays: [...this.state.ourDays, i]})
       }
     } else if (repeat === 'daily') {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
         if (i._d.getDay() !== 5 && i._d.getDay() !== 6) {
-          arr.push(this.convert(i._d));
+          arr.push({
+            startTime: `${this.convert(i._d)} ${startTime}`,
+            endTime: `${this.convert(i._d)} ${endTime}`,
+          });
         }
       }
+    } else if (repeat === 'once') {
+      // this.setState({ourDays: [...this.state.ourDays, i]})
+      arr.push({
+        startTime: `${date} ${startTime}`,
+        endTime: `${date} ${endTime}`,
+      });
     }
     return arr;
-    // this.setState({ourDays: arr})
   };
-
-  handleData = () => {};
 
   convert = (str) => {
     const date = new Date(str);
     const mnth = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getDate()}`.slice(-2);
     return [date.getFullYear(), mnth, day].join('-');
+  };
+
+  bookRoom = (name, desc, timeArr) => {
+    fetch('/api/v1/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, description: desc, time: timeArr }),
+    }).then(() => {});
   };
 
   render() {
@@ -134,7 +153,14 @@ class App extends React.Component {
       enddateRange,
       ourDays,
     } = this.state;
-    this.setOurDates(repeat, startdateRange, enddateRange);
+    const arraydat = this.setOurDates(
+      repeat,
+      startdateRange,
+      enddateRange,
+      startTime,
+      endTime,
+      date
+    );
 
     return (
       <div className="App">
@@ -157,6 +183,7 @@ class App extends React.Component {
               startdateRange,
               enddateRange,
               ourDays,
+              arraydat,
               handleSearch: this.handleSearch,
               setRoom: this.setRoom,
               convert: this.convert,
@@ -170,6 +197,7 @@ class App extends React.Component {
               dateOnChange: this.dateOnChange,
               timeOnChange: this.timeOnChange,
               dateROnChange: this.dateROnChange,
+              bookRoom: this.bookRoom,
             }}
           >
             <BookingForm />
