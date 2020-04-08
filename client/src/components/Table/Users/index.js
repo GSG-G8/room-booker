@@ -1,7 +1,7 @@
 import { Button, Checkbox, message, Modal, notification, Table } from 'antd';
 import React from 'react';
 
-class App extends React.Component {
+class Users extends React.Component {
   state = {
     data: [],
     loading: false,
@@ -143,4 +143,4 @@ class App extends React.Component {
   }
 }
 
-export default App;
+export default Users;
