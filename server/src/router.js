@@ -14,6 +14,7 @@ const {
   deleteBooking,
   getProfile,
   getRooms,
+  bookingRoom,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -26,6 +27,7 @@ router.use(verifyUser);
 router.patch('/patchProfile', patchProfile);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
+router.post('/booking', bookingRoom);
 router.delete('/booking/:id', deleteBooking);
 router.get('/rooms', getRooms);
 
