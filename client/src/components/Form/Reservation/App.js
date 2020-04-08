@@ -1,11 +1,11 @@
 /* eslint-disable no-underscore-dangle */
 // //// not really an app just the component we want to call reservation form
 
-import React from 'react';
-import { Button, Checkbox } from 'antd';
+import { Button } from 'antd';
 import moment from 'moment';
-import BookingForm from './index';
+import React from 'react';
 import ThemeContext from './Context';
+import BookingForm from './index';
 
 const roomsName = ['Tokyo', 'Berlin', 'Rome', 'NewYork', 'Cairo', 'Jerusalem'];
 
@@ -139,7 +139,9 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Button type="primary"> Try this</Button>
+          <Button type="primary" onClick={this.showModal}>
+            Try this
+          </Button>
           <ThemeContext.Provider
             value={{
               rooms,
@@ -155,6 +157,7 @@ class App extends React.Component {
               startdateRange,
               enddateRange,
               ourDays,
+              handleSearch: this.handleSearch,
               setRoom: this.setRoom,
               convert: this.convert,
               setOurDates: this.setOurDates,
@@ -171,7 +174,6 @@ class App extends React.Component {
           >
             <BookingForm />
           </ThemeContext.Provider>
-          <Checkbox>Check all</Checkbox>
         </header>
       </div>
     );
