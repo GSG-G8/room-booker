@@ -1,8 +1,8 @@
 const { clientError, serverError } = require('./error');
 const signup = require('./signup');
 const login = require('./login');
+const { getRBookingbyDate, bookingRoom } = require('./booking');
 const logout = require('./logout');
-const { getRBookingbyDate } = require('./booking');
 const { addRoom } = require('./room');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
@@ -25,4 +25,5 @@ module.exports = {
   patchProfile,
   deleteBooking,
   getProfile,
+  bookingRoom,
 };

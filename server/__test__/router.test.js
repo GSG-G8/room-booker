@@ -18,8 +18,7 @@ test('login endpoint with correct data', (done) => {
       JSON.stringify({ email: 'lina@gazaskygeeks.com', password: '123456' })
     )
     .expect(200)
-    // eslint-disable-next-line no-unused-vars
-    .end((err, res) => {
+    .end((err) => {
       if (err) return done(err);
       return done();
     });
@@ -219,14 +218,14 @@ test('testing for /logout ', (done) => {
   request(app)
     .get('/api/v1/logout')
     .expect(200)
-    .end((err, res) => {
+    .end((err) => {
       if (err) done(err);
       done();
     });
 });
 test('GET /rooms/:date with date have room booked', (done) => {
   request(app)
-    .get('/api/v1/rooms/2020-04-05')
+    .get('/api/v1/rooms/2020-04-14')
     .set({
       'Content-Type': 'application/json',
     })
@@ -238,7 +237,7 @@ test('GET /rooms/:date with date have room booked', (done) => {
     .end((err, res) => {
       if (err) return done(err);
       expect(Array.isArray(res.body)).toBe(true);
-      expect(res.body[0].start_time).toBe('2020-04-05T07:00:00.000Z');
+      expect(res.body[0].start_time).toBe('2020-04-14T06:00:00.000Z');
       return done();
     });
 });
@@ -272,7 +271,7 @@ test('activate user route /users/:id', (done) => {
     ])
     .send(JSON.stringify({ active: true }))
     .expect(200)
-    .end((err, res) => {
+    .end((err) => {
       if (err) return done(err);
       getUserById(4).then(({ rows }) => expect(rows[0].is_active).toBe(true));
       return done();
