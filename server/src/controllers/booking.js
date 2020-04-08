@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const Boom = require('@hapi/boom');
 const moment = require('../utils/moment-range');
 const { getBookingbydate } = require('../database/queries');
@@ -26,8 +25,6 @@ const bookingRoom = (req, res, next) => {
   const { roomId, time, description } = req.body;
 
   const { userID: userId } = req.user;
-
-  // const newBookingInterval = moment.range(startTime, endTime);
 
   bookingSchema
     .validateAsync(
@@ -61,9 +58,6 @@ const bookingRoom = (req, res, next) => {
         throw Boom.badRequest('your bookings are overlaping', overlaps);
       return getBookingByRoomId(roomId);
     })
-
-    // .then((e) => console.log(e))
-    // .then(() => getBookingByRoomId(roomId)) // get all room existing bookings
     .then(({ rows }) =>
       // transform all those existing bookings to moment-range intervals
       rows.map(({ start_time: existingStartTime, end_time: existingEndTime }) =>

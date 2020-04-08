@@ -10,7 +10,6 @@ const bookRoom = (bookings, roomId, userId) => {
 
   const sql = `INSERT INTO booking (room_id, user_id, start_time, end_time, description) VALUES ${values} RETURNING *`;
 
-  console.log(sql);
   return connection.query(sql);
 };
 
@@ -41,16 +40,6 @@ const getBookingByTimeRange = ({ startTime, endTime, roomId }) => {
   };
   return connection.query(sql);
 };
-
-// module.exports = (id, userid, role) => {
-//   const sql = {
-//     text:
-//       'DELETE FROM booking where (id =$1 and (user_id =$2 or ( select is_admin from bookinguser inner join booking on booking.user_id = bookinguser.id )=$3))',
-
-//     values: [id, userid, role],
-//   };
-//   return connection.query(sql);
-// };
 
 module.exports = {
   deleteBookingById,

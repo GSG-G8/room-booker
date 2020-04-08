@@ -28,12 +28,4 @@ CREATE TABLE booking (
 	date_created DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
--- CREATE TABLE business_hour (
--- 	id SERIAL PRIMARY KEY,
--- 	--  sunday: 0
--- 	day_of_the_week INTEGER <= 6 NOT NULL,
--- 	open_at TIME NOT NULL,
--- 	close_at TIME NOT NULL
--- )
-
 COMMIT;
