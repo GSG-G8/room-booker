@@ -47,7 +47,14 @@ const bookingRoom = (req, res, next) => {
       )
     )
     .then((intervals) =>
-      intervals.map((e) => checkOverlap(intervals, e)).flat()
+      intervals
+        .map((e) =>
+          checkOverlap(
+            intervals.filter((v) => v !== e),
+            e
+          )
+        )
+        .flat()
     )
     .then((overlaps) => {
       if (overlaps.length)
