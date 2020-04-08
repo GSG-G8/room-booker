@@ -1,17 +1,22 @@
 const connection = require('../config/connection');
 
-const bookRoom = (roomId, userId, startTime, endTime, description) => {
-  const sql = {
-    text:
-      'INSERT INTO booking (room_id, user_id, start_time, end_time, description) values ($1, $2, $3, $4, $5) RETURNING *',
-    values: [roomId, userId, startTime, endTime, description],
-  };
+const bookRoom = (bookings, roomId, userId) => {
+  const values = bookings
+    .map(
+      ({ description, startTime, endTime }) =>
+        `(${roomId}, ${userId}, '${startTime}', '${endTime}', '${description}')`
+    )
+    .join(',');
+
+  const sql = `INSERT INTO booking (room_id, user_id, start_time, end_time, description) VALUES ${values} RETURNING *`;
+
+  console.log(sql);
   return connection.query(sql);
 };
 
 const getBookingByRoomId = (roomId) =>
   connection.query({
-    text: `SELECT id, room_id, user_id, start_time, end_time, description from booking WHERE room_id = $1;`,
+    text: `SELECT id, room_id, user_id, start_time, end_time, description from booking WHERE room_id = $1 AND start_time > CURRENT_TIMESTAMP ;`,
     values: [roomId],
   });
 const deleteBookingById = (id) => {
@@ -27,21 +32,7 @@ const getBooking = (id) => {
   return connection.query(sql);
 };
 
-// select *
-//   from foo
-//  where (date > lower_date and date < upper_date) -- technically this clause isn't needed if they are a day apart
-//     or (date = lower_date and time >= lower_time)
-//     or (date = upper_date and time <= upper_time)
-
 const getBookingByTimeRange = ({ startTime, endTime, roomId }) => {
-  /* SELECT time,
-  close 
-  FROM intraday_values 
-   between date="2005-03-01" 
-   and time="15:30" 
-   and date="2005-03-02" 
-  //  and time = "15:14" current_timestamp 
-*/
   const now = new Date();
   const sql = {
     text: `SELECT * FROM booking WHERE $1 >= booking.start_time

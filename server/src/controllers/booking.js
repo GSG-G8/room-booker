@@ -18,53 +18,69 @@ const getRBookingbyDate = (req, res, next) => {
 };
 
 const checkOverlap = (arrOfIntervals, interval) =>
-  arrOfIntervals.filter(({ interval: existingInterval }) =>
+  arrOfIntervals.filter((existingInterval) =>
     existingInterval.overlaps(interval)
   );
 
 const bookingRoom = (req, res, next) => {
-  const { roomId, description, startTime, endTime } = req.body;
-  const { userID } = req.user;
+  const { roomId, time, description } = req.body;
 
-  const newBookingInterval = moment.range(startTime, endTime);
+  const { userID: userId } = req.user;
+
+  // const newBookingInterval = moment.range(startTime, endTime);
 
   bookingSchema
     .validateAsync(
       {
         roomId,
+        time,
         description,
-        startTime,
-        endTime,
       },
       { abortEarly: false }
     )
     .catch((err) => {
       throw Boom.badRequest(err.details.map((e) => e.message).join('\n'));
     })
-    .then(() => getBookingByRoomId(roomId))
-    .then(({ rows }) =>
-      rows.map(
-        ({
-          start_time: existingStartTime,
-          end_time: existingEndTime,
-          ...rest
-        }) => ({
-          interval: moment.range(existingStartTime, existingEndTime),
-          ...rest,
-        })
+    .then(() =>
+      time.map(({ startTime: time1, endTime: time2 }) =>
+        moment.range(time1, time2)
       )
     )
-    .then((arrOfIntervals) => checkOverlap(arrOfIntervals, newBookingInterval))
+    .then((intervals) =>
+      intervals.map((e) => checkOverlap(intervals, e)).flat()
+    )
+    .then((overlaps) => {
+      if (overlaps.length)
+        throw Boom.badRequest('your bookings are overlaping', overlaps);
+      return getBookingByRoomId(roomId);
+    })
+
+    // .then((e) => console.log(e))
+    // .then(() => getBookingByRoomId(roomId)) // get all room existing bookings
+    .then(({ rows }) =>
+      // transform all those existing bookings to moment-range intervals
+      rows.map(({ start_time: existingStartTime, end_time: existingEndTime }) =>
+        moment.range(existingStartTime, existingEndTime)
+      )
+    )
+    .then((arrOfIntervals) =>
+      // check all new bookings intervals if they overlap
+      time
+        .map(({ startTime, endTime }) =>
+          checkOverlap(arrOfIntervals, moment.range(startTime, endTime))
+        )
+        .flat()
+    )
     .then((overlapsArr) => {
       if (overlapsArr.length)
         throw Boom.badRequest(
           'Other bookings already exist in the requested interval',
           overlapsArr
         );
-      return bookRoom(roomId, userID, startTime, endTime, description);
+      return bookRoom(time, roomId, userId, description);
     })
-    .then(({ rows: [newBooking] }) => {
-      res.status(201).json({ ...newBooking });
+    .then(({ rows }) => {
+      res.status(201).json({ newBookings: rows });
     })
     .catch(next);
 };
