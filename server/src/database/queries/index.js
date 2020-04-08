@@ -8,8 +8,14 @@ const getUserWithPassword = require('./getUserWithPassword');
 const patchProfile = require('./patchProfile');
 const getUsers = require('./getUsers');
 const { activateUser, makeAdmin } = require('./activeUser');
-const { deleteBookingById, getBooking } = require('./Booking');
 const getUser = require('./getUser');
+const {
+  deleteBookingById,
+  getBooking,
+  bookRoom,
+  getBookingByRoomId,
+  getBookingByTimeRange,
+} = require('./booking');
 
 module.exports = {
   checkEmail,
@@ -27,4 +33,7 @@ module.exports = {
   deleteBookingById,
   getUser,
   getBookingbydate,
+  bookRoom,
+  getBookingByRoomId,
+  getBookingByTimeRange,
 };
