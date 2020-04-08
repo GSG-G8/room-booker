@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable react/no-unused-state */
 import { Button, Form, Input, Modal, Radio, Switch } from 'antd';
 import React, { Component } from 'react';
+import moment from 'moment';
 import Complete from './AutoComplete';
 import DatePick from './PickDate';
 import './style.css';
@@ -15,6 +17,9 @@ class BookingForm extends Component {
     date: null,
     startTime: null,
     endTime: null,
+    startdateRange: null,
+    enddateRange: null,
+    ourDays: [],
   };
 
   showModal = () => {
@@ -64,8 +69,47 @@ class BookingForm extends Component {
     this.setState({ endTime: value[1] });
   };
 
+  dateRangeOnChange = (time, value) => {
+    this.setState({ startdateRange: value[0] });
+    this.setState({ enddateRange: value[1] });
+  };
+
+  setOurDates = (repeat, start, end) => {
+    const arr = [];
+    if (repeat === 'weekly') {
+      for (let i = moment(start); i <= moment(end); i = i.add(1, 'week')) {
+        arr.push(this.convert(i._d));
+        // this.setState({ourDays: [...this.state.ourDays, i]})
+      }
+    } else if (repeat === 'daily') {
+      for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
+        if (i._d.getDay() !== 5 && i._d.getDay() !== 6) {
+          arr.push(this.convert(i._d));
+        }
+      }
+    }
+    return arr;
+    // this.setState({ourDays: arr})
+  };
+
+  convert = (str) => {
+    const date = new Date(str);
+    const mnth = `0${date.getMonth() + 1}`.slice(-2);
+    const day = `0${date.getDate()}`.slice(-2);
+    return [date.getFullYear(), mnth, day].join('-');
+  };
+
   render() {
-    const { visible, confirmLoading, desc, repeat } = this.state;
+    const {
+      visible,
+      confirmLoading,
+      desc,
+      repeat,
+      startdateRange,
+      enddateRange,
+    } = this.state;
+    this.setOurDates(repeat, startdateRange, enddateRange);
+
     return (
       <Modal
         title="Reserve Your room"
@@ -130,6 +174,7 @@ class BookingForm extends Component {
             <DatePick
               repeatValue={repeat}
               handleChange={this.dateOnChange}
+              dateROnChange={this.dateRangeOnChange}
               timeHandle={this.timeOnChange}
             />
           </Form.Item>
