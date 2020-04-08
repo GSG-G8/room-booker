@@ -13,6 +13,7 @@ const {
   patchProfile,
   deleteBooking,
   getProfile,
+  getRooms,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -26,6 +27,7 @@ router.patch('/patchProfile', patchProfile);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 router.delete('/booking/:id', deleteBooking);
+router.get('/rooms', getRooms);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
