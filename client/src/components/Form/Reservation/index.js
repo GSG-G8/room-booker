@@ -7,8 +7,12 @@ import Complete from './AutoComplete';
 import DatePick from './PickDate';
 import './style.css';
 
+const roomsName = ['Tokyo', 'Berlin', 'Roma', 'NewYork', 'Cairo', 'Jerusalim'];
+
 class BookingForm extends Component {
   state = {
+    rooms: [],
+    selectedRoom: '',
     visible: true,
     confirmLoading: false,
     repeat: 'once',
@@ -38,6 +42,18 @@ class BookingForm extends Component {
     this.setState({
       visible: false,
     });
+  };
+
+  handleSearch = (value) => {
+    this.setState({
+      rooms: roomsName.filter((e) =>
+        e.toUpperCase().includes(value.toUpperCase())
+      ),
+    });
+  };
+
+  setRoom = (value) => {
+    this.setState({ selectedRoom: value });
   };
 
   repeatOnChange = (e) => {
@@ -101,6 +117,7 @@ class BookingForm extends Component {
 
   render() {
     const {
+      rooms,
       visible,
       confirmLoading,
       desc,
@@ -140,7 +157,11 @@ class BookingForm extends Component {
               },
             ]}
           >
-            <Complete />
+            <Complete
+              rooms={rooms}
+              setRoom={this.setRoom}
+              handleSearch={this.handleSearch}
+            />
           </Form.Item>
           <Form.Item
             name="description"
