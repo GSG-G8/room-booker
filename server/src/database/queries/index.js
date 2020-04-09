@@ -7,6 +7,7 @@ const getUserById = require('./getUserById');
 const getUserWithPassword = require('./getUserWithPassword');
 const patchProfile = require('./patchProfile');
 const getUsers = require('./getUsers');
+const getRooms = require('./getRooms');
 const { activateUser, makeAdmin } = require('./activeUser');
 const getUser = require('./getUser');
 const {
@@ -33,6 +34,7 @@ module.exports = {
   deleteBookingById,
   getUser,
   getBookingbydate,
+  getRooms,
   bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
