@@ -4,11 +4,11 @@ import { Redirect, Route } from 'react-router-dom';
 import { AuthConsumer } from '../context';
 
 function ProtectedRoute({ children }) {
-  return (
+  return (props) => (
     <AuthConsumer>
-      {({ logged }) => (
-        <Route render={() => (logged ? children : <Redirect to="/login" />)} />
-      )}
+      {({ logged }) =>
+        logged ? <Route {...props}>{children}</Route> : <Redirect to="/login" />
+      }
     </AuthConsumer>
   );
 }

@@ -2,12 +2,26 @@ import React from 'react';
 
 const Context = React.createContext();
 
-class AuthProvider extends React.Component {
+export class AuthProvider extends React.Component {
   state = {
     isAuth: false,
     logged: false,
     admin: false,
   };
+
+  componentDidMount() {
+    fetch('/api/v1/auth')
+      .then((res) => {
+        if (res.ok) return res.json();
+        throw new Error();
+      })
+      .then((res) => {
+        this.setState({ logged: true, admin: res.role });
+      })
+      .catch(() => {
+        this.setState({ logged: false, admin: false });
+      });
+  }
 
   render() {
     const { isAuth, logged, admin } = this.state;
@@ -17,14 +31,11 @@ class AuthProvider extends React.Component {
           isAuth,
           logged,
           admin,
-          setAdmin: (Admin) => this.setState({ admin: Admin }),
-          setLoged: (Loged) => this.setState({ logged: Loged }),
         }}
-      />
+      >
+        {React.Children}
+      </Context.Provider>
     );
   }
 }
-
-const AuthConsumer = Context.Consumer;
-
-export { AuthProvider, AuthConsumer };
+export const AuthConsumer = Context.Consumer;
