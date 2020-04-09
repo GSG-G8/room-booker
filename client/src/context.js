@@ -4,7 +4,6 @@ const Context = React.createContext();
 
 export class AuthProvider extends React.Component {
   state = {
-    isAuth: false,
     logged: false,
     admin: false,
   };
@@ -24,11 +23,10 @@ export class AuthProvider extends React.Component {
   }
 
   render() {
-    const { isAuth, logged, admin } = this.state;
+    const { logged, admin } = this.state;
     return (
       <Context.Provider
         value={{
-          isAuth,
           logged,
           admin,
         }}
