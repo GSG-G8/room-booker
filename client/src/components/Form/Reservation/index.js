@@ -23,6 +23,7 @@ const BookingForm = () => {
         remindMeOnChange,
         arraydat,
         bookRoom,
+        rooms,
       }) => (
         <Modal
           title="Reserve Your Room"
@@ -36,7 +37,7 @@ const BookingForm = () => {
               .then(() => {
                 form.resetFields();
                 handleOk();
-                bookRoom(selectedRoom, desc, arraydat);
+                bookRoom(selectedRoom, rooms, desc, arraydat);
               })
               .catch((info) => {
                 console.log('Validate Failed:', info);

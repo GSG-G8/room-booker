@@ -7,7 +7,14 @@ import React from 'react';
 import ThemeContext from './Context';
 import BookingForm from './index';
 
-const roomsName = ['Tokyo', 'Berlin', 'Rome', 'NewYork', 'Cairo', 'Jerusalem'];
+const roomsName = [
+  { id: 1, name: 'Tokyo' },
+  { id: 2, name: 'Berlin' },
+  { id: 3, name: 'Rome' },
+  { id: 4, name: 'NewYork' },
+  { id: 5, name: 'Cairo' },
+  { id: 6, name: 'Jerusalem' },
+];
 
 class App extends React.Component {
   state = {
@@ -29,7 +36,7 @@ class App extends React.Component {
   handleSearch = (value) => {
     this.setState({
       rooms: roomsName.filter((e) =>
-        e.toUpperCase().includes(value.toUpperCase())
+        e.name.toUpperCase().includes(value.toUpperCase())
       ),
     });
   };
@@ -127,13 +134,17 @@ class App extends React.Component {
     return [date.getFullYear(), mnth, day].join('-');
   };
 
-  bookRoom = (name, desc, timeArr) => {
+  bookRoom = (name, rooms, desc, timeArr) => {
     fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ name, description: desc, time: timeArr }),
+      body: JSON.stringify({
+        roomId: rooms.filter((e) => e.name === name)[0].id,
+        description: desc,
+        time: timeArr,
+      }),
     }).then(() => {});
   };
 

@@ -17,8 +17,8 @@ const Autocomplete = () => (
         placeholder="Room Name"
       >
         {rooms.map((room) => (
-          <Option key={room} value={room}>
-            {room}
+          <Option key={room.id} value={room.name}>
+            {room.name}
           </Option>
         ))}
       </AutoComplete>
