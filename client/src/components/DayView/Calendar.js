@@ -49,7 +49,7 @@ class Calendar extends React.Component {
         results.forEach(({ room_id: roomId, ...rest }) => {
           const room = rooms[roomId];
           // rooms.find(({ room_id: roomId2 }) => roomId2 === roomId);
-          console.log(room);
+          // console.log(room);
           if (!room.events) room.events = [];
           room.events = [...room.events, rest];
         });
