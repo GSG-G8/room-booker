@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 // //// not really an app just the component we want to call reservation form
 
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import ThemeContext from './Context';
@@ -66,6 +66,9 @@ class App extends React.Component {
   repeatOnChange = (e) => {
     this.setState({
       repeat: e.target.value,
+      date: null,
+      startdateRange: null,
+      enddateRange: null,
     });
   };
 
@@ -89,13 +92,11 @@ class App extends React.Component {
   };
 
   timeOnChange = (time, value) => {
-    this.setState({ startTime: value[0] });
-    this.setState({ endTime: value[1] });
+    this.setState({ startTime: value[0], endTime: value[1] });
   };
 
   dateROnChange = (time, value) => {
-    this.setState({ startdateRange: value[0] });
-    this.setState({ enddateRange: value[1] });
+    this.setState({ startdateRange: value[0], enddateRange: value[1] });
   };
 
   setOurDates = (repeat, start, end, startTime, endTime, date) => {
@@ -135,22 +136,38 @@ class App extends React.Component {
   };
 
   bookRoom = (name, rooms, desc, timeArr) => {
-    console.log('here our data', {
-      roomId: rooms.filter((e) => e.name === name)[0].id,
-      description: desc,
-      time: timeArr,
-    });
-    // fetch('/api/v1/booking', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     roomId: rooms.filter((e) => e.name === name)[0].id,
-    //     description: desc,
-    //     time: timeArr,
-    //   }),
-    // }).then(() => {});
+    this.setState({ confirmLoading: true });
+
+    // console.log('here our data', {
+    //   roomId: rooms.filter((e) => e.name === name)[0].id,
+    //   description: desc,
+    //   time: timeArr,
+    // });
+    fetch('/api/v1/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        roomId: rooms.filter((e) => e.name === name)[0].id,
+        description: desc,
+        time: timeArr,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) {
+          message.error('faild to fetch data');
+          throw res.statusText;
+        }
+        return res.json();
+      })
+      .then((results) => {
+        const resultsWithKey = results.map((row) => ({ key: row.id, ...row }));
+        this.setState({ confirmLoading: false, ourData: resultsWithKey });
+      })
+      .catch(() => {
+        this.setState({ confirmLoading: false });
+      });
   };
 
   render() {

@@ -37,8 +37,10 @@ const BookingForm = () => {
           title="Reserve Your Room"
           visible={visible}
           onCancel={handleCancel}
+          // footer={ourData.length > 0 ? null : true}
           okText="Reserve Room"
           cancelText="Cancel"
+          okButtonProps={{ disabled: ourData.length > 0 }}
           onOk={() => {
             form
               .validateFields()
