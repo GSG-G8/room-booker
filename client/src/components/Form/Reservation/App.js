@@ -15,7 +15,6 @@ const roomsName = [
   { id: 5, name: 'Cairo' },
   { id: 6, name: 'Jerusalem' },
 ];
-
 class App extends React.Component {
   state = {
     rooms: [],
@@ -30,7 +29,14 @@ class App extends React.Component {
     endTime: null,
     startdateRange: null,
     enddateRange: null,
-    ourData: [],
+    ourData: [
+      // {
+      //   room_id: 1,
+      //   start_time: '2020-04-14 09:00:00',
+      //   end_time: '2020-04-14 10:00:00',
+      //   description: 'meeting',
+      // },
+    ],
   };
 
   handleSearch = (value) => {
@@ -161,9 +167,8 @@ class App extends React.Component {
         }
         return res.json();
       })
-      .then((results) => {
-        const resultsWithKey = results.map((row) => ({ key: row.id, ...row }));
-        this.setState({ confirmLoading: false, ourData: resultsWithKey });
+      .then((result) => {
+        this.setState({ confirmLoading: false, ourData: [result] });
       })
       .catch(() => {
         this.setState({ confirmLoading: false });
@@ -194,7 +199,6 @@ class App extends React.Component {
       endTime,
       date
     );
-
     return (
       <div className="App">
         <header className="App-header">

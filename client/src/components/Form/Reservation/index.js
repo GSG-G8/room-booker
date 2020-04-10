@@ -6,7 +6,14 @@ import ThemeContext from './Context';
 import './style.css';
 
 const { Option } = AutoComplete;
-
+const roomsName = [
+  { id: 1, name: 'Tokyo' },
+  { id: 2, name: 'Berlin' },
+  { id: 3, name: 'Rome' },
+  { id: 4, name: 'NewYork' },
+  { id: 5, name: 'Cairo' },
+  { id: 6, name: 'Jerusalem' },
+];
 const BookingForm = () => {
   const [form] = Form.useForm();
   const disabledDate = (current) => current && current < moment().endOf('day');
@@ -65,7 +72,12 @@ const BookingForm = () => {
                   width: 200,
                 }}
                 disabled={ourData.length > 0}
-                defaultValue={ourData.length > 0 ? 'value' : ''}
+                defaultValue={
+                  ourData.length > 0
+                    ? roomsName.filter((e) => e.id === ourData[0].room_id)[0]
+                        .name
+                    : ''
+                }
                 onSelect={setRoom}
                 onSearch={handleSearch}
                 placeholder="Room Name"
@@ -129,7 +141,10 @@ const BookingForm = () => {
                   disabledDate={disabledDate}
                   onChange={dateOnChange}
                   disabled={ourData.length > 0}
-                  defaultValue={ourData.length > 0 && moment('2020-04-02')}
+                  defaultValue={
+                    ourData.length > 0 &&
+                    moment(ourData[0].start_time.split(' ')[0])
+                  }
                 />
               )}
             </Form.Item>
@@ -147,8 +162,8 @@ const BookingForm = () => {
                 disabled={ourData.length > 0}
                 defaultValue={
                   ourData.length > 0 && [
-                    moment('13:30:00', 'HH:mm:ss'),
-                    moment('14:30:00', 'HH:mm:ss'),
+                    moment(ourData[0].start_time.split(' ')[1], 'HH:mm:ss'),
+                    moment(ourData[0].end_time.split(' ')[1], 'HH:mm:ss'),
                   ]
                 }
                 onChange={timeOnChange}
