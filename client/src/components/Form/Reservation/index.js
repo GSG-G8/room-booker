@@ -1,13 +1,15 @@
 /* eslint-disable no-underscore-dangle */
-import { Form, Input, Modal, Radio, Switch } from 'antd';
+import { AutoComplete, DatePicker, Form, Input, Modal, Radio, Switch, TimePicker } from 'antd';
+import moment from 'moment';
 import React from 'react';
-import Complete from './AutoComplete';
-import DatePick from './PickDate';
 import ThemeContext from './Context';
 import './style.css';
 
+const { Option } = AutoComplete;
+
 const BookingForm = () => {
   const [form] = Form.useForm();
+  const disabledDate = (current) => current && current < moment().endOf('day');
 
   return (
     <ThemeContext.Consumer>
@@ -24,6 +26,12 @@ const BookingForm = () => {
         arraydat,
         bookRoom,
         rooms,
+        ourData,
+        timeOnChange,
+        setRoom,
+        handleSearch,
+        dateROnChange,
+        dateOnChange,
       }) => (
         <Modal
           title="Reserve Your Room"
@@ -50,14 +58,34 @@ const BookingForm = () => {
               label="Space(s):"
               rules={[{ required: true, message: 'Choose your space' }]}
             >
-              <Complete />
+              <AutoComplete
+                style={{
+                  width: 200,
+                }}
+                disabled={ourData.length > 0}
+                defaultValue={ourData.length > 0 ? 'value' : ''}
+                onSelect={setRoom}
+                onSearch={handleSearch}
+                placeholder="Room Name"
+                value={selectedRoom}
+              >
+                {rooms.map((room) => (
+                  <Option key={room.id} value={room.name}>
+                    {room.name}
+                  </Option>
+                ))}
+              </AutoComplete>
             </Form.Item>
             <Form.Item
               name="description"
-              label="description"
+              label="Description"
               rules={[{ required: true, message: 'Add decription' }]}
             >
-              <Input.TextArea value={desc} onChange={descOnChange} />
+              <Input.TextArea
+                value={desc}
+                disabled={ourData.length > 0}
+                onChange={descOnChange}
+              />
             </Form.Item>
             <Form.Item
               name="repeat"
@@ -69,20 +97,69 @@ const BookingForm = () => {
               ]}
             >
               <Radio.Group
-                defaultValue="once"
                 value={repeat}
                 onChange={repeatOnChange}
+                disabled={ourData.length > 0}
               >
                 <Radio.Button value="once">Once</Radio.Button>
                 <Radio.Button value="daily">Daily</Radio.Button>
                 <Radio.Button value="weekly">Weekly</Radio.Button>
               </Radio.Group>
             </Form.Item>
-            <Form.Item>
-              <DatePick />
+            <Form.Item
+              name="date"
+              label="Day "
+              rules={[
+                {
+                  required: true,
+                  message: 'Choose your date',
+                },
+              ]}
+            >
+              {repeat !== 'once' ? (
+                <DatePicker.RangePicker
+                  onChange={dateROnChange}
+                  disabledDate={disabledDate}
+                />
+              ) : (
+                <DatePicker
+                  format="YYYY-MM-DD"
+                  disabledDate={disabledDate}
+                  onChange={dateOnChange}
+                  disabled={ourData.length > 0}
+                  defaultValue={ourData.length > 0 && moment('2020-04-02')}
+                />
+              )}
             </Form.Item>
+            <Form.Item
+              name="time"
+              label=" Time"
+              rules={[
+                {
+                  required: true,
+                  message: 'Choose your time',
+                },
+              ]}
+            >
+              <TimePicker.RangePicker
+                disabled={ourData.length > 0}
+                defaultValue={
+                  ourData.length > 0 && [
+                    moment('13:30:00', 'HH:mm:ss'),
+                    moment('14:30:00', 'HH:mm:ss'),
+                  ]
+                }
+                onChange={timeOnChange}
+              />
+            </Form.Item>
+
             <Form.Item>
-              Remind me <Switch defaultChecked onChange={remindMeOnChange} />
+              Remind me
+              <Switch
+                disabled={ourData.length > 0}
+                defaultChecked
+                onChange={remindMeOnChange}
+              />
             </Form.Item>
           </Form>
         </Modal>
@@ -92,14 +169,3 @@ const BookingForm = () => {
 };
 
 export default BookingForm;
-
-// const validateMessages = {
-//   required: '${label} is required!',
-//   types: {
-//     email: '${label} is not validate email!',
-//     number: '${label} is not a validate number!',
-//   },
-//   number: {
-//     range: '${label} must be between ${min} and ${max}',
-//   },
-// };

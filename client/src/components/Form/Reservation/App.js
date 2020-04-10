@@ -30,7 +30,7 @@ class App extends React.Component {
     endTime: null,
     startdateRange: null,
     enddateRange: null,
-    ourDays: [],
+    ourData: [],
   };
 
   handleSearch = (value) => {
@@ -135,17 +135,22 @@ class App extends React.Component {
   };
 
   bookRoom = (name, rooms, desc, timeArr) => {
-    fetch('/api/v1/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        roomId: rooms.filter((e) => e.name === name)[0].id,
-        description: desc,
-        time: timeArr,
-      }),
-    }).then(() => {});
+    console.log('here our data', {
+      roomId: rooms.filter((e) => e.name === name)[0].id,
+      description: desc,
+      time: timeArr,
+    });
+    // fetch('/api/v1/booking', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     roomId: rooms.filter((e) => e.name === name)[0].id,
+    //     description: desc,
+    //     time: timeArr,
+    //   }),
+    // }).then(() => {});
   };
 
   render() {
@@ -162,7 +167,7 @@ class App extends React.Component {
       endTime,
       startdateRange,
       enddateRange,
-      ourDays,
+      ourData,
     } = this.state;
     const arraydat = this.setOurDates(
       repeat,
@@ -193,7 +198,7 @@ class App extends React.Component {
               endTime,
               startdateRange,
               enddateRange,
-              ourDays,
+              ourData,
               arraydat,
               handleSearch: this.handleSearch,
               setRoom: this.setRoom,
