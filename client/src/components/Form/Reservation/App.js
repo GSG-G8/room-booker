@@ -32,8 +32,8 @@ class App extends React.Component {
     ourData: [
       // {
       //   room_id: 1,
-      //   start_time: '2020-04-14 09:00:00',
-      //   end_time: '2020-04-14 10:00:00',
+      //   start_time: '2020-04-14T09:00:00',
+      //   end_time: '2020-04-14T10:00:00',
       //   description: 'meeting',
       // },
     ],
@@ -52,49 +52,32 @@ class App extends React.Component {
   };
 
   showModal = () => {
-    this.setState({
-      visible: true,
-    });
+    this.setState({ visible: true });
   };
 
   handleOk = () => {
-    this.setState({
-      confirmLoading: true,
-    });
+    this.setState({ confirmLoading: true });
   };
 
   handleCancel = () => {
-    this.setState({
-      visible: false,
-    });
+    this.setState({ visible: false });
   };
 
   repeatOnChange = (e) => {
-    this.setState({
-      repeat: e.target.value,
-      date: null,
-      startdateRange: null,
-      enddateRange: null,
-    });
+    this.setState({ repeat: e.target.value });
   };
 
   descOnChange = (e) => {
-    this.setState({
-      desc: e.target.value,
-    });
+    this.setState({ desc: e.target.value });
   };
 
   remindMeOnChange = (checked) => {
-    this.setState({
-      remind: checked,
-    });
+    this.setState({ remind: checked });
   };
 
   dateOnChange = (value, dateString) => {
     // console.log('Selected Time: ', value);
-    this.setState({
-      date: dateString,
-    });
+    this.setState({ date: dateString });
   };
 
   timeOnChange = (time, value) => {
@@ -136,19 +119,13 @@ class App extends React.Component {
 
   convert = (str) => {
     const date = new Date(str);
-    const mnth = `0${date.getMonth() + 1}`.slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
     const day = `0${date.getDate()}`.slice(-2);
-    return [date.getFullYear(), mnth, day].join('-');
+    return [date.getFullYear(), month, day].join('-');
   };
 
-  bookRoom = (name, rooms, desc, timeArr) => {
+  bookRoom = (name, rooms, desc, timeArr, remind) => {
     this.setState({ confirmLoading: true });
-
-    // console.log('here our data', {
-    //   roomId: rooms.filter((e) => e.name === name)[0].id,
-    //   description: desc,
-    //   time: timeArr,
-    // });
     fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -158,6 +135,7 @@ class App extends React.Component {
         roomId: rooms.filter((e) => e.name === name)[0].id,
         description: desc,
         time: timeArr,
+        remindMe: remind,
       }),
     })
       .then((res) => {
@@ -168,7 +146,8 @@ class App extends React.Component {
         return res.json();
       })
       .then((result) => {
-        this.setState({ confirmLoading: false, ourData: [result] });
+        this.setState({ confirmLoading: false, ourData: result.newBookings });
+        // console.log('here our starttime', this.state.ourData[0].start_time);
       })
       .catch(() => {
         this.setState({ confirmLoading: false });
@@ -199,6 +178,7 @@ class App extends React.Component {
       endTime,
       date
     );
+
     return (
       <div className="App">
         <header className="App-header">

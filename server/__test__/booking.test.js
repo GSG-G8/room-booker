@@ -25,6 +25,7 @@ test('make new booking no overlapping', (done) => {
             endTime: '2020-04-14 14:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -53,6 +54,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
             endTime: '2020-04-14 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -81,6 +83,7 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
             endTime: '2020-04-13 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -109,6 +112,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
             endTime: '2020-04-14 16:30:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -137,6 +141,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
             endTime: '2020-04-14 15:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -165,6 +170,7 @@ test('make new booking with overlapping', (done) => {
             endTime: '2020-04-14 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -193,6 +199,7 @@ test('make new booking with expire date ', (done) => {
             endTime: '2020-04-04 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -228,6 +235,7 @@ test('test for when the user inputs intersecting times ', (done) => {
             endTime: '2020-04-13 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -264,6 +272,7 @@ test('test for 100%  valid input ', (done) => {
             endTime: '2020-04-13 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)

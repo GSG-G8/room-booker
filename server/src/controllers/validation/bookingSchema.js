@@ -13,4 +13,5 @@ module.exports = Joi.object({
     .min(1)
     .unique()
     .required(),
+  remindMe: Joi.boolean().required(),
 });

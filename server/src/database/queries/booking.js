@@ -1,9 +1,9 @@
 const connection = require('../config/connection');
 
-const bookRoom = (bookings, roomId, userId) => {
+const bookRoom = (bookings, roomId, userId, description) => {
   const values = bookings
     .map(
-      ({ description, startTime, endTime }) =>
+      ({ startTime, endTime }) =>
         `(${roomId}, ${userId}, '${startTime}', '${endTime}', '${description}')`
     )
     .join(',');

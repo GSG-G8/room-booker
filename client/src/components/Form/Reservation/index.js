@@ -1,5 +1,14 @@
 /* eslint-disable no-underscore-dangle */
-import { AutoComplete, DatePicker, Form, Input, Modal, Radio, Switch, TimePicker } from 'antd';
+import {
+  AutoComplete,
+  DatePicker,
+  Form,
+  Input,
+  Modal,
+  Radio,
+  Switch,
+  TimePicker,
+} from 'antd';
 import moment from 'moment';
 import React from 'react';
 import ThemeContext from './Context';
@@ -17,7 +26,7 @@ const roomsName = [
 const BookingForm = () => {
   const [form] = Form.useForm();
   const disabledDate = (current) => current && current < moment().endOf('day');
-
+  // roomsName.filter((e) => e.id === ourData[0].room_id)[0].name
   return (
     <ThemeContext.Consumer>
       {({
@@ -39,6 +48,7 @@ const BookingForm = () => {
         handleSearch,
         dateROnChange,
         dateOnChange,
+        remind,
       }) => (
         <Modal
           title="Reserve Your Room"
@@ -54,7 +64,7 @@ const BookingForm = () => {
               .then(() => {
                 form.resetFields();
                 handleOk();
-                bookRoom(selectedRoom, rooms, desc, arraydat);
+                bookRoom(selectedRoom, rooms, desc, arraydat, remind);
               })
               .catch((info) => {
                 console.log('Validate Failed:', info);
@@ -143,7 +153,7 @@ const BookingForm = () => {
                   disabled={ourData.length > 0}
                   defaultValue={
                     ourData.length > 0 &&
-                    moment(ourData[0].start_time.split(' ')[0])
+                    moment(ourData[0].start_time.split('T')[0])
                   }
                 />
               )}
@@ -162,8 +172,8 @@ const BookingForm = () => {
                 disabled={ourData.length > 0}
                 defaultValue={
                   ourData.length > 0 && [
-                    moment(ourData[0].start_time.split(' ')[1], 'HH:mm:ss'),
-                    moment(ourData[0].end_time.split(' ')[1], 'HH:mm:ss'),
+                    moment(ourData[0].start_time.split('T')[1], 'HH:mm:ss'),
+                    moment(ourData[0].end_time.split('T')[1], 'HH:mm:ss'),
                   ]
                 }
                 onChange={timeOnChange}

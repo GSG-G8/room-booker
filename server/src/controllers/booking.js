@@ -1,8 +1,16 @@
 const Boom = require('@hapi/boom');
+const nodemailer = require('nodemailer');
+const ical = require('ical-generator');
+const Moment = require('moment');
 const moment = require('../utils/moment-range');
 const { getBookingbydate } = require('../database/queries');
 const bookingSchema = require('./validation/bookingSchema');
-const { bookRoom, getBookingByRoomId } = require('../database/queries');
+const {
+  bookRoom,
+  getBookingByRoomId,
+  getUserById,
+} = require('../database/queries');
+require('env2')('./config.env');
 
 const getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
@@ -22,16 +30,16 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 const bookingRoom = (req, res, next) => {
-  const { roomId, time, description } = req.body;
-
+  const { roomId, time, description, remindMe } = req.body;
   const { userID: userId } = req.user;
-
+  let myData = [];
   bookingSchema
     .validateAsync(
       {
         roomId,
         time,
         description,
+        remindMe,
       },
       { abortEarly: false }
     )
@@ -80,9 +88,59 @@ const bookingRoom = (req, res, next) => {
         );
       return bookRoom(time, roomId, userId, description);
     })
+    // eslint-disable-next-line consistent-return
     .then(({ rows }) => {
+      if (remindMe) {
+        myData = rows;
+        return myData;
+      }
       res.status(201).json({ newBookings: rows });
     })
+    .then(() => getUserById(userId))
+    .then(({ rows }) => ({ email: rows[0].email, name: rows[0].name }))
+    .then(({ email }) => {
+      myData.forEach((row) => {
+        const cal = ical({
+          events: [
+            {
+              start: Moment(row.start_time),
+              end: Moment(row.end_time),
+              description: row.description,
+            },
+          ],
+        }).toString();
+
+        const transporter = nodemailer.createTransport({
+          service: 'gazaskygeeks',
+          auth: {
+            user: process.env.EMAIL,
+            pass: process.env.PASSWORD,
+          },
+        });
+
+        const msg = {
+          from: `"Gaza Sky Geeks" <${process.env.EMAIL}>`,
+          to: email,
+          subject: 'Room booking',
+          html: 'here is your room booking',
+          icalEvent: {
+            filename: 'bookingRoom.ics',
+            method: 'request',
+            content:
+              'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
+          },
+          alternatives: [
+            {
+              contentType: 'text/calendar',
+              content: Buffer.from(cal.toString()),
+            },
+          ],
+        };
+
+        transporter.sendMail(msg);
+      });
+    })
+    .then(() => res.status(201).json({ newBookings: myData }))
     .catch(next);
 };
 module.exports = { getRBookingbyDate, bookingRoom };
