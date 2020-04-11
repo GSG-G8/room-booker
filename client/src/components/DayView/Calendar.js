@@ -10,7 +10,7 @@ import './style.css';
 class Calendar extends React.Component {
   state = {
     rooms: [],
-    events: [],
+    // events: [],
   };
 
   componentDidMount() {
@@ -18,6 +18,12 @@ class Calendar extends React.Component {
       this.fetchRoomEvent(moment('2020-04-14').format('YYYY-MM-DD'))
     );
   }
+
+  // componentDidUpdate() {
+  //   this.fetchRoomName().then(() =>
+  //     this.fetchRoomEvent(moment('2020-04-14').format('YYYY-MM-DD'))
+  //   );
+  // }
 
   fetchRoomName = () =>
     fetch(`/api/v1/rooms`)
@@ -46,39 +52,65 @@ class Calendar extends React.Component {
       })
       .then((results) => {
         const { rooms } = this.state;
-        results.forEach(({ room_id: roomId, ...rest }) => {
-          const room = rooms[roomId];
-          // rooms.find(({ room_id: roomId2 }) => roomId2 === roomId);
-          // console.log(room);
-          if (!room.events) room.events = [];
-          room.events = [...room.events, rest];
-        });
-        // console.log({ rooms, results });
-        this.setState({ events: results });
+
+        const roomsWithEvents = rooms.map(({ id, ...rest }) => ({
+          id,
+          ...rest,
+          events: results
+            .filter((event) => event.room_id === id)
+            .map((event) => ({
+              start: event.start_time,
+              end: event.end_time,
+              description: event.description,
+            })),
+        }));
+        this.setState({ rooms: roomsWithEvents });
       });
   };
 
   render() {
-    const { rooms, events } = this.state;
+    const { rooms } = this.state;
     return (
       <div className="calendars">
         {rooms.map((room) => (
-          <div>
+          <div key={room.id}>
             <h1> {room.name}</h1>
+
             <FullCalendar
-              style={{
-                width: '100px',
-                hight: '1000px',
-              }}
+              width="100px"
+              height="auto"
               defaultView="timeGridDay"
               plugins={[timeGridPlugin]}
               header={{
                 left: '',
                 center: '',
               }}
-              editable="true"
+              // editable="true"
               resourceLabelText="Rooms"
-              events={events}
+              resources={room}
+              resourceRender={room}
+              events={room.events}
+              //   room.events === undefined
+              //     ? []
+              //     : room.events.map((event) => ({
+              //         start: event.start_time,
+              //         end: event.end_time,
+              //         description: event.description,
+              //       }))
+              // }
+
+              // events: [
+              //   {
+              //     title: 'BCH237',
+              //     start: '2019-08-12T10:30:00',
+              //     end: '2019-08-12T11:30:00',
+              //     extendedProps: {
+              //       department: 'BioChemistry'
+              //     },
+              //     description: 'Lecture'
+              //   }
+              //   // more events ...
+              // ],
               timeZone="UTC"
             />
           </div>
