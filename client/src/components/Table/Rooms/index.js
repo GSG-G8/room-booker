@@ -1,4 +1,3 @@
-// import { Button, Checkbox, message, Modal, notification, Table } from 'antd';
 import { Button, message, Modal, notification, Table } from 'antd';
 import React from 'react';
 import NewRoom from '../../Form/AddRoom';
@@ -28,7 +27,7 @@ class Rooms extends React.Component {
             this.setState({
               visible: true,
               updateID: id,
-              initialName: (console.log(row), row.name),
+              initialName: row.name,
             });
           }}
         >
