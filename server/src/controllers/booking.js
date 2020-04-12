@@ -91,13 +91,16 @@ const bookingRoom = (req, res, next) => {
     })
     // eslint-disable-next-line consistent-return
     .then(({ rows }) => {
-      if (remindMe) {
-        bookingData = rows;
-        return bookingData;
-      }
-      res.status(201).json({ newBookings: rows });
+      bookingData = rows;
+      return bookingData;
     })
-    .then(() => getUserById(userId))
+    .then((result) => res.status(201).json({ newBookings: result }))
+    .then(() => {
+      if (remindMe) {
+        return getUserById(userId);
+      }
+      return res.end();
+    })
     .then(({ rows }) => ({ email: rows[0].email, name: rows[0].name }))
     // eslint-disable-next-line no-unused-vars
     .then(({ email }) => {
@@ -105,7 +108,7 @@ const bookingRoom = (req, res, next) => {
         events: bookingData.map((row) => ({
           start: Moment(row.start_time),
           end: Moment(row.end_time),
-          summary: 'Example Event',
+          summary: row.title,
           description: row.description,
         })),
       }).toString();
@@ -139,8 +142,6 @@ const bookingRoom = (req, res, next) => {
 
       transporter.sendMail(msg).catch(console.error);
     })
-
-    .then(() => res.status(201).json({ newBookings: bookingData }))
     .catch(next);
 };
 module.exports = { getRBookingbyDate, bookingRoom };
