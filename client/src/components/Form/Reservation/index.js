@@ -1,14 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import {
-  AutoComplete,
-  DatePicker,
-  Form,
-  Input,
-  Modal,
-  Radio,
-  Switch,
-  TimePicker,
-} from 'antd';
+import { AutoComplete, DatePicker, Form, Input, Modal, Radio, Switch, TimePicker } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import ThemeContext from './Context';
@@ -32,8 +23,9 @@ const BookingForm = () => {
       {({
         visible,
         handleCancel,
-        handleOk,
         desc,
+        title,
+        titleOnChange,
         descOnChange,
         selectedRoom,
         repeat,
@@ -49,12 +41,13 @@ const BookingForm = () => {
         dateROnChange,
         dateOnChange,
         remind,
+        confirmLoading,
       }) => (
         <Modal
           title="Reserve Your Room"
           visible={visible}
+          confirmLoading={confirmLoading}
           onCancel={handleCancel}
-          // footer={ourData.length > 0 ? null : true}
           okText="Reserve Room"
           cancelText="Cancel"
           okButtonProps={{ disabled: ourData.length > 0 }}
@@ -63,8 +56,7 @@ const BookingForm = () => {
               .validateFields()
               .then(() => {
                 form.resetFields();
-                handleOk();
-                bookRoom(selectedRoom, rooms, desc, arraydat, remind);
+                bookRoom(selectedRoom, rooms, title, desc, arraydat, remind);
               })
               .catch((info) => {
                 console.log('Validate Failed:', info);
@@ -82,7 +74,7 @@ const BookingForm = () => {
                   width: 200,
                 }}
                 disabled={ourData.length > 0}
-                defaultValue={
+                initialValues={
                   ourData.length > 0
                     ? roomsName.filter((e) => e.id === ourData[0].room_id)[0]
                         .name
@@ -100,6 +92,19 @@ const BookingForm = () => {
                 ))}
               </AutoComplete>
             </Form.Item>
+
+            <Form.Item
+              name="title"
+              label="Title"
+              rules={[{ required: true, message: 'Add Your Title' }]}
+            >
+              <Input
+                value={title}
+                disabled={ourData.length > 0}
+                onChange={titleOnChange}
+              />
+            </Form.Item>
+
             <Form.Item
               name="description"
               label="Description"
@@ -111,6 +116,7 @@ const BookingForm = () => {
                 onChange={descOnChange}
               />
             </Form.Item>
+
             <Form.Item
               name="repeat"
               label="Repeat"
@@ -130,34 +136,49 @@ const BookingForm = () => {
                 <Radio.Button value="weekly">Weekly</Radio.Button>
               </Radio.Group>
             </Form.Item>
-            <Form.Item
-              name="date"
-              label="Day "
-              rules={[
-                {
-                  required: true,
-                  message: 'Choose your date',
-                },
-              ]}
-            >
-              {repeat !== 'once' ? (
-                <DatePicker.RangePicker
-                  onChange={dateROnChange}
-                  disabledDate={disabledDate}
-                />
-              ) : (
+
+            {repeat === 'once' && (
+              <Form.Item
+                name="date"
+                label="Day "
+                rules={[
+                  {
+                    required: true,
+                    message: 'Choose your date',
+                  },
+                ]}
+              >
                 <DatePicker
                   format="YYYY-MM-DD"
                   disabledDate={disabledDate}
                   onChange={dateOnChange}
                   disabled={ourData.length > 0}
-                  defaultValue={
+                  initialValues={
                     ourData.length > 0 &&
                     moment(ourData[0].start_time.split('T')[0])
                   }
                 />
-              )}
-            </Form.Item>
+              </Form.Item>
+            )}
+
+            {repeat !== 'once' && (
+              <Form.Item
+                name="daterange"
+                label="Day "
+                rules={[
+                  {
+                    required: true,
+                    message: 'Choose your date',
+                  },
+                ]}
+              >
+                <DatePicker.RangePicker
+                  onChange={dateROnChange}
+                  disabledDate={disabledDate}
+                />
+              </Form.Item>
+            )}
+
             <Form.Item
               name="time"
               label=" Time"

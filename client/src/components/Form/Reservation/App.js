@@ -23,6 +23,7 @@ class App extends React.Component {
     confirmLoading: false,
     repeat: 'once',
     remind: true,
+    title: null,
     desc: null,
     date: null,
     startTime: null,
@@ -55,16 +56,16 @@ class App extends React.Component {
     this.setState({ visible: true });
   };
 
-  handleOk = () => {
-    this.setState({ confirmLoading: true });
-  };
-
   handleCancel = () => {
     this.setState({ visible: false });
   };
 
   repeatOnChange = (e) => {
     this.setState({ repeat: e.target.value });
+  };
+
+  titleOnChange = (e) => {
+    this.setState({ title: e.target.value });
   };
 
   descOnChange = (e) => {
@@ -95,7 +96,6 @@ class App extends React.Component {
           startTime: `${this.convert(i.format())} ${startTime}`,
           endTime: `${this.convert(i.format())} ${endTime}`,
         });
-        // this.setState({ourDays: [...this.state.ourDays, i]})
       }
     } else if (repeat === 'daily') {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
@@ -107,7 +107,6 @@ class App extends React.Component {
         }
       }
     } else if (repeat === 'once') {
-      // this.setState({ourDays: [...this.state.ourDays, i]})
       arr.push({
         startTime: `${date} ${startTime}`,
         endTime: `${date} ${endTime}`,
@@ -123,7 +122,7 @@ class App extends React.Component {
     return [date.getFullYear(), month, day].join('-');
   };
 
-  bookRoom = (name, rooms, desc, timeArr, remind) => {
+  bookRoom = (name, rooms, title, desc, timeArr, remind) => {
     this.setState({ confirmLoading: true });
     fetch('/api/v1/booking', {
       method: 'POST',
@@ -132,6 +131,7 @@ class App extends React.Component {
       },
       body: JSON.stringify({
         roomId: rooms.filter((e) => e.name === name)[0].id,
+        title,
         description: desc,
         time: timeArr,
         remindMe: remind,
@@ -139,15 +139,19 @@ class App extends React.Component {
     })
       .then((res) => {
         if (!res.ok) {
-          message.error('faild to fetch data');
+          res.json().then(({ message: msg }) => message.error(msg));
           throw res.statusText;
         }
         return res.json();
       })
       .then((result) => {
-        this.setState({ confirmLoading: false, ourData: result.newBookings });
-        // console.log('here our starttime', this.state.ourData[0].start_time);
+        this.setState({
+          confirmLoading: false,
+          visible: false,
+          ourData: result.newBookings,
+        });
       })
+      .then(() => message.success('Room booked successfully', 3))
       .catch(() => {
         this.setState({ confirmLoading: false });
       });
@@ -161,6 +165,7 @@ class App extends React.Component {
       confirmLoading,
       repeat,
       remind,
+      title,
       desc,
       date,
       startTime,
@@ -191,6 +196,7 @@ class App extends React.Component {
               confirmLoading,
               repeat,
               remind,
+              title,
               desc,
               date,
               startTime,
@@ -206,6 +212,7 @@ class App extends React.Component {
               showModal: this.showModal,
               handleOk: this.handleOk,
               handleCancel: this.handleCancel,
+              titleOnChange: this.titleOnChange,
               repeatOnChange: this.repeatOnChange,
               descOnChange: this.descOnChange,
               remindMeOnChange: this.remindMeOnChange,
