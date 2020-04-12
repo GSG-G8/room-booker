@@ -24,6 +24,7 @@ CREATE TABLE booking (
 	user_id INTEGER NOT NULL REFERENCES bookinguser(id),
 	start_time TIMESTAMP NOT NULL,
 	end_time TIMESTAMP NOT NULL,
+	title TEXT NOT NULL,
 	description TEXT NOT NULL,
 	date_created DATE NOT NULL DEFAULT CURRENT_DATE
 );

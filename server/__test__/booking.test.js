@@ -18,6 +18,7 @@ test('make new booking no overlapping', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -47,6 +48,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -76,6 +78,7 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -105,6 +108,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -134,6 +138,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -163,6 +168,7 @@ test('make new booking with overlapping', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -192,6 +198,7 @@ test('make new booking with expire date ', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -220,6 +227,7 @@ test('test for when the user inputs intersecting times ', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -257,6 +265,7 @@ test('test for 100%  valid input ', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {

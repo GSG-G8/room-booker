@@ -30,7 +30,7 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 const bookingRoom = (req, res, next) => {
-  const { roomId, time, description, remindMe } = req.body;
+  const { roomId, time, title, description, remindMe } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
   bookingSchema
@@ -38,6 +38,7 @@ const bookingRoom = (req, res, next) => {
       {
         roomId,
         time,
+        title,
         description,
         remindMe,
       },
@@ -86,7 +87,7 @@ const bookingRoom = (req, res, next) => {
           'Other bookings already exist in the requested interval',
           overlapsArr
         );
-      return bookRoom(time, roomId, userId, description);
+      return bookRoom(time, roomId, userId, title, description);
     })
     // eslint-disable-next-line consistent-return
     .then(({ rows }) => {
@@ -104,6 +105,7 @@ const bookingRoom = (req, res, next) => {
         events: bookingData.map((row) => ({
           start: Moment(row.start_time),
           end: Moment(row.end_time),
+          summary: 'Example Event',
           description: row.description,
         })),
       }).toString();
@@ -126,6 +128,7 @@ const bookingRoom = (req, res, next) => {
           content:
             'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
         },
+        // 'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\n...';
         alternatives: [
           {
             contentType: 'text/calendar',
