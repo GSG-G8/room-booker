@@ -28,7 +28,7 @@ function App() {
               </ul>
             </nav>
             <Switch>
-              <ProtectedRoute path="/dashboard">
+              <ProtectedRoute adminOnly path="/dashboard">
                 <Dashboard />
               </ProtectedRoute>
               <Route path="/profile">

@@ -3,16 +3,27 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { AuthConsumer } from '../context';
 
-function ProtectedRoute({ children, ...props }) {
+function ProtectedRoute({ children, adminOnly, ...props }) {
   return (
     <AuthConsumer>
-      {({ logged }) =>
-        // eslint-disable-next-line react/jsx-props-no-spreading
-        logged ? <Route {...props}>{children}</Route> : <Redirect to="/login" />
+      {({ admin, logged }) =>
+        logged && (admin || !adminOnly) ? (
+          // eslint-disable-next-line react/jsx-props-no-spreading
+          <Route {...props}>{children}</Route>
+        ) : (
+          <Redirect to="/login" />
+        )
       }
     </AuthConsumer>
   );
 }
-ProtectedRoute.propTypes = { children: PropTypes.node.isRequired };
+ProtectedRoute.propTypes = {
+  children: PropTypes.node.isRequired,
+  adminOnly: PropTypes.bool,
+};
+
+ProtectedRoute.defaultProps = {
+  adminOnly: false,
+};
 
 export default ProtectedRoute;
