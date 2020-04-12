@@ -1,11 +1,15 @@
 // import { Button, Checkbox, message, Modal, notification, Table } from 'antd';
-import { Button, message, Modal, Table } from 'antd';
+import { Button, message, Modal, notification, Table } from 'antd';
 import React from 'react';
+import NewRoom from '../../Form/AddRoom';
 
 class Rooms extends React.Component {
   state = {
     data: [],
     loading: false,
+    visible: false,
+    updateID: 0,
+    initialName: '',
   };
 
   columns = [
@@ -16,6 +20,25 @@ class Rooms extends React.Component {
     {
       title: 'Action',
       dataIndex: 'id',
+      colSpan: 2,
+      render: (id, row) => (
+        <Button
+          type="link"
+          onClick={() => {
+            this.setState({
+              visible: true,
+              updateID: id,
+              initialName: (console.log(row), row.name),
+            });
+          }}
+        >
+          Update
+        </Button>
+      ),
+    },
+    {
+      dataIndex: 'id',
+      colSpan: 0,
       render: (id) => (
         <Button
           danger
@@ -49,7 +72,7 @@ class Rooms extends React.Component {
     fetch(`/api/v1/rooms`)
       .then((res) => {
         if (!res.ok) {
-          message.error('faild to fetch data');
+          message.error('could not fetch data');
           throw res.statusText;
         }
         return res.json();
@@ -63,18 +86,90 @@ class Rooms extends React.Component {
       });
   };
 
-  deleteRoom = () => {};
+  createRoom = (values) => {
+    fetch(`/api/v1/rooms`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    }).then((res) => {
+      if (!res.ok) {
+        message.error('could not create room');
+      } else {
+        this.fetchData();
+        this.setState({ visible: false });
+        notification.success({
+          message: 'room has been created',
+        });
+      }
+    });
+  };
+
+  deleteRoom = (id) => {
+    fetch(`/api/v1/rooms/${id}`, {
+      method: 'delete',
+    }).then((res) => {
+      if (!res.ok) {
+        message.error('could not delete the room');
+      } else {
+        notification.success({
+          message: 'room has been deleted',
+        });
+        const { data } = this.state;
+        this.setState({ data: data.filter((row) => row.id !== id) });
+      }
+    });
+  };
+
+  updateRoom = ({ id, name }) => {
+    fetch(`/api/v1/rooms/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name }),
+    }).then((res) => {
+      if (!res.ok) {
+        message.error('could not update the room');
+      } else {
+        notification.success({
+          message: 'room has been updated',
+        });
+        this.fetchData();
+        this.setState({
+          visible: false,
+        });
+      }
+    });
+  };
 
   render() {
-    const { loading, data } = this.state;
+    const { loading, data, visible, updateID, initialName } = this.state;
+
     return (
-      <Table
-        bordered
-        dataSource={data}
-        columns={this.columns}
-        pagination={{ hideOnSinglePage: true }}
-        loading={loading}
-      />
+      <div>
+        <NewRoom
+          visible={visible}
+          onCreate={this.createRoom}
+          onUpdate={this.updateRoom}
+          onClick={() => {
+            this.setState({ visible: true, updateID: 0 });
+          }}
+          onCancel={() => {
+            this.setState({ visible: false });
+          }}
+          updateID={updateID}
+          initialName={initialName}
+        />
+        <Table
+          bordered
+          dataSource={data}
+          columns={this.columns}
+          pagination={{ hideOnSinglePage: true }}
+          loading={loading}
+        />
+      </div>
     );
   }
 }
