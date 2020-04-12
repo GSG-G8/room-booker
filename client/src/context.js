@@ -31,8 +31,8 @@ class AuthProvider extends React.Component {
         value={{
           logged,
           admin,
-          setAdmin: (Admin) => this.setState({ admin: Admin }),
-          setLoged: (Loged) => this.setState({ logged: Loged }),
+          setAuth: ({ Logged, Admin }) =>
+            this.setState({ logged: Logged, admin: Admin }),
         }}
       >
         {children}
