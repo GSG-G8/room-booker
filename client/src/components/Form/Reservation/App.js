@@ -76,7 +76,6 @@ class App extends React.Component {
   };
 
   dateOnChange = (value, dateString) => {
-    // console.log('Selected Time: ', value);
     this.setState({ date: dateString });
   };
 
@@ -93,8 +92,8 @@ class App extends React.Component {
     if (repeat === 'weekly') {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'week')) {
         arr.push({
-          startTime: `${this.convert(i._d)} ${startTime}`,
-          endTime: `${this.convert(i._d)} ${endTime}`,
+          startTime: `${this.convert(i.format())} ${startTime}`,
+          endTime: `${this.convert(i.format())} ${endTime}`,
         });
         // this.setState({ourDays: [...this.state.ourDays, i]})
       }
@@ -102,8 +101,8 @@ class App extends React.Component {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
         if (i._d.getDay() !== 5 && i._d.getDay() !== 6) {
           arr.push({
-            startTime: `${this.convert(i._d)} ${startTime}`,
-            endTime: `${this.convert(i._d)} ${endTime}`,
+            startTime: `${this.convert(i.format())} ${startTime}`,
+            endTime: `${this.convert(i.format())} ${endTime}`,
           });
         }
       }
@@ -178,7 +177,6 @@ class App extends React.Component {
       endTime,
       date
     );
-
     return (
       <div className="App">
         <header className="App-header">
