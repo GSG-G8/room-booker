@@ -1,8 +1,9 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const Context = React.createContext();
 
-export class AuthProvider extends React.Component {
+class AuthProvider extends React.Component {
   state = {
     logged: false,
     admin: false,
@@ -24,16 +25,21 @@ export class AuthProvider extends React.Component {
 
   render() {
     const { logged, admin } = this.state;
+    const { children } = this.props;
     return (
       <Context.Provider
         value={{
           logged,
           admin,
+          setAdmin: (Admin) => this.setState({ admin: Admin }),
+          setLoged: (Loged) => this.setState({ logged: Loged }),
         }}
       >
-        {React.Children}
+        {children}
       </Context.Provider>
     );
   }
 }
-export const AuthConsumer = Context.Consumer;
+AuthProvider.propTypes = { children: PropTypes.node.isRequired };
+const AuthConsumer = Context.Consumer;
+export { AuthProvider, AuthConsumer };
