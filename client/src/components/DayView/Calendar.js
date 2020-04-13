@@ -103,8 +103,7 @@ class Calendar extends React.Component {
       }
     } else if (repeat === 'daily') {
       for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
-        // eslint-disable-next-line no-underscore-dangle
-        if (i._d.getDay() !== 5 && i._d.getDay() !== 6) {
+        if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
           arr.push({
             startTime: `${this.convert(i.format())} ${startTime}`,
             endTime: `${this.convert(i.format())} ${endTime}`,
