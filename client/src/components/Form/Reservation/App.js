@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 // //// not really an app just the component we want to call reservation form
 
 import { Button, message } from 'antd';

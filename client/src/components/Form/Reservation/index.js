@@ -15,18 +15,9 @@ import ThemeContext from './Context';
 import './style.css';
 
 const { Option } = AutoComplete;
-const roomsName = [
-  { id: 1, name: 'Tokyo' },
-  { id: 2, name: 'Berlin' },
-  { id: 3, name: 'Rome' },
-  { id: 4, name: 'NewYork' },
-  { id: 5, name: 'Cairo' },
-  { id: 6, name: 'Jerusalem' },
-];
 const BookingForm = () => {
   const [form] = Form.useForm();
   const disabledDate = (current) => current && current < moment().endOf('day');
-  // roomsName.filter((e) => e.id === ourData[0].room_id)[0].name
   return (
     <ThemeContext.Consumer>
       {({
@@ -51,6 +42,7 @@ const BookingForm = () => {
         dateOnChange,
         remind,
         confirmLoading,
+        ourRooms,
       }) => (
         <Modal
           title="Reserve Your Room"
@@ -85,7 +77,7 @@ const BookingForm = () => {
                 disabled={ourData.length > 0}
                 initialValues={
                   ourData.length > 0
-                    ? roomsName.filter((e) => e.id === ourData[0].room_id)[0]
+                    ? ourRooms.filter((e) => e.id === ourData[0].room_id)[0]
                         .name
                     : ''
                 }

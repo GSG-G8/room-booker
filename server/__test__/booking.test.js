@@ -82,8 +82,8 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-13 14:30:00',
-            endTime: '2020-04-13 16:00:00',
+            startTime: '2020-05-13 14:30:00',
+            endTime: '2020-05-13 16:00:00',
           },
         ],
         remindMe: false,
@@ -269,16 +269,16 @@ test('test for 100%  valid input ', (done) => {
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-13 12:00:00',
-            endTime: '2020-04-13 12:30:00',
+            startTime: '2020-05-13 12:00:00',
+            endTime: '2020-05-13 12:30:00',
           },
           {
-            startTime: '2020-04-13 01:00:00',
-            endTime: '2020-04-13 02:00:00',
+            startTime: '2020-05-13 01:00:00',
+            endTime: '2020-05-13 02:00:00',
           },
           {
-            startTime: '2020-04-13 15:30:00',
-            endTime: '2020-04-13 16:00:00',
+            startTime: '2020-05-13 15:30:00',
+            endTime: '2020-05-13 16:00:00',
           },
         ],
         remindMe: false,

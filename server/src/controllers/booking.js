@@ -122,7 +122,7 @@ const bookingRoom = (req, res, next) => {
       });
       const msg = {
         from: `"ROOM BOOKER - Gaza Sky Geeks" <${process.env.EMAIL}>`,
-        to: 'linaebe0@gmail.com',
+        to: 'linahjamal89@gmail.com',
         subject: 'Room booking',
         html: 'here is your room booking',
         icalEvent: {
