@@ -24,6 +24,9 @@ router.get('/logout', logout);
 
 // only logged in access under this:
 router.use(verifyUser);
+router.get('/auth', (req, res) => {
+  res.json(req.user);
+});
 router.patch('/patchProfile', patchProfile);
 router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
