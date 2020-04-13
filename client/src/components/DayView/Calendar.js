@@ -2,7 +2,7 @@ import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClic
 // import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import { Button, message } from 'antd';
+import { Button, message, Spin } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
@@ -28,6 +28,7 @@ class Calendar extends React.Component {
     endTime: null,
     startdateRange: null,
     enddateRange: null,
+    loading: false,
     ourData: [
       // {
       //   room_id: 1,
@@ -39,7 +40,8 @@ class Calendar extends React.Component {
   };
 
   componentDidMount() {
-    this.fetchRoomName().then(() => this.fetchRoomEvent('2020-04-14'));
+    this.setState({ loading: true });
+    this.fetchRoomName().then(() => this.setState({ loading: false }));
   }
 
   handleSearch = (value) => {
@@ -52,6 +54,7 @@ class Calendar extends React.Component {
     });
   };
 
+  // #region
   setRoom = (value) => {
     this.setState({ selectedRoom: value });
   };
@@ -165,6 +168,7 @@ class Calendar extends React.Component {
     console.log('hiiiiiii', date.dateStr);
   };
 
+  // #endregion
   fetchRoomName = () =>
     fetch(`/api/v1/rooms`)
       .then((res) => {
@@ -177,11 +181,11 @@ class Calendar extends React.Component {
       .then((results) => {
         this.setState({ ourRooms: results });
       })
-      .catch(() => {
-        message.error('error');
+      .catch((err) => {
+        message.error(err);
       });
 
-  fetchRoomEvent = (date) => {
+  fetchRoomEvent = (date) =>
     fetch(`/api/v1/rooms/${date}`)
       .then((res) => {
         if (!res.ok) {
@@ -200,11 +204,30 @@ class Calendar extends React.Component {
             resourceId: event.room_id,
           })),
         });
+      })
+      .catch((err) => {
+        message.error(err);
       });
-    // .catch((e) => console.log(e, 'hiiiiiii'));
+
+  resourcesFunc = ({ start }, successCallback, failureCallback) => {
+    const { ourRooms } = this.state;
+    successCallback(
+      ourRooms.map((room) => ({ id: room.id, title: room.name }))
+    );
+
+    this.fetchRoomEvent(moment(start).format('YYYY-MM-DD')).catch(
+      failureCallback
+    );
+    // somethingAsynchonous((resources) => { // fetchRoomEvent
+    //   successCallback(resources);
+    // });
   };
 
   render() {
+    const { loading } = this.state;
+
+    if (loading) return <Spin />;
+
     const {
       ourRooms,
       events,
@@ -293,11 +316,6 @@ class Calendar extends React.Component {
           //   );
           // }}
           ref={this.calendarComponentRef}
-          // header={{
-          //   left: 'prev',
-          //   center: 'title',
-          //   right: 'next',
-          // }}
           header={{
             left: 'prev,next today ',
             center: 'title',
@@ -305,13 +323,9 @@ class Calendar extends React.Component {
           }}
           // editable="true"m
           resourceLabelText="Rooms"
-          resources={
-            ourRooms === undefined
-              ? []
-              : ourRooms.map((room) => ({ id: room.id, title: room.name }))
-          }
+          resources={this.resourcesFunc}
+          refetchResourcesOnNavigate
           events={events}
-          // refetchResourcesOnNavigate
           timeZone="UTC"
         />
       </div>
