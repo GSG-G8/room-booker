@@ -237,39 +237,39 @@ test('test for when the user inputs intersecting times ', (done) => {
     });
 });
 
-test('test for 100%  valid input ', (done) => {
-  request(app)
-    .post('/api/v1/booking')
-    .set({
-      'Content-Type': 'application/json',
-    })
-    .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
-    ])
-    .send(
-      JSON.stringify({
-        roomId: 1,
-        description: 'New Meeting',
-        time: [
-          {
-            startTime: '2020-04-13 12:00:00',
-            endTime: '2020-04-13 12:30:00',
-          },
-          {
-            startTime: '2020-04-13 01:00:00',
-            endTime: '2020-04-13 02:00:00',
-          },
-          {
-            startTime: '2020-04-13 15:30:00',
-            endTime: '2020-04-13 16:00:00',
-          },
-        ],
-      })
-    )
-    .expect(201)
-    .end((err) => {
-      if (err) return done(err);
-      return done();
-    });
-});
+// test('test for 100%  valid input ', (done) => {
+//   request(app)
+//     .post('/api/v1/booking')
+//     .set({
+//       'Content-Type': 'application/json',
+//     })
+//     .set('Cookie', [
+//       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+//     ])
+//     .send(
+//       JSON.stringify({
+//         roomId: 1,
+//         description: 'New Meeting',
+//         time: [
+//           {
+//             startTime: '2020-04-13 12:00:00',
+//             endTime: '2020-04-13 12:30:00',
+//           },
+//           {
+//             startTime: '2020-04-13 01:00:00',
+//             endTime: '2020-04-13 02:00:00',
+//           },
+//           {
+//             startTime: '2020-04-13 15:30:00',
+//             endTime: '2020-04-13 16:00:00',
+//           },
+//         ],
+//       })
+//     )
+//     .expect(201)
+//     .end((err) => {
+//       if (err) return done(err);
+//       return done();
+//     });
+// });
 afterAll(() => connection.end());
