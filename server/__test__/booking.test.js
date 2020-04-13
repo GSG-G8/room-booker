@@ -18,6 +18,7 @@ test('make new booking no overlapping', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -25,6 +26,7 @@ test('make new booking no overlapping', (done) => {
             endTime: '2020-04-14 14:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -46,6 +48,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -53,6 +56,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
             endTime: '2020-04-14 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -74,6 +78,7 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -81,6 +86,7 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
             endTime: '2020-04-13 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(201)
@@ -102,6 +108,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -109,6 +116,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
             endTime: '2020-04-14 16:30:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -130,6 +138,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -137,6 +146,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
             endTime: '2020-04-14 15:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -158,6 +168,7 @@ test('make new booking with overlapping', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -165,6 +176,7 @@ test('make new booking with overlapping', (done) => {
             endTime: '2020-04-14 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -186,6 +198,7 @@ test('make new booking with expire date ', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -193,6 +206,7 @@ test('make new booking with expire date ', (done) => {
             endTime: '2020-04-04 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -213,6 +227,7 @@ test('test for when the user inputs intersecting times ', (done) => {
     .send(
       JSON.stringify({
         roomId: 1,
+        title: 'Meeting',
         description: 'New Meeting',
         time: [
           {
@@ -228,6 +243,7 @@ test('test for when the user inputs intersecting times ', (done) => {
             endTime: '2020-04-13 16:00:00',
           },
         ],
+        remindMe: false,
       })
     )
     .expect(400)
@@ -237,39 +253,41 @@ test('test for when the user inputs intersecting times ', (done) => {
     });
 });
 
-// test('test for 100%  valid input ', (done) => {
-//   request(app)
-//     .post('/api/v1/booking')
-//     .set({
-//       'Content-Type': 'application/json',
-//     })
-//     .set('Cookie', [
-//       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
-//     ])
-//     .send(
-//       JSON.stringify({
-//         roomId: 1,
-//         description: 'New Meeting',
-//         time: [
-//           {
-//             startTime: '2020-04-13 12:00:00',
-//             endTime: '2020-04-13 12:30:00',
-//           },
-//           {
-//             startTime: '2020-04-13 01:00:00',
-//             endTime: '2020-04-13 02:00:00',
-//           },
-//           {
-//             startTime: '2020-04-13 15:30:00',
-//             endTime: '2020-04-13 16:00:00',
-//           },
-//         ],
-//       })
-//     )
-//     .expect(201)
-//     .end((err) => {
-//       if (err) return done(err);
-//       return done();
-//     });
-// });
+test('test for 100%  valid input ', (done) => {
+  request(app)
+    .post('/api/v1/booking')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+    ])
+    .send(
+      JSON.stringify({
+        roomId: 1,
+        title: 'Meeting',
+        description: 'New Meeting',
+        time: [
+          {
+            startTime: '2020-04-13 12:00:00',
+            endTime: '2020-04-13 12:30:00',
+          },
+          {
+            startTime: '2020-04-13 01:00:00',
+            endTime: '2020-04-13 02:00:00',
+          },
+          {
+            startTime: '2020-04-13 15:30:00',
+            endTime: '2020-04-13 16:00:00',
+          },
+        ],
+        remindMe: false,
+      })
+    )
+    .expect(201)
+    .end((err) => {
+      if (err) return done(err);
+      return done();
+    });
+});
 afterAll(() => connection.end());
