@@ -13,7 +13,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const { Option } = AutoComplete;
+// const { Option } = AutoComplete;
 
 class BookingForm extends React.Component {
   state = {
@@ -23,25 +23,20 @@ class BookingForm extends React.Component {
 
   formRef = React.createRef();
 
-  // componentDidUpdate(prevProps) {
-  //   const { modalData } = this.props;
-  //   if (prevProps.modalData !== modalData) {
-  //   }
-  // }
-
   bookRoom = ({
     repeat,
     date,
     daterange,
     time,
-    remind = true,
+    remind: remindMe = true,
     room,
     ...rest
   }) => {
-    const { id: roomId } = this.findRoom(room);
+    const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
-    const body = { roomId, timeArr, remind, ...rest };
+    const body = { roomId, time: timeArr, remindMe, ...rest };
+    // console.log({ body });
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -66,10 +61,26 @@ class BookingForm extends React.Component {
       });
   };
 
-  findRoom = (name) => {
+  findRoomIdByName = (name) => {
     const { rooms } = this.props;
-    return rooms.find((room) => room.name === name);
+    return rooms.find((room) => room.name === name).id;
   };
+
+  // findRoomNameById = (id) => {
+  //   const { rooms } = this.props;
+  //   // TODO:
+  //   // AutoComplete doesnt take this and as a result the room name doesnt get selected manually
+  //   console.log(rooms.find((room) => room.id === id));
+  //   return rooms.find((room) => room.id === id).name;
+  // };
+
+  // handleSearch = (value) => {
+  //   const { rooms } = this.props;
+  //   console.log(value);
+  //   return rooms
+  //     .filter((room) => room.name.toLowerCase().startsWith(value.toLowerCase()))
+  //     .map(({ id, name }) => ({ id, value: name }));
+  // };
 
   repeatOnChange = (e) => {
     this.setState({ repeat: e.target.value });
@@ -85,6 +96,8 @@ class BookingForm extends React.Component {
     if (repeat === 'weekly') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
         arr.push({
+          // TODO:
+          // this date formatting doesnt work, need to set mins and hours manually and then toISOString()
           startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
           endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
         });
@@ -100,8 +113,8 @@ class BookingForm extends React.Component {
       }
     } else if (repeat === 'once') {
       arr.push({
-        startTime: `${date} ${startTime.format('HH-MM')}`,
-        endTime: `${date} ${endTime.format('HH-MM')}`,
+        startTime: `${date.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
+        endTime: `${date.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
       });
     }
     return arr;
@@ -111,9 +124,12 @@ class BookingForm extends React.Component {
     const disabledDate = (current) =>
       current && current < moment().endOf('day');
 
-    const { rooms, visible, handleHide } = this.props;
+    const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
 
+    const { start, end } = modalData;
+    // roomId,
+    // const { name: roomName } = this.findRoomNameById(+roomId);
     return (
       <Modal
         title="Reserve Your Room"
@@ -128,15 +144,21 @@ class BookingForm extends React.Component {
         }}
       >
         <Form
+          initialValues={{
+            time: [moment(start), moment(end)],
+            date: moment(start),
+            // room: roomName,
+            remind: true,
+          }}
           ref={this.formRef}
           onFinish={(values) => {
             this.bookRoom(values)
               .then(() => {
-                this.formRef.current.resetValues();
                 handleHide();
               })
               .catch(message.error);
           }}
+          onValuesChange={console.log}
         >
           <Form.Item
             name="room"
@@ -149,14 +171,10 @@ class BookingForm extends React.Component {
               }}
               disabled={confirmLoading}
               onSelect={this.setRoom}
+              // onSearch={this.handleSearch}
               placeholder="Room Name"
-            >
-              {rooms.map((room) => (
-                <Option key={room.id} value={room.name}>
-                  {room.name}
-                </Option>
-              ))}
-            </AutoComplete>
+              options={rooms.map(({ id, name }) => ({ id, value: name }))}
+            />
           </Form.Item>
 
           <Form.Item
@@ -250,6 +268,11 @@ BookingForm.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
   visible: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
+  modalData: PropTypes.shape({
+    roomId: PropTypes.string,
+    start: PropTypes.any,
+    end: PropTypes.any,
+  }).isRequired,
 };
 
 export default BookingForm;

@@ -3,7 +3,7 @@ const Joi = require('@hapi/joi');
 module.exports = Joi.object({
   roomId: Joi.number().required(),
   title: Joi.string().required(),
-  description: Joi.string().required(),
+  description: Joi.string(),
   time: Joi.array()
     .items(
       Joi.object({

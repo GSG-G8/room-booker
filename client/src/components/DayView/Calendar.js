@@ -80,8 +80,6 @@ class Calendar extends React.Component {
     );
   };
 
-  // handleDateClick = (info) => {};
-
   handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
     this.setState({ modalData: { roomId, start, end } });
     this.showModal();
@@ -96,12 +94,14 @@ class Calendar extends React.Component {
 
     return (
       <div className="calendars">
-        <BookingForm
-          rooms={rooms}
-          visible={visible}
-          handleHide={this.handleHide}
-          modalData={modalData}
-        />
+        {visible && (
+          <BookingForm
+            rooms={rooms}
+            visible={visible}
+            handleHide={this.handleHide}
+            modalData={modalData}
+          />
+        )}
         <FullCalendar
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
           width="100px"
@@ -109,7 +109,6 @@ class Calendar extends React.Component {
           defaultView="resourceTimeGridDay"
           plugins={[resourceTimeGridPlugin, interactionPlugin]}
           selectable="true"
-          dateClick={this.handleDateClick}
           select={this.handleDateSelect}
           ref={this.calendarComponentRef}
           customButtons={{
