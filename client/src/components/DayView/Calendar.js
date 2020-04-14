@@ -15,6 +15,7 @@ class Calendar extends React.Component {
     events: [],
     rooms: [],
     visible: false,
+    modalData: { roomId: 1, start: new Date(), end: new Date() },
   };
 
   componentDidMount() {
@@ -22,7 +23,7 @@ class Calendar extends React.Component {
     this.fetchRoomName().then(() => this.setState({ loading: false }));
   }
 
-  handleCancel = () => {
+  handleHide = () => {
     this.setState({ visible: false });
   };
 
@@ -79,19 +80,27 @@ class Calendar extends React.Component {
     );
   };
 
+  // handleDateClick = (info) => {};
+
+  handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
+    this.setState({ modalData: { roomId, start, end } });
+    this.showModal();
+  };
+
   render() {
     const { loading } = this.state;
 
     if (loading) return <Spin />;
 
-    const { rooms, events, visible } = this.state;
+    const { rooms, events, visible, modalData } = this.state;
 
     return (
       <div className="calendars">
         <BookingForm
           rooms={rooms}
           visible={visible}
-          handleCancel={this.handleCancel}
+          handleHide={this.handleHide}
+          modalData={modalData}
         />
         <FullCalendar
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
@@ -100,8 +109,8 @@ class Calendar extends React.Component {
           defaultView="resourceTimeGridDay"
           plugins={[resourceTimeGridPlugin, interactionPlugin]}
           selectable="true"
-          dateClick={this.handleDate}
-          select={(info) => console.log({ info })}
+          dateClick={this.handleDateClick}
+          select={this.handleDateSelect}
           ref={this.calendarComponentRef}
           customButtons={{
             myCustomButton: {
@@ -110,9 +119,9 @@ class Calendar extends React.Component {
             },
           }}
           header={{
-            left: 'prev,next,,today ',
-            center: 'title, myCustomButton',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay',
+            right: 'myCustomButton',
+            center: 'title',
+            left: 'prev,next,today',
           }}
           // editable="true"m
           resourceLabelText="Rooms"
