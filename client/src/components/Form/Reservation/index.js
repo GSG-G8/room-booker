@@ -1,14 +1,13 @@
-/* eslint-disable no-underscore-dangle */
 import {
   AutoComplete,
   DatePicker,
   Form,
   Input,
+  message,
   Modal,
   Radio,
   Switch,
   TimePicker,
-  message,
 } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -18,51 +17,37 @@ const { Option } = AutoComplete;
 
 class BookingForm extends React.Component {
   state = {
-    confirmLoading: false,
     repeat: 'once',
-    remind: true,
-    title: '',
-    desc: '',
-    date: '',
-    startTime: '',
-    endTime: '',
-    startdateRange: '',
-    enddateRange: '',
-    ourData: [
-      // {
-      //   room_id: 1,
-      //   start_time: '2020-04-14T09:00:00',
-      //   end_time: '2020-04-14T10:00:00',
-      //   description: 'meeting',
-      // },
-    ],
+    confirmLoading: false,
   };
 
   formRef = React.createRef();
 
-  setRoom = (value) => {
-    this.setState({ selectedRoom: value });
-  };
+  // componentDidUpdate(prevProps) {
+  //   const { modalData } = this.props;
+  //   if (prevProps.modalData !== modalData) {
+  //   }
+  // }
 
-  titleOnChange = (e) => {
-    this.setState({ title: e.target.value });
-  };
-
-  bookRoom = (name, rooms, title, desc, timeArr, remind) => {
-    const { handleCancel } = this.props;
+  bookRoom = ({
+    repeat,
+    date,
+    daterange,
+    time,
+    remind = true,
+    room,
+    ...rest
+  }) => {
+    const { id: roomId } = this.findRoom(room);
+    const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
+    const body = { roomId, timeArr, remind, ...rest };
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        roomId: rooms.filter((e) => e.name === name)[0].id,
-        title,
-        description: desc,
-        time: timeArr,
-        remindMe: remind,
-      }),
+      body: JSON.stringify(body),
     })
       .then((res) => {
         if (!res.osk) {
@@ -71,140 +56,90 @@ class BookingForm extends React.Component {
         }
         return res.json();
       })
-      .then((result) => {
-        handleCancel();
-        this.setState({
-          confirmLoading: false,
-          ourData: result.newBookings,
-        });
+      .then(() => {
+        this.setState({ confirmLoading: false });
       })
       .then(() => message.success('Room booked successfully', 3))
-      .catch(() => {
+      .catch((err) => {
+        message.error(err);
         this.setState({ confirmLoading: false });
       });
   };
 
-  handleSearch = (value) => {
-    const { rooms } = this.state;
-    this.setState({
-      rooms: rooms.filter((e) =>
-        e.name.toUpperCase().includes(value.toUpperCase())
-      ),
-    });
+  findRoom = (name) => {
+    const { rooms } = this.props;
+    return rooms.find((room) => room.name === name);
   };
 
   repeatOnChange = (e) => {
     this.setState({ repeat: e.target.value });
   };
 
-  descOnChange = (e) => {
-    this.setState({ desc: e.target.value });
-  };
-
-  remindMeOnChange = (checked) => {
-    this.setState({ remind: checked });
-  };
-
-  dateOnChange = (value, dateString) => {
-    this.setState({ date: dateString });
-  };
-
-  timeOnChange = (time, value) => {
-    this.setState({ startTime: value[0], endTime: value[1] });
-  };
-
-  dateROnChange = (time, value) => {
-    this.setState({ startdateRange: value[0], enddateRange: value[1] });
-  };
-
-  setOurDates = (repeat, start, end, startTime, endTime, date) => {
+  makeBookingArr = (
+    repeat,
+    date,
+    [startDate, endDate] = [],
+    [startTime, endTime]
+  ) => {
     const arr = [];
     if (repeat === 'weekly') {
-      for (let i = moment(start); i <= moment(end); i = i.add(1, 'week')) {
+      for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
         arr.push({
-          startTime: `${this.convert(i.format())} ${startTime}`,
-          endTime: `${this.convert(i.format())} ${endTime}`,
+          startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
+          endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
         });
       }
     } else if (repeat === 'daily') {
-      for (let i = moment(start); i <= moment(end); i = i.add(1, 'day')) {
+      for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
         if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
           arr.push({
-            startTime: `${this.convert(i.format())} ${startTime}`,
-            endTime: `${this.convert(i.format())} ${endTime}`,
+            startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
+            endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
           });
         }
       }
     } else if (repeat === 'once') {
       arr.push({
-        startTime: `${date} ${startTime}`,
-        endTime: `${date} ${endTime}`,
+        startTime: `${date} ${startTime.format('HH-MM')}`,
+        endTime: `${date} ${endTime.format('HH-MM')}`,
       });
     }
     return arr;
-  };
-
-  convert = (str) => {
-    const date = new Date(str);
-    const month = `0${date.getMonth() + 1}`.slice(-2);
-    const day = `0${date.getDate()}`.slice(-2);
-    return [date.getFullYear(), month, day].join('-');
   };
 
   render() {
     const disabledDate = (current) =>
       current && current < moment().endOf('day');
 
-    const { rooms, visible, handleCancel } = this.props;
-    const {
-      selectedRoom,
-      title,
-      desc,
-      repeat,
-      ourData,
-      remind,
-      confirmLoading,
-      startdateRange,
-      enddateRange,
-      startTime,
-      endTime,
-      date,
-    } = this.state;
+    const { rooms, visible, handleHide } = this.props;
+    const { repeat, confirmLoading } = this.state;
 
-    const arraydat = this.setOurDates(
-      repeat,
-      startdateRange,
-      enddateRange,
-      startTime,
-      endTime,
-      date
-    );
     return (
       <Modal
         title="Reserve Your Room"
         visible={visible}
         confirmLoading={confirmLoading}
-        onCancel={handleCancel}
+        onCancel={handleHide}
         okText="Reserve Room"
         cancelText="Cancel"
-        okButtonProps={{ disabled: ourData.length > 0 }}
+        okButtonProps={{ disabled: confirmLoading }}
         onOk={() => {
-          this.formRef.current
-            .validateFields()
-            .then(() =>
-              this.bookRoom(selectedRoom, rooms, title, desc, arraydat, remind)
-            )
-            .then(() => {
-              this.formRef.current.resetFields();
-            })
-            .catch((info) => {
-              console.log('Validate Failed:', info);
-            });
+          this.formRef.current.submit();
         }}
       >
-        <Form ref={this.formRef}>
+        <Form
+          ref={this.formRef}
+          onFinish={(values) => {
+            this.bookRoom(values)
+              .then(() => {
+                this.formRef.current.resetValues();
+                handleHide();
+              })
+              .catch(message.error);
+          }}
+        >
           <Form.Item
-            name="name"
+            name="room"
             label="Space(s):"
             rules={[{ required: true, message: 'Choose your space' }]}
           >
@@ -212,16 +147,9 @@ class BookingForm extends React.Component {
               style={{
                 width: 200,
               }}
-              disabled={ourData.length > 0}
-              initialValues={
-                ourData.length > 0
-                  ? rooms.filter((e) => e.id === ourData[0].room_id)[0].name
-                  : ''
-              }
+              disabled={confirmLoading}
               onSelect={this.setRoom}
-              onSearch={this.handleSearch}
               placeholder="Room Name"
-              value={selectedRoom}
             >
               {rooms.map((room) => (
                 <Option key={room.id} value={room.name}>
@@ -236,23 +164,11 @@ class BookingForm extends React.Component {
             label="Title"
             rules={[{ required: true, message: 'Add Your Title' }]}
           >
-            <Input
-              value={title}
-              disabled={ourData.length > 0}
-              onChange={this.titleOnChange}
-            />
+            <Input disabled={confirmLoading} />
           </Form.Item>
 
-          <Form.Item
-            name="description"
-            label="Description"
-            rules={[{ required: true, message: 'Add decription' }]}
-          >
-            <Input.TextArea
-              value={desc}
-              disabled={ourData.length > 0}
-              onChange={this.descOnChange}
-            />
+          <Form.Item name="description" label="Description">
+            <Input.TextArea disabled={confirmLoading} />
           </Form.Item>
 
           <Form.Item
@@ -265,9 +181,8 @@ class BookingForm extends React.Component {
             ]}
           >
             <Radio.Group
-              value={repeat}
               onChange={this.repeatOnChange}
-              disabled={ourData.length > 0}
+              disabled={confirmLoading}
             >
               <Radio.Button value="once">Once</Radio.Button>
               <Radio.Button value="daily">Daily</Radio.Button>
@@ -289,12 +204,7 @@ class BookingForm extends React.Component {
               <DatePicker
                 format="YYYY-MM-DD"
                 disabledDate={disabledDate}
-                onChange={this.dateOnChange}
-                disabled={ourData.length > 0}
-                initialValues={
-                  ourData.length > 0 &&
-                  moment(ourData[0].start_time.split('T')[0])
-                }
+                disabled={confirmLoading}
               />
             </Form.Item>
           )}
@@ -310,10 +220,7 @@ class BookingForm extends React.Component {
                 },
               ]}
             >
-              <DatePicker.RangePicker
-                onChange={this.dateROnChange}
-                disabledDate={disabledDate}
-              />
+              <DatePicker.RangePicker disabledDate={disabledDate} />
             </Form.Item>
           )}
 
@@ -327,25 +234,11 @@ class BookingForm extends React.Component {
               },
             ]}
           >
-            <TimePicker.RangePicker
-              disabled={ourData.length > 0}
-              defaultValue={
-                ourData.length > 0 && [
-                  moment(ourData[0].start_time.split('T')[1], 'HH:mm:ss'),
-                  moment(ourData[0].end_time.split('T')[1], 'HH:mm:ss'),
-                ]
-              }
-              onChange={this.timeOnChange}
-            />
+            <TimePicker.RangePicker disabled={confirmLoading} />
           </Form.Item>
 
-          <Form.Item>
-            Remind me
-            <Switch
-              disabled={ourData.length > 0}
-              defaultChecked
-              onChange={this.remindMeOnChange}
-            />
+          <Form.Item name="remind" label="Remind me" valuePropName="checked">
+            <Switch disabled={confirmLoading} />
           </Form.Item>
         </Form>
       </Modal>
@@ -356,7 +249,7 @@ class BookingForm extends React.Component {
 BookingForm.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
   visible: PropTypes.bool.isRequired,
-  handleCancel: PropTypes.func.isRequired,
+  handleHide: PropTypes.func.isRequired,
 };
 
 export default BookingForm;
