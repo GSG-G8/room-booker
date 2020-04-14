@@ -13,8 +13,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-// const { Option } = AutoComplete;
-
 class BookingForm extends React.Component {
   state = {
     repeat: 'once',
@@ -36,31 +34,28 @@ class BookingForm extends React.Component {
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
     const body = { roomId, time: timeArr, remindMe, ...rest };
-    console.log(timeArr, 'our array');
-    console.log('hi our body', body);
-    // console.log({ body });
-    // return fetch('/api/v1/booking', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(body),
-    // })
-    //   .then((res) => {
-    //     if (!res.osk) {
-    //       res.json().then(({ message: msg }) => message.error(msg));
-    //       throw res.statusText;
-    //     }
-    //     return res.json();
-    //   })
-    //   .then(() => {
-    //     this.setState({ confirmLoading: false });
-    //   })
-    //   .then(() => message.success('Room booked successfully', 3))
-    //   .catch((err) => {
-    //     message.error(err);
-    //     this.setState({ confirmLoading: false });
-    //   });
+    return fetch('/api/v1/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => {
+        if (!res.osk) {
+          res.json().then(({ message: msg }) => message.error(msg));
+          throw res.statusText;
+        }
+        return res.json();
+      })
+      .then(() => {
+        this.setState({ confirmLoading: false });
+      })
+      .then(() => message.success('Room booked successfully', 3))
+      .catch((err) => {
+        message.error(err);
+        this.setState({ confirmLoading: false });
+      });
   };
 
   findRoomIdByName = (name) => {
@@ -72,15 +67,6 @@ class BookingForm extends React.Component {
     const { rooms } = this.props;
     return rooms.find((room) => room.id === Number(id)).name;
   };
-
-  // handleSearch = (value) => {
-  //   const { rooms } = this.props;
-  //   console.log(value);
-  //   return rooms.filter((room) =>
-  //     room.name.toLowerCase().startsWith(value.toLowerCase())
-  //   );
-  //   // .map(({ id, name }) => ({ id, value: name }));
-  // };
 
   repeatOnChange = (e) => {
     this.setState({ repeat: e.target.value });
@@ -98,23 +84,23 @@ class BookingForm extends React.Component {
         arr.push({
           // TODO:
           // this date formatting doesnt work, need to set mins and hours manually and then toISOString()
-          startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
-          endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
+          startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
+          endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
         });
       }
     } else if (repeat === 'daily') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
         if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
           arr.push({
-            startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
-            endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
+            startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
+            endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
           });
         }
       }
     } else if (repeat === 'once') {
       arr.push({
-        startTime: `${date.format('YYYY-MM-DD')} ${startTime.format('HH-MM')}`,
-        endTime: `${date.format('YYYY-MM-DD')} ${endTime.format('HH-MM')}`,
+        startTime: `${date.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
+        endTime: `${date.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
       });
     }
     return arr;
@@ -156,7 +142,6 @@ class BookingForm extends React.Component {
               })
               .catch(message.error);
           }}
-          // onValuesChange={console.log}
         >
           <Form.Item
             name="room"
