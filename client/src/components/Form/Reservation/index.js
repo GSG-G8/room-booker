@@ -36,29 +36,31 @@ class BookingForm extends React.Component {
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
     const body = { roomId, time: timeArr, remindMe, ...rest };
+    console.log(timeArr, 'our array');
+    console.log('hi our body', body);
     // console.log({ body });
-    return fetch('/api/v1/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => {
-        if (!res.osk) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then(() => {
-        this.setState({ confirmLoading: false });
-      })
-      .then(() => message.success('Room booked successfully', 3))
-      .catch((err) => {
-        message.error(err);
-        this.setState({ confirmLoading: false });
-      });
+    // return fetch('/api/v1/booking', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(body),
+    // })
+    //   .then((res) => {
+    //     if (!res.osk) {
+    //       res.json().then(({ message: msg }) => message.error(msg));
+    //       throw res.statusText;
+    //     }
+    //     return res.json();
+    //   })
+    //   .then(() => {
+    //     this.setState({ confirmLoading: false });
+    //   })
+    //   .then(() => message.success('Room booked successfully', 3))
+    //   .catch((err) => {
+    //     message.error(err);
+    //     this.setState({ confirmLoading: false });
+    //   });
   };
 
   findRoomIdByName = (name) => {
@@ -66,20 +68,18 @@ class BookingForm extends React.Component {
     return rooms.find((room) => room.name === name).id;
   };
 
-  // findRoomNameById = (id) => {
-  //   const { rooms } = this.props;
-  //   // TODO:
-  //   // AutoComplete doesnt take this and as a result the room name doesnt get selected manually
-  //   console.log(rooms.find((room) => room.id === id));
-  //   return rooms.find((room) => room.id === id).name;
-  // };
+  findRoomNameById = (id) => {
+    const { rooms } = this.props;
+    return rooms.find((room) => room.id === Number(id)).name;
+  };
 
   // handleSearch = (value) => {
   //   const { rooms } = this.props;
   //   console.log(value);
-  //   return rooms
-  //     .filter((room) => room.name.toLowerCase().startsWith(value.toLowerCase()))
-  //     .map(({ id, name }) => ({ id, value: name }));
+  //   return rooms.filter((room) =>
+  //     room.name.toLowerCase().startsWith(value.toLowerCase())
+  //   );
+  //   // .map(({ id, name }) => ({ id, value: name }));
   // };
 
   repeatOnChange = (e) => {
@@ -127,9 +127,7 @@ class BookingForm extends React.Component {
     const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
 
-    const { start, end } = modalData;
-    // roomId,
-    // const { name: roomName } = this.findRoomNameById(+roomId);
+    const { start, end, roomId } = modalData;
     return (
       <Modal
         title="Reserve Your Room"
@@ -147,7 +145,7 @@ class BookingForm extends React.Component {
           initialValues={{
             time: [moment(start), moment(end)],
             date: moment(start),
-            // room: roomName,
+            room: this.findRoomNameById(roomId),
             remind: true,
           }}
           ref={this.formRef}
@@ -158,7 +156,7 @@ class BookingForm extends React.Component {
               })
               .catch(message.error);
           }}
-          onValuesChange={console.log}
+          // onValuesChange={console.log}
         >
           <Form.Item
             name="room"
@@ -170,10 +168,12 @@ class BookingForm extends React.Component {
                 width: 200,
               }}
               disabled={confirmLoading}
-              onSelect={this.setRoom}
-              // onSearch={this.handleSearch}
               placeholder="Room Name"
               options={rooms.map(({ id, name }) => ({ id, value: name }))}
+              filterOption={(inputValue, option) =>
+                option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+                -1
+              }
             />
           </Form.Item>
 
