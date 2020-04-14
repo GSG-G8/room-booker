@@ -7,6 +7,8 @@ const { addRoom } = require('./room');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
 const getRooms = require('./getRooms');
+const deleteRoomByID = require('./deleteRoomByID');
+const patchRoom = require('./patchRoom');
 const activateAccount = require('./activateAccount');
 const patchProfile = require('./patchProfile');
 const deleteBooking = require('./deleteBooking');
@@ -27,5 +29,7 @@ module.exports = {
   deleteBooking,
   getProfile,
   getRooms,
+  deleteRoomByID,
+  patchRoom,
   bookingRoom,
 };

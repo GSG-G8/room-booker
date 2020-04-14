@@ -6,4 +6,13 @@ const addNewRoom = (name) =>
 const getRoom = (name) =>
   connection.query('SELECT * FROM room  WHERE name = $1 ', [name]);
 
-module.exports = { addNewRoom, getRoom };
+const deleteRoomByID = (id) =>
+  connection.query('DELETE FROM room WHERE id = $1;', [id]);
+
+const patchRoom = (id, name) =>
+  connection.query({
+    text: 'UPDATE room SET name=$2 WHERE id=$1 RETURNING id;',
+    values: [id, name],
+  });
+
+module.exports = { addNewRoom, getRoom, deleteRoomByID, patchRoom };

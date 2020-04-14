@@ -14,6 +14,8 @@ const {
   deleteBooking,
   getProfile,
   getRooms,
+  deleteRoomByID,
+  patchRoom,
   bookingRoom,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
@@ -38,6 +40,8 @@ router.get('/rooms', getRooms);
 router.use(checkAdmin);
 
 router.post('/rooms', addRoom);
+router.delete('/rooms/:id', deleteRoomByID);
+router.patch('/rooms/:id', patchRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 router.patch('/users/:id', activateAccount);
