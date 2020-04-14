@@ -2,7 +2,7 @@ const Joi = require('@hapi/joi');
 
 module.exports = Joi.object({
   daysOfWeek: Joi.array()
-    .items(Joi.number().min(1).max(7).required())
+    .items(Joi.number().min(0).max(6).required())
     .max(7)
     .unique()
     .required(),
