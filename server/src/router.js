@@ -15,6 +15,8 @@ const {
   getProfile,
   getRooms,
   bookingRoom,
+  getBusinessHours,
+  patchBusinessHours,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -41,6 +43,8 @@ router.post('/rooms', addRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 router.patch('/users/:id', activateAccount);
+router.get('/businessHours', getBusinessHours);
+router.patch('/businessHours', patchBusinessHours);
 
 router.use(clientError);
 router.use(serverError);
