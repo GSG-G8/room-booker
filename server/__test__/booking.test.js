@@ -19,14 +19,14 @@ test('make new booking no overlapping', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-14 12:00:00',
-            endTime: '2020-04-14 14:00:00',
+            startTime: '2021-04-14 12:00:00',
+            endTime: '2021-04-14 14:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(201)
@@ -36,7 +36,7 @@ test('make new booking no overlapping', (done) => {
     });
 });
 
-test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:00:00 ', (done) => {
+test('make new booking no overlapping between 2021-04-14 14:30:00-2021-04-14 16:00:00 ', (done) => {
   request(app)
     .post('/api/v1/booking')
     .set({
@@ -49,14 +49,14 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-14 14:30:00',
-            endTime: '2020-04-14 16:00:00',
+            startTime: '2021-04-14 14:30:00',
+            endTime: '2021-04-14 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(201)
@@ -66,7 +66,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
     });
 });
 
-test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:00:00 ', (done) => {
+test('make new booking no overlapping between 2021-04-13 14:30:00-2021-04-13 16:00:00 ', (done) => {
   request(app)
     .post('/api/v1/booking')
     .set({
@@ -79,14 +79,14 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-05-13 14:30:00',
-            endTime: '2020-05-13 16:00:00',
+            startTime: '2021-04-13 14:30:00',
+            endTime: '2021-04-13 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(201)
@@ -109,6 +109,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
@@ -116,7 +117,6 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
             endTime: '2020-04-14 16:30:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(400)
@@ -139,6 +139,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
@@ -146,7 +147,6 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
             endTime: '2020-04-14 15:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(400)
@@ -169,6 +169,7 @@ test('make new booking with overlapping', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
@@ -176,7 +177,6 @@ test('make new booking with overlapping', (done) => {
             endTime: '2020-04-14 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(400)
@@ -199,6 +199,7 @@ test('make new booking with expire date ', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
@@ -206,7 +207,6 @@ test('make new booking with expire date ', (done) => {
             endTime: '2020-04-04 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(400)
@@ -228,6 +228,7 @@ test('test for when the user inputs intersecting times ', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
@@ -243,7 +244,6 @@ test('test for when the user inputs intersecting times ', (done) => {
             endTime: '2020-04-13 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(400)
@@ -266,22 +266,22 @@ test('test for 100%  valid input ', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        remindMe: false,
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-05-13 12:00:00',
-            endTime: '2020-05-13 12:30:00',
+            startTime: '2021-04-13 12:00:00',
+            endTime: '2021-04-13 12:30:00',
           },
           {
-            startTime: '2020-05-13 01:00:00',
-            endTime: '2020-05-13 02:00:00',
+            startTime: '2021-04-13 01:00:00',
+            endTime: '2021-04-13 02:00:00',
           },
           {
-            startTime: '2020-05-13 15:30:00',
-            endTime: '2020-05-13 16:00:00',
+            startTime: '2021-04-13 15:30:00',
+            endTime: '2021-04-13 16:00:00',
           },
         ],
-        remindMe: false,
       })
     )
     .expect(201)
