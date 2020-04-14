@@ -2,7 +2,7 @@ import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClic
 // import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import { Button, message, Spin } from 'antd';
+import { message, Spin } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
@@ -88,10 +88,6 @@ class Calendar extends React.Component {
 
     return (
       <div className="calendars">
-        <Button type="primary" onClick={this.showModal}>
-          Book room
-        </Button>
-
         <BookingForm
           rooms={rooms}
           visible={visible}
@@ -107,9 +103,15 @@ class Calendar extends React.Component {
           dateClick={this.handleDate}
           select={(info) => console.log({ info })}
           ref={this.calendarComponentRef}
+          customButtons={{
+            myCustomButton: {
+              text: 'Book Your Room',
+              click: this.showModal,
+            },
+          }}
           header={{
-            left: 'prev,next today ',
-            center: 'title',
+            left: 'prev,next,,today ',
+            center: 'title, myCustomButton',
             right: 'dayGridMonth,timeGridWeek,timeGridDay',
           }}
           // editable="true"m

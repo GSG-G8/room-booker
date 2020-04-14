@@ -11,6 +11,7 @@ import {
   message,
 } from 'antd';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React from 'react';
 
 const { Option } = AutoComplete;
@@ -351,5 +352,11 @@ class BookingForm extends React.Component {
     );
   }
 }
+
+BookingForm.propTypes = {
+  rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  visible: PropTypes.bool.isRequired,
+  handleCancel: PropTypes.func.isRequired,
+};
 
 export default BookingForm;
