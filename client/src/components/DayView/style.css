@@ -3,8 +3,5 @@
 @import "~@fullcalendar/timegrid/main.css";
 
 .calendars {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
   margin: 100px;
 }
