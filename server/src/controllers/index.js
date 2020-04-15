@@ -11,6 +11,8 @@ const activateAccount = require('./activateAccount');
 const patchProfile = require('./patchProfile');
 const deleteBooking = require('./deleteBooking');
 const getProfile = require('./getProfile');
+const deleteRoomByID = require('./deleteRoomByID');
+const patchRoom = require('./patchRoom');
 
 module.exports = {
   clientError,
@@ -28,4 +30,6 @@ module.exports = {
   getProfile,
   getRooms,
   bookingRoom,
+  deleteRoomByID,
+  patchRoom,
 };

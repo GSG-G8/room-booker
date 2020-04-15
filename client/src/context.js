@@ -10,6 +10,10 @@ class AuthProvider extends React.Component {
   };
 
   componentDidMount() {
+    this.getAuth();
+  }
+
+  getAuth = () => {
     fetch('/api/v1/auth')
       .then((res) => {
         if (res.ok) return res.json();
@@ -21,7 +25,7 @@ class AuthProvider extends React.Component {
       .catch(() => {
         this.setState({ logged: false, admin: false });
       });
-  }
+  };
 
   setAuth = ({ logged, admin }) => this.setState({ logged, admin });
 
@@ -34,6 +38,7 @@ class AuthProvider extends React.Component {
           logged,
           admin,
           setAuth: this.setAuth,
+          getAuth: this.getAuth,
         }}
       >
         {children}
