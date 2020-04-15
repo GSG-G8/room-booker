@@ -20,9 +20,11 @@
     "cookie-parser": "^1.4.5",
     "env2": "^2.2.2",
     "express": "^4.17.1",
+    "ical-generator": "^1.9.4",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.24.0",
     "moment-range": "^4.0.2",
+    "nodemailer": "^6.4.6",
     "pg": "^7.18.2"
   },
   "devDependencies": {
