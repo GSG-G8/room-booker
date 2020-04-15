@@ -82,25 +82,35 @@ class BookingForm extends React.Component {
     if (repeat === 'weekly') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
         arr.push({
-          // TODO:
-          // this date formatting doesnt work, need to set mins and hours manually and then toISOString()
-          startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
-          endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
+          startTime: moment(
+            `${i.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
+          ).toISOString(true),
+          endTime: moment(
+            `${i.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
+          ).toISOString(true),
         });
       }
     } else if (repeat === 'daily') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
         if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
           arr.push({
-            startTime: `${i.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
-            endTime: `${i.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
+            startTime: moment(
+              `${i.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
+            ).toISOString(true),
+            endTime: moment(
+              `${i.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
+            ).toISOString(true),
           });
         }
       }
     } else if (repeat === 'once') {
       arr.push({
-        startTime: `${date.format('YYYY-MM-DD')} ${startTime.format('HH:MM')}`,
-        endTime: `${date.format('YYYY-MM-DD')} ${endTime.format('HH:MM')}`,
+        startTime: moment(
+          `${date.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
+        ).toISOString(true),
+        endTime: moment(
+          `${date.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
+        ).toISOString(true),
       });
     }
     return arr;
@@ -128,6 +138,10 @@ class BookingForm extends React.Component {
         }}
       >
         <Form
+          labelCol={{
+            span: 5,
+          }}
+          labelAlign="left"
           initialValues={{
             time: [moment(start), moment(end)],
             date: moment(start),
@@ -223,7 +237,10 @@ class BookingForm extends React.Component {
                 },
               ]}
             >
-              <DatePicker.RangePicker disabledDate={disabledDate} />
+              <DatePicker.RangePicker
+                minuteStep={15}
+                disabledDate={disabledDate}
+              />
             </Form.Item>
           )}
 

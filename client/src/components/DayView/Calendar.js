@@ -62,6 +62,7 @@ class Calendar extends React.Component {
           events: results.map((event) => ({
             start: event.start_time,
             end: event.end_time,
+            title: event.title,
             description: event.description,
             resourceId: event.room_id,
           })),
