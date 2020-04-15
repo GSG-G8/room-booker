@@ -16,7 +16,7 @@ const getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
     .then(({ rows }) => {
       if (rows.length === 0) {
-        throw Boom.notFound('no booking rooms for this day');
+        res.json([]);
       } else {
         res.json(rows);
       }
