@@ -97,50 +97,53 @@ const bookingRoom = (req, res, next) => {
     .then((result) => res.status(201).json({ newBookings: result }))
     .then(() => {
       if (remindMe) {
-        return getUserById(userId);
+        getUserById(userId)
+          .then(({ rows }) => ({
+            email: rows[0].email,
+            name: rows[0].name,
+          }))
+          // eslint-disable-next-line no-unused-vars
+          .then(({ email }) => {
+            const cal = ical({
+              events: bookingData.map((row) => ({
+                start: Moment(row.start_time),
+                end: Moment(row.end_time),
+                summary: row.title,
+                description: row.description,
+              })),
+            }).toString();
+
+            const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+              },
+            });
+            const msg = {
+              from: `"ROOM BOOKER - Gaza Sky Geeks" <${process.env.EMAIL}>`,
+              to: 'linaebe0@gmail.com',
+              subject: 'Room booking',
+              html: 'here is your room booking',
+              icalEvent: {
+                filename: 'bookingRoom.ics',
+                method: 'request',
+                content:
+                  'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
+              },
+              // 'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\n...';
+              alternatives: [
+                {
+                  contentType: 'text/calendar',
+                  content: Buffer.from(cal.toString()),
+                },
+              ],
+            };
+
+            transporter.sendMail(msg).catch(console.error);
+          });
       }
       return res.end();
-    })
-    .then(({ rows }) => ({ email: rows[0].email, name: rows[0].name }))
-    // eslint-disable-next-line no-unused-vars
-    .then(({ email }) => {
-      const cal = ical({
-        events: bookingData.map((row) => ({
-          start: Moment(row.start_time),
-          end: Moment(row.end_time),
-          summary: row.title,
-          description: row.description,
-        })),
-      }).toString();
-
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-          user: process.env.EMAIL,
-          pass: process.env.PASSWORD,
-        },
-      });
-      const msg = {
-        from: `"ROOM BOOKER - Gaza Sky Geeks" <${process.env.EMAIL}>`,
-        to: 'linahjamal89@gmail.com',
-        subject: 'Room booking',
-        html: 'here is your room booking',
-        icalEvent: {
-          filename: 'bookingRoom.ics',
-          method: 'request',
-          content:
-            'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
-        },
-        // 'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\n...';
-        alternatives: [
-          {
-            contentType: 'text/calendar',
-            content: Buffer.from(cal.toString()),
-          },
-        ],
-      };
-
-      transporter.sendMail(msg).catch(console.error);
     })
     .catch(next);
 };

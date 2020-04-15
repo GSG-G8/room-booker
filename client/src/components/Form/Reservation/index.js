@@ -34,28 +34,30 @@ class BookingForm extends React.Component {
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
     const body = { roomId, time: timeArr, remindMe, ...rest };
-    return fetch('/api/v1/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => {
-        if (!res.osk) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
+    return (
+      fetch('/api/v1/booking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
       })
-      .then(() => {
-        this.setState({ confirmLoading: false });
-      })
-      .then(() => message.success('Room booked successfully', 3))
-      .catch((err) => {
-        message.error(err);
-        this.setState({ confirmLoading: false });
-      });
+        .then((res) => {
+          if (!res.ok) {
+            res.json().then(({ message: msg }) => message.error(msg));
+            throw res.statusText;
+          }
+          return res.json();
+        })
+        .then(() => {
+          this.setState({ confirmLoading: false });
+        })
+        .then(() => message.success('Room booked successfully', 3))
+        // eslint-disable-next-line no-unused-vars
+        .catch((err) => {
+          this.setState({ confirmLoading: false });
+        })
+    );
   };
 
   findRoomIdByName = (name) => {
