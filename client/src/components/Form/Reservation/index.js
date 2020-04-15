@@ -77,28 +77,33 @@ class BookingForm extends React.Component {
     [startDate, endDate] = [],
     [startTime, endTime]
   ) => {
-    const handleTimeArray = (day, start, end) => ({
-      startTime: moment(
-        `${day.format('YYYY-MM-DD')} ${start.format('LTS')}`
-      ).toISOString(true),
-      endTime: moment(
-        `${day.format('YYYY-MM-DD')} ${end.format('LTS')}`
-      ).toISOString(true),
-    });
+    const handleTime = (day, time) =>
+      moment(`${day.format('YYYY-MM-DD')} ${time.format('LTS')}`).toISOString(
+        true
+      );
 
     const arr = [];
     if (repeat === 'weekly') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
-        arr.push(handleTimeArray(i, startTime, endTime));
+        arr.push({
+          startTime: handleTime(i, startTime),
+          endTime: handleTime(i, endTime),
+        });
       }
     } else if (repeat === 'daily') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
         if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
-          arr.push(handleTimeArray(i, startTime, endTime));
+          arr.push({
+            startTime: handleTime(i, startTime),
+            endTime: handleTime(i, endTime),
+          });
         }
       }
     } else if (repeat === 'once') {
-      arr.push(handleTimeArray(date, startTime, endTime));
+      arr.push({
+        startTime: handleTime(date, startTime),
+        endTime: handleTime(date, endTime),
+      });
     }
     return arr;
   };
