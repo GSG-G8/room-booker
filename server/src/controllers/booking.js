@@ -89,7 +89,6 @@ const bookingRoom = (req, res, next) => {
         );
       return bookRoom(time, roomId, userId, title, description);
     })
-    // eslint-disable-next-line consistent-return
     .then(({ rows }) => {
       bookingData = rows;
       return bookingData;
@@ -102,8 +101,10 @@ const bookingRoom = (req, res, next) => {
             email: rows[0].email,
             name: rows[0].name,
           }))
+
           // eslint-disable-next-line no-unused-vars
           .then(({ email }) => {
+            // email will used in production but right now, it would case problem by nodemailer
             const cal = ical({
               events: bookingData.map((row) => ({
                 start: Moment(row.start_time),
@@ -131,7 +132,6 @@ const bookingRoom = (req, res, next) => {
                 content:
                   'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
               },
-              // 'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\n...';
               alternatives: [
                 {
                   contentType: 'text/calendar',
@@ -140,7 +140,9 @@ const bookingRoom = (req, res, next) => {
               ],
             };
 
-            transporter.sendMail(msg).catch(console.error);
+            transporter.sendMail(msg).catch((error) => {
+              throw Boom.badRequest(error);
+            });
           });
       }
       return res.end();

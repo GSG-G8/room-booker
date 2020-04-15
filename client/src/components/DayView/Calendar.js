@@ -1,5 +1,4 @@
 import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClick
-// import dayGridPlugin from '@fullcalendar/daygrid';
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { message, Spin } from 'antd';
@@ -9,8 +8,6 @@ import BookingForm from '../Form/Reservation';
 import './style.css';
 
 class Calendar extends React.Component {
-  calendarComponentRef = React.createRef();
-
   state = {
     events: [],
     rooms: [],
@@ -94,7 +91,7 @@ class Calendar extends React.Component {
     const { rooms, events, visible, modalData } = this.state;
 
     return (
-      <div className="calendars">
+      <div className="container">
         {visible && (
           <BookingForm
             rooms={rooms}
@@ -104,6 +101,7 @@ class Calendar extends React.Component {
           />
         )}
         <FullCalendar
+          className="calendar"
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
           width="100px"
           height="auto"
@@ -111,7 +109,6 @@ class Calendar extends React.Component {
           plugins={[resourceTimeGridPlugin, interactionPlugin]}
           selectable="true"
           select={this.handleDateSelect}
-          ref={this.calendarComponentRef}
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
@@ -123,7 +120,6 @@ class Calendar extends React.Component {
             center: 'title',
             left: 'prev,next,today',
           }}
-          // editable="true"m
           resourceLabelText="Rooms"
           resources={this.resourcesFunc}
           refetchResourcesOnNavigate

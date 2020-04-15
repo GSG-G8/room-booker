@@ -2,6 +2,9 @@
 @import "~@fullcalendar/daygrid/main.css";
 @import "~@fullcalendar/timegrid/main.css";
 
-.calendars {
-  margin: 100px;
+.container {
+  margin: 10%;
+}
+.fc-view-container {
+  overflow-x: scroll;
 }

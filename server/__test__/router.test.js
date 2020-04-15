@@ -255,7 +255,6 @@ test('GET /rooms/:date with date have not room booked', (done) => {
     .expect(200)
     .end((err, res) => {
       if (err) return done(err);
-      // expect(res.body).toBe([]);
       expect(Array.isArray(res.body)).toBe(true);
       return done();
     });

@@ -77,40 +77,28 @@ class BookingForm extends React.Component {
     [startDate, endDate] = [],
     [startTime, endTime]
   ) => {
+    const handleTimeArray = (day, start, end) => ({
+      startTime: moment(
+        `${day.format('YYYY-MM-DD')} ${start.format('LTS')}`
+      ).toISOString(true),
+      endTime: moment(
+        `${day.format('YYYY-MM-DD')} ${end.format('LTS')}`
+      ).toISOString(true),
+    });
+
     const arr = [];
     if (repeat === 'weekly') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
-        arr.push({
-          startTime: moment(
-            `${i.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
-          ).toISOString(true),
-          endTime: moment(
-            `${i.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
-          ).toISOString(true),
-        });
+        arr.push(handleTimeArray(i, startTime, endTime));
       }
     } else if (repeat === 'daily') {
       for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
         if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
-          arr.push({
-            startTime: moment(
-              `${i.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
-            ).toISOString(true),
-            endTime: moment(
-              `${i.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
-            ).toISOString(true),
-          });
+          arr.push(handleTimeArray(i, startTime, endTime));
         }
       }
     } else if (repeat === 'once') {
-      arr.push({
-        startTime: moment(
-          `${date.format('YYYY-MM-DD')} ${startTime.format('LTS')}`
-        ).toISOString(true),
-        endTime: moment(
-          `${date.format('YYYY-MM-DD')} ${endTime.format('LTS')}`
-        ).toISOString(true),
-      });
+      arr.push(handleTimeArray(date, startTime, endTime));
     }
     return arr;
   };
@@ -236,10 +224,7 @@ class BookingForm extends React.Component {
                 },
               ]}
             >
-              <DatePicker.RangePicker
-                minuteStep={15}
-                disabledDate={disabledDate}
-              />
+              <DatePicker.RangePicker disabledDate={disabledDate} />
             </Form.Item>
           )}
 
