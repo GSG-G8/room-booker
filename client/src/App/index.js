@@ -31,15 +31,15 @@ function App() {
               <ProtectedRoute adminOnly path="/dashboard">
                 <Dashboard />
               </ProtectedRoute>
-              <Route path="/profile">
+              <ProtectedRoute path="/profile">
                 <Profile />
-              </Route>
+              </ProtectedRoute>
               <Route path="/login">
                 <Login />
               </Route>
-              <Route path="/">
+              <ProtectedRoute path="/">
                 <Home />
-              </Route>
+              </ProtectedRoute>
             </Switch>
           </div>
         </AuthProvider>
