@@ -2,8 +2,7 @@
   "eslint.workingDirectories": ["client", "server"],
   "[javascript]": {
     "editor.codeActionsOnSave": {
-      "source.fixAll": true,
-      "source.organizeImports": true
+      "source.fixAll": true
     },
     "editor.formatOnSave": false
   },

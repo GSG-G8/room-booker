@@ -1,14 +1,14 @@
 const connection = require('../config/connection');
 
-const bookRoom = (bookings, roomId, userId) => {
+const bookRoom = (bookings, roomId, userId, title, description) => {
   const values = bookings
     .map(
-      ({ description, startTime, endTime }) =>
-        `(${roomId}, ${userId}, '${startTime}', '${endTime}', '${description}')`
+      ({ startTime, endTime }) =>
+        `(${roomId}, ${userId}, '${startTime}', '${endTime}', '${title}', '${description}')`
     )
     .join(',');
 
-  const sql = `INSERT INTO booking (room_id, user_id, start_time, end_time, description) VALUES ${values} RETURNING *`;
+  const sql = `INSERT INTO booking (room_id, user_id, start_time, end_time, title ,description) VALUES ${values} RETURNING *`;
 
   return connection.query(sql);
 };
