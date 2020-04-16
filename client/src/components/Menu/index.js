@@ -1,4 +1,4 @@
-import { CalendarOutlined, HomeOutlined, LockOutlined, UserOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -18,11 +18,6 @@ function Menu2() {
         history.push(`/dashboard${path}`);
       }}
     >
-      <Menu.Item key="dashboard">
-        <CalendarOutlined />
-        <span>Dashboard</span>
-      </Menu.Item>
-
       <Menu.Item key="users">
         <UserOutlined />
         <span>Users</span>
@@ -31,11 +26,6 @@ function Menu2() {
       <Menu.Item key="rooms">
         <HomeOutlined />
         <span>Rooms</span>
-      </Menu.Item>
-
-      <Menu.Item key="admin">
-        <LockOutlined />
-        <span>Admin</span>
       </Menu.Item>
     </Menu>
   );
