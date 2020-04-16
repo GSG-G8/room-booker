@@ -9,6 +9,7 @@ const patchProfile = require('./patchProfile');
 const getUsers = require('./getUsers');
 const getRooms = require('./getRooms');
 const { activateUser, makeAdmin } = require('./activeUser');
+const { getBusinessHours, patchBusinessHours } = require('./businessHours');
 const getUser = require('./getUser');
 const {
   deleteBookingById,
@@ -38,4 +39,6 @@ module.exports = {
   bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
+  getBusinessHours,
+  patchBusinessHours,
 };

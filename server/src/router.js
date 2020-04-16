@@ -17,6 +17,8 @@ const {
   deleteRoomByID,
   patchRoom,
   bookingRoom,
+  getBusinessHours,
+  patchBusinessHours,
 } = require('./controllers');
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
@@ -35,6 +37,7 @@ router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 router.post('/booking', bookingRoom);
 router.delete('/booking/:id', deleteBooking);
 router.get('/rooms', getRooms);
+router.get('/businessHours', getBusinessHours);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
@@ -45,6 +48,7 @@ router.patch('/rooms/:id', patchRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 router.patch('/users/:id', activateAccount);
+router.patch('/businessHours', patchBusinessHours);
 
 router.use(clientError);
 router.use(serverError);

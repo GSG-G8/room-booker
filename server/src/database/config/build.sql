@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS bookinguser , booking , room CASCADE;
+DROP TABLE IF EXISTS bookinguser , booking , businessHours , room CASCADE;
 
 CREATE TABLE bookinguser (
 	id SERIAL PRIMARY KEY,
@@ -28,5 +28,17 @@ CREATE TABLE booking (
 	description TEXT NOT NULL,
 	date_created DATE NOT NULL DEFAULT CURRENT_DATE
 );
+
+CREATE TABLE businessHours (
+	daysOfWeek INTEGER[] NOT NULL,
+	startTime VARCHAR(8) NOT NULL,
+	endTime VARCHAR(8) NOT NULL
+);
+
+INSERT INTO businessHours
+	(daysOfWeek, startTime, endTime)
+VALUES
+	('{1, 2, 3, 4}', '10:00', '18:00')
+;
 
 COMMIT;

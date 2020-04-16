@@ -13,6 +13,10 @@ const activateAccount = require('./activateAccount');
 const patchProfile = require('./patchProfile');
 const deleteBooking = require('./deleteBooking');
 const getProfile = require('./getProfile');
+const {
+  get: getBusinessHours,
+  patch: patchBusinessHours,
+} = require('./businessHours');
 
 module.exports = {
   clientError,
@@ -32,4 +36,6 @@ module.exports = {
   deleteRoomByID,
   patchRoom,
   bookingRoom,
+  getBusinessHours,
+  patchBusinessHours,
 };
