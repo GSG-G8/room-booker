@@ -1,7 +1,5 @@
-/* @import "antd/dist/antd.css"; */
 .navcontainer {
   width: 100%;
-  /* background: red; */
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -10,18 +8,10 @@
 }
 
 .nav__logo {
-  /* margin: 5px; */
   margin-left: 20px;
   width: 120px;
-  /* margin-left: -60px; */
 }
-/* .logo{
-  width: 50px;
 
-} */
-/* .nav__menu {
-  align-self: right;
-} */
 .ant-dropdown-button {
   margin: 0 8px 8px 0;
 }

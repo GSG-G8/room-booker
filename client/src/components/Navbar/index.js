@@ -1,12 +1,12 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
-import 'antd/dist/antd.css';
+// import 'antd/dist/antd.css';
 import React from 'react';
 import './style.css';
 
 class Nav extends React.Component {
   logout = () => {
-    fetch('/logout').then(() => window.location.reload());
+    fetch('/api/v1/logout').then(() => window.location.reload());
   };
 
   render() {
