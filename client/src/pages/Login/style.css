@@ -1,23 +1,22 @@
-.login {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-family: "Roboto", sans-serif;
+   .login {
+  display: flex;
+  justify-content: space-around;
   }
-  .login__image{
-    width: 30%;
-    height: 30%;
-  }
-  .login__form {
 
+  .login__form {
     display: flex;
     justify-content: center;
-    margin-top: 35px;
+    margin-top: 5%;
     flex-direction: column;
     align-items: center;
-    padding: 2.5rem 0;
+    padding-right: 30%;
   }
   
+  .login__image{
+  margin-top: 190px;
+  width: 30%;
+  height: 30%;
+  }
   .link {
     text-decoration: none;
     font-family: "Roboto", sans-serif;
@@ -26,23 +25,23 @@
   }
   .login__input {
     text-align: center;
-    border: none;
-    width: 15rem;
     margin-bottom: 15px;
   }
-  
   .login__header {
+    display: flex;
+    margin-top: 120px;
+    flex-direction: column;
     font-weight: bold;
-    padding-top: 30px;
+    padding-top: 15px;
     font-size: 30px;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: rgb(59, 57, 110);
   }
-  
   .login__button {
     height: 2rem;
     width: 15rem;
     display: block;
     margin-top: 24px;
     background-color: rgb(59, 57, 110);
-  }
+  } 
+  

@@ -9,13 +9,10 @@ import './style.css';
 
 class Login extends React.Component {
   state = {
-    // email: '',
-    // password: '',
     error: false,
   };
 
   handleSubmit = (values, getAuth) => {
-    // e.preventDefault();
     const { email, password } = values;
     fetch('/api/v1/login', {
       method: 'POST',
@@ -32,31 +29,13 @@ class Login extends React.Component {
       if (res.ok) {
         getAuth();
       }
-      // const {
-      //   history: { push },
-      //   location: {
-      //     state: {
-      //       from: { pathname = '/' },
-      //     },
-      //   },
-      // } = this.props;
-      // return push(pathname);
     });
-    // .then((res) => {
-    //   if (!res) {
-    //     this.setState({
-    //       error: true,
-    //     });
-    //   } else {
-    //     this.setState({
-    //       error: false,
-    //     });
-    //   }
-    // });
   };
 
   render() {
     const { error } = this.state;
+    const { previousLocation } = this.props;
+
     const errorMessage = error ? (
       <p className="error-message">Please correct your email or password</p>
     ) : null;
@@ -64,7 +43,7 @@ class Login extends React.Component {
       <AuthConsumer>
         {({ logged, getAuth }) => (
           <div className="login">
-            {logged && <Redirect to="/" />}
+            {logged && <Redirect to={previousLocation} />}
             <img src={loginImg} alt="loginImage" className="login__image" />
             <p className="login__header">LOGIN</p>
             <Form
@@ -101,10 +80,11 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  location: PropTypes.shape({ state: PropTypes.string }).isRequired,
+  previousLocation: PropTypes.string,
+};
+
+Login.defaultProps = {
+  previousLocation: '/',
 };
 
 export default Login;
