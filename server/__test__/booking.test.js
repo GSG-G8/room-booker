@@ -23,8 +23,8 @@ test('make new booking no overlapping', (done) => {
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-14 12:00:00',
-            endTime: '2020-04-14 14:00:00',
+            startTime: '2021-04-14 12:00:00',
+            endTime: '2021-04-14 14:00:00',
           },
         ],
       })
@@ -36,7 +36,7 @@ test('make new booking no overlapping', (done) => {
     });
 });
 
-test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:00:00 ', (done) => {
+test('make new booking no overlapping between 2021-04-14 14:30:00-2021-04-14 16:00:00 ', (done) => {
   request(app)
     .post('/api/v1/booking')
     .set({
@@ -53,8 +53,8 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-14 14:30:00',
-            endTime: '2020-04-14 16:00:00',
+            startTime: '2021-04-14 14:30:00',
+            endTime: '2021-04-14 16:00:00',
           },
         ],
       })
@@ -66,7 +66,7 @@ test('make new booking no overlapping between 2020-04-14 14:30:00-2020-04-14 16:
     });
 });
 
-test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:00:00 ', (done) => {
+test('make new booking no overlapping between 2021-04-13 14:30:00-2021-04-13 16:00:00 ', (done) => {
   request(app)
     .post('/api/v1/booking')
     .set({
@@ -83,8 +83,8 @@ test('make new booking no overlapping between 2020-04-13 14:30:00-2020-04-13 16:
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-13 14:30:00',
-            endTime: '2020-04-13 16:00:00',
+            startTime: '2021-04-13 14:30:00',
+            endTime: '2021-04-13 16:00:00',
           },
         ],
       })
@@ -270,16 +270,16 @@ test('test for 100%  valid input ', (done) => {
         description: 'New Meeting',
         time: [
           {
-            startTime: '2020-04-13 12:00:00',
-            endTime: '2020-04-13 12:30:00',
+            startTime: '2021-04-13 12:00:00',
+            endTime: '2021-04-13 12:30:00',
           },
           {
-            startTime: '2020-04-13 01:00:00',
-            endTime: '2020-04-13 02:00:00',
+            startTime: '2021-04-13 01:00:00',
+            endTime: '2021-04-13 02:00:00',
           },
           {
-            startTime: '2020-04-13 15:30:00',
-            endTime: '2020-04-13 16:00:00',
+            startTime: '2021-04-13 15:30:00',
+            endTime: '2021-04-13 16:00:00',
           },
         ],
       })
