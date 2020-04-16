@@ -1,13 +1,16 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
-// import 'antd/dist/antd.css';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { AuthConsumer } from '../../context';
 import './style.css';
 
 class Nav extends React.Component {
-  logout = () => {
-    fetch('/api/v1/logout').then(() => window.location.reload());
-  };
+  logout = () =>
+    fetch('/api/v1/logout').then(() => {
+      const { getAuth } = this.context;
+      return getAuth();
+    });
 
   render() {
     const menu = (
@@ -20,17 +23,19 @@ class Nav extends React.Component {
     );
     return (
       <div className="navcontainer">
-        <img
-          className="nav__logo"
-          src="https://test.hq-sf.org/wp-content/uploads/2015/06/thumb_375_default_big-480x269.jpg"
-          alt="GSG logo"
-        />
+        <Link to="/">
+          <img
+            className="nav__logo"
+            src="https://test.hq-sf.org/wp-content/uploads/2015/06/thumb_375_default_big-480x269.jpg"
+            alt="GSG logo"
+          />
+        </Link>
         <Dropdown.Button
           className="nav__menu"
           overlay={menu}
           icon={<UserOutlined />}
         >
-          Hello! user
+          <AuthConsumer>{({ username }) => `Hello, ${username}!`}</AuthConsumer>
         </Dropdown.Button>
       </div>
     );
