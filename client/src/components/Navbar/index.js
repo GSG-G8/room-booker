@@ -22,7 +22,7 @@ class Nav extends React.Component {
       <div className="navcontainer">
         <img
           className="nav__logo"
-          src="https://cdn2.hubspot.net/hubfs/3918501/Copy%20of%20GSG%20Logo.jpg"
+          src="https://test.hq-sf.org/wp-content/uploads/2015/06/thumb_375_default_big-480x269.jpg"
           alt="GSG logo"
         />
         <Dropdown.Button
