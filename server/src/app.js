@@ -2,8 +2,6 @@ const express = require('express');
 const { join } = require('path');
 const compression = require('compression');
 const cookieParser = require('cookie-parser');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const morgan = require('morgan');
 
 const router = require('./router');
 
@@ -22,7 +20,8 @@ const middlewares = [
 
 app.use(middlewares);
 
-if (process.env.NODE_ENV === 'development') app.use(morgan('dev'));
+// eslint-disable-next-line global-require
+if (process.env.NODE_ENV === 'development') app.use(require('morgan')('dev'));
 
 app.use('/api/v1/', router);
 
