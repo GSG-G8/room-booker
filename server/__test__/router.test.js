@@ -252,10 +252,10 @@ test('GET /rooms/:date with date have not room booked', (done) => {
       'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
     ])
     .expect('Content-Type', /json/)
-    .expect(404)
+    .expect(200)
     .end((err, res) => {
       if (err) return done(err);
-      expect(res.body.message).toBe('no booking rooms for this day');
+      expect(Array.isArray(res.body)).toBe(true);
       return done();
     });
 });

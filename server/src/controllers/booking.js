@@ -1,14 +1,22 @@
 const Boom = require('@hapi/boom');
+const nodemailer = require('nodemailer');
+const ical = require('ical-generator');
+const Moment = require('moment');
 const moment = require('../utils/moment-range');
 const { getBookingbydate } = require('../database/queries');
 const bookingSchema = require('./validation/bookingSchema');
-const { bookRoom, getBookingByRoomId } = require('../database/queries');
+const {
+  bookRoom,
+  getBookingByRoomId,
+  getUserById,
+} = require('../database/queries');
+require('env2')('./config.env');
 
 const getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
     .then(({ rows }) => {
       if (rows.length === 0) {
-        throw Boom.notFound('no booking rooms for this day');
+        res.json([]);
       } else {
         res.json(rows);
       }
@@ -22,16 +30,17 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 const bookingRoom = (req, res, next) => {
-  const { roomId, time, description } = req.body;
-
+  const { roomId, time, title, description, remindMe } = req.body;
   const { userID: userId } = req.user;
-
+  let bookingData = [];
   bookingSchema
     .validateAsync(
       {
         roomId,
         time,
+        title,
         description,
+        remindMe,
       },
       { abortEarly: false }
     )
@@ -78,10 +87,65 @@ const bookingRoom = (req, res, next) => {
           'Other bookings already exist in the requested interval',
           overlapsArr
         );
-      return bookRoom(time, roomId, userId, description);
+      return bookRoom(time, roomId, userId, title, description);
     })
     .then(({ rows }) => {
-      res.status(201).json({ newBookings: rows });
+      bookingData = rows;
+      return bookingData;
+    })
+    .then((result) => res.status(201).json({ newBookings: result }))
+    .then(() => {
+      if (remindMe) {
+        getUserById(userId)
+          .then(({ rows }) => ({
+            email: rows[0].email,
+            name: rows[0].name,
+          }))
+
+          // eslint-disable-next-line no-unused-vars
+          .then(({ email }) => {
+            // email will used in production but right now, it would case problem by nodemailer
+            const cal = ical({
+              events: bookingData.map((row) => ({
+                start: Moment(row.start_time),
+                end: Moment(row.end_time),
+                summary: row.title,
+                description: row.description,
+              })),
+            }).toString();
+
+            const transporter = nodemailer.createTransport({
+              service: 'gmail',
+              auth: {
+                user: process.env.EMAIL,
+                pass: process.env.PASSWORD,
+              },
+            });
+            const msg = {
+              from: `"ROOM BOOKER - Gaza Sky Geeks" <${process.env.EMAIL}>`,
+              to: 'linaebe0@gmail.com',
+              subject: 'Room booking',
+              html: 'here is your room booking',
+              icalEvent: {
+                filename: 'bookingRoom.ics',
+                method: 'request',
+                content:
+                  'BEGIN:VCALENDAR\r\nPRODID:-//ACME/DesktopCalendar//EN\r\nMETHOD:REQUEST\r\nVERSION:2.0\r\n...',
+              },
+              alternatives: [
+                {
+                  contentType: 'text/calendar',
+                  content: Buffer.from(cal.toString()),
+                },
+              ],
+            };
+
+            transporter.sendMail(msg).catch((error) => {
+              throw Boom.badRequest(error);
+            });
+          });
+      }
+      return res.end();
     })
     .catch(next);
 };
