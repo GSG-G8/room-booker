@@ -12,7 +12,8 @@ class Login extends React.Component {
     error: false,
   };
 
-  handleSubmit = (values, getAuth) => {
+  handleSubmit = (values) => {
+    const { getAuth } = this.context;
     const { email, password } = values;
     fetch('/api/v1/login', {
       method: 'POST',

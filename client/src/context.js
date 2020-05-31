@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Spin } from 'antd';
 
 const Context = React.createContext();
 
@@ -7,6 +8,7 @@ class AuthProvider extends React.Component {
   state = {
     logged: false,
     admin: false,
+    loading: true,
   };
 
   componentDidMount() {
@@ -19,33 +21,33 @@ class AuthProvider extends React.Component {
         if (res.ok) return res.json();
         throw new Error();
       })
-      .then((res) => {
-        this.setState({ logged: true, admin: res.role });
+      .then(({ role, ...res }) => {
+        this.setState({
+          ...res,
+          logged: true,
+          admin: role,
+          loading: false,
+        });
       })
       .catch(() => {
-        this.setState({ logged: false, admin: false });
+        this.setState({ logged: false, admin: false, loading: false });
       });
   };
 
   setAuth = ({ logged, admin }) => this.setState({ logged, admin });
 
   render() {
-    const { logged, admin } = this.state;
+    const { loading, ...restOfState } = this.state;
     const { children } = this.props;
+    if (loading) return <Spin />;
     return (
-      <Context.Provider
-        value={{
-          logged,
-          admin,
-          setAuth: this.setAuth,
-          getAuth: this.getAuth,
-        }}
-      >
-        {children}
-      </Context.Provider>
+      <Context.Provider value={{ ...restOfState }}>{children}</Context.Provider>
     );
   }
 }
+
 AuthProvider.propTypes = { children: PropTypes.node.isRequired };
+
 const AuthConsumer = Context.Consumer;
+
 export { AuthProvider, AuthConsumer };

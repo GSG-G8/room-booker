@@ -1,22 +1,28 @@
-   .login {
-  display: flex;
-  justify-content: space-around;
+ .login {
+   display: flex;
+   justify-content: space-around;
   }
-
   .login__form {
     display: flex;
     justify-content: center;
-    margin-top: 5%;
+    margin-top: 10rem;
     flex-direction: column;
-    align-items: center;
     padding-right: 30%;
   }
-  
-  .login__image{
-  margin-top: 190px;
-  width: 30%;
-  height: 30%;
+   .login__header {
+    display: flex;
+    margin-top: 18rem;
+    font-weight: bold;
+    font-size: 35px;
+    color: rgb(59, 57, 110);
   }
+  .login__image{
+  margin-top: 15rem;
+  margin-left: 15rem;
+  width: 70vh;
+  height: 50vh;
+  }
+
   .link {
     text-decoration: none;
     font-family: "Roboto", sans-serif;
@@ -25,18 +31,9 @@
   }
   .login__input {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 1rem;
   }
-  .login__header {
-    display: flex;
-    margin-top: 120px;
-    flex-direction: column;
-    font-weight: bold;
-    padding-top: 15px;
-    font-size: 30px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: rgb(59, 57, 110);
-  }
+  
   .login__button {
     height: 2rem;
     width: 15rem;
@@ -44,4 +41,4 @@
     margin-top: 24px;
     background-color: rgb(59, 57, 110);
   } 
-  
+   
