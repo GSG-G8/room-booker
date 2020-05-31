@@ -2,7 +2,7 @@
 import { Layout } from 'antd';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Menu2 from '../../components/Menu';
+import AdminMenu from '../../components/Menu';
 import Rooms from '../../components/Table/Rooms';
 import Users from '../../components/Table/Users';
 import './style.css';
@@ -12,8 +12,8 @@ const { Content, Sider } = Layout;
 function Dashboard() {
   return (
     <Layout>
-      <Sider width={200} className="layout-background">
-        <Menu2 />
+      <Sider>
+        <AdminMenu />
       </Sider>
       <Layout>
         <Content

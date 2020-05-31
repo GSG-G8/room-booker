@@ -1,6 +1,8 @@
 import { Button, message, Modal, notification, Table } from 'antd';
 import React from 'react';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import NewRoom from '../../Form/AddRoom';
+import './style.css';
 
 class Rooms extends React.Component {
   state = {
@@ -19,6 +21,7 @@ class Rooms extends React.Component {
     {
       title: 'Action',
       dataIndex: 'id',
+      width: '64px',
       colSpan: 2,
       render: (id, row) => (
         <Button
@@ -31,12 +34,13 @@ class Rooms extends React.Component {
             });
           }}
         >
-          Update
+          <EditOutlined />
         </Button>
       ),
     },
     {
       dataIndex: 'id',
+      width: '64px',
       colSpan: 0,
       render: (id) => (
         <Button
@@ -55,7 +59,7 @@ class Rooms extends React.Component {
             });
           }}
         >
-          Delete
+          <DeleteOutlined />
         </Button>
       ),
     },
@@ -147,7 +151,7 @@ class Rooms extends React.Component {
     const { loading, data, visible, updateID, initialName } = this.state;
 
     return (
-      <div>
+      <div className="rooms">
         <NewRoom
           visible={visible}
           onCreate={this.createRoom}

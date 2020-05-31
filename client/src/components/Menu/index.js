@@ -4,7 +4,7 @@ import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import './style.css';
 
-function Menu2() {
+function AdminMenu() {
   const history = useHistory();
   const location = useLocation();
   const defaultKey = location.pathname.split('/').pop();
@@ -13,6 +13,8 @@ function Menu2() {
     <Menu
       defaultSelectedKeys={[defaultKey]}
       mode="inline"
+      theme="dark"
+      className="admin-menu"
       onSelect={({ key }) => {
         const path = key === 'dashboard' ? '' : `/${key}`;
         history.push(`/dashboard${path}`);
@@ -31,4 +33,4 @@ function Menu2() {
   );
 }
 
-export default Menu2;
+export default AdminMenu;

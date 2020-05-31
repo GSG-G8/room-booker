@@ -1,5 +1,6 @@
 import { Button, Form, Input, Modal } from 'antd';
 import PropTypes from 'prop-types';
+import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
 
 const NewRoom = ({
@@ -19,8 +20,9 @@ const NewRoom = ({
   }
 
   return (
-    <div>
+    <>
       <Button type="primary" onClick={onClick}>
+        <PlusOutlined />
         New Room
       </Button>
       <Modal
@@ -55,7 +57,7 @@ const NewRoom = ({
           </Form.Item>
         </Form>
       </Modal>
-    </div>
+    </>
   );
 };
 
