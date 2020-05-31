@@ -3,6 +3,17 @@ import PropTypes from 'prop-types';
 import { PlusOutlined } from '@ant-design/icons';
 import React from 'react';
 
+const onModalOk = (form, updateID, onUpdate, onCreate) => {
+  form
+    .validateFields()
+    .then((values) => {
+      form.resetFields();
+      if (updateID > 0) onUpdate({ id: updateID, ...values });
+      else onCreate(values);
+    })
+    .catch(() => {});
+};
+
 const NewRoom = ({
   visible,
   onCreate,
@@ -32,14 +43,7 @@ const NewRoom = ({
         cancelText="Cancel"
         onCancel={onCancel}
         onOk={() => {
-          form
-            .validateFields()
-            .then((values) => {
-              form.resetFields();
-              if (updateID > 0) onUpdate({ id: updateID, ...values });
-              else onCreate(values);
-            })
-            .catch(() => {});
+          onModalOk(form, updateID, onUpdate, onCreate);
         }}
       >
         <Form form={form} layout="vertical" name="form_in_modal">

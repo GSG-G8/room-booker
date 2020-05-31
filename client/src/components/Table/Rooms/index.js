@@ -2,6 +2,7 @@ import { Button, message, Modal, notification, Table } from 'antd';
 import React from 'react';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import NewRoom from '../../Form/AddRoom';
+import { fetchData, createRoom, deleteRoom, updateRoom } from './functions';
 import './style.css';
 
 class Rooms extends React.Component {
@@ -47,14 +48,14 @@ class Rooms extends React.Component {
           danger
           type="link"
           onClick={() => {
-            const { deleteRoom } = this;
+            const component = this;
             Modal.confirm({
               title: 'delete user',
               okText: 'Detete',
               cancelText: 'Cancel',
               content: 'are you sure ?',
               onOk() {
-                deleteRoom(id);
+                deleteRoom(id, component, message, notification);
               },
             });
           }}
@@ -66,86 +67,8 @@ class Rooms extends React.Component {
   ];
 
   componentDidMount() {
-    this.fetchData();
+    fetchData(this, message);
   }
-
-  fetchData = () => {
-    this.setState({ loading: true });
-
-    fetch(`/api/v1/rooms`)
-      .then((res) => {
-        if (!res.ok) {
-          message.error('could not fetch data');
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then((results) => {
-        const resultsWithKey = results.map((row) => ({ key: row.id, ...row }));
-        this.setState({ loading: false, data: resultsWithKey });
-      })
-      .catch(() => {
-        this.setState({ loading: false });
-      });
-  };
-
-  createRoom = (values) => {
-    fetch(`/api/v1/rooms`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    }).then((res) => {
-      if (!res.ok) {
-        message.error('could not create room');
-      } else {
-        this.fetchData();
-        this.setState({ visible: false });
-        notification.success({
-          message: 'room has been created',
-        });
-      }
-    });
-  };
-
-  deleteRoom = (id) => {
-    fetch(`/api/v1/rooms/${id}`, {
-      method: 'delete',
-    }).then((res) => {
-      if (!res.ok) {
-        message.error('could not delete the room');
-      } else {
-        notification.success({
-          message: 'room has been deleted',
-        });
-        const { data } = this.state;
-        this.setState({ data: data.filter((row) => row.id !== id) });
-      }
-    });
-  };
-
-  updateRoom = ({ id, name }) => {
-    fetch(`/api/v1/rooms/${id}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name }),
-    }).then((res) => {
-      if (!res.ok) {
-        message.error('could not update the room');
-      } else {
-        notification.success({
-          message: 'room has been updated',
-        });
-        this.fetchData();
-        this.setState({
-          visible: false,
-        });
-      }
-    });
-  };
 
   render() {
     const { loading, data, visible, updateID, initialName } = this.state;
@@ -154,8 +77,12 @@ class Rooms extends React.Component {
       <div className="rooms">
         <NewRoom
           visible={visible}
-          onCreate={this.createRoom}
-          onUpdate={this.updateRoom}
+          onCreate={(values) => {
+            createRoom(values, this, message, notification);
+          }}
+          onUpdate={(values) => {
+            updateRoom(values, this, message, notification);
+          }}
           onClick={() => {
             this.setState({ visible: true, updateID: 0 });
           }}
