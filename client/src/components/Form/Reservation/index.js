@@ -115,7 +115,7 @@ class BookingForm extends React.Component {
     const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
 
-    const { start, end, roomId } = modalData;
+    const { start, end, roomId, title, description, readOnly } = modalData;
     return (
       <Modal
         title="Reserve Your Room"
@@ -124,7 +124,7 @@ class BookingForm extends React.Component {
         onCancel={handleHide}
         okText="Reserve Room"
         cancelText="Cancel"
-        okButtonProps={{ disabled: confirmLoading }}
+        okButtonProps={{ disabled: confirmLoading || readOnly }}
         onOk={() => {
           this.formRef.current.submit();
         }}
@@ -138,6 +138,8 @@ class BookingForm extends React.Component {
             time: [moment(start), moment(end)],
             date: moment(start),
             room: this.findRoomNameById(roomId),
+            title,
+            description,
             remind: true,
           }}
           ref={this.formRef}
@@ -158,7 +160,7 @@ class BookingForm extends React.Component {
               style={{
                 width: 200,
               }}
-              disabled={confirmLoading}
+              disabled={confirmLoading || readOnly}
               placeholder="Room Name"
               options={rooms.map(({ id, name }) => ({ id, value: name }))}
               filterOption={(inputValue, option) =>
@@ -173,11 +175,11 @@ class BookingForm extends React.Component {
             label="Title"
             rules={[{ required: true, message: 'Add Your Title' }]}
           >
-            <Input disabled={confirmLoading} />
+            <Input disabled={confirmLoading || readOnly} />
           </Form.Item>
 
           <Form.Item name="description" label="Description">
-            <Input.TextArea disabled={confirmLoading} />
+            <Input.TextArea disabled={confirmLoading || readOnly} />
           </Form.Item>
 
           <Form.Item
@@ -191,7 +193,7 @@ class BookingForm extends React.Component {
           >
             <Radio.Group
               onChange={this.repeatOnChange}
-              disabled={confirmLoading}
+              disabled={confirmLoading || readOnly}
             >
               <Radio.Button value="once">Once</Radio.Button>
               <Radio.Button value="daily">Daily</Radio.Button>
@@ -213,7 +215,7 @@ class BookingForm extends React.Component {
               <DatePicker
                 format="YYYY-MM-DD"
                 disabledDate={disabledDate}
-                disabled={confirmLoading}
+                disabled={confirmLoading || readOnly}
               />
             </Form.Item>
           )}
@@ -245,13 +247,13 @@ class BookingForm extends React.Component {
           >
             <TimePicker.RangePicker
               minuteStep={10}
-              disabled={confirmLoading}
+              disabled={confirmLoading || readOnly}
               format="HH:mm"
             />
           </Form.Item>
 
           <Form.Item name="remind" label="Remind me" valuePropName="checked">
-            <Switch disabled={confirmLoading} />
+            <Switch disabled={confirmLoading || readOnly} />
           </Form.Item>
         </Form>
       </Modal>
@@ -267,6 +269,9 @@ BookingForm.propTypes = {
     roomId: PropTypes.string,
     start: PropTypes.any,
     end: PropTypes.any,
+    title: PropTypes.string,
+    description: PropTypes.string,
+    readOnly: PropTypes.bool,
   }).isRequired,
 };
 

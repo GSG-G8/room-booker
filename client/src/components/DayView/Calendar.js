@@ -12,7 +12,14 @@ class Calendar extends React.Component {
     events: [],
     rooms: [],
     visible: false,
-    modalData: { roomId: 1, start: new Date(), end: new Date() },
+    modalData: {
+      roomId: 1,
+      start: new Date(),
+      end: new Date(),
+      readOnly: false,
+      title: '',
+      description: '',
+    },
   };
 
   componentDidMount() {
@@ -79,7 +86,31 @@ class Calendar extends React.Component {
   };
 
   handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
-    this.setState({ modalData: { roomId, start, end } });
+    this.setState({
+      modalData: {
+        roomId,
+        start,
+        end,
+        title: '',
+        description: '',
+        readOnly: false,
+      },
+    });
+    this.showModal();
+  };
+
+  showEventForm = ({ event }) => {
+    const { start, end, title, extendedProps } = event;
+    this.setState({
+      modalData: {
+        roomId: event.getResources()[0].id,
+        start,
+        end,
+        title,
+        description: extendedProps.description,
+        readOnly: true,
+      },
+    });
     this.showModal();
   };
 
@@ -109,6 +140,7 @@ class Calendar extends React.Component {
           plugins={[resourceTimeGridPlugin, interactionPlugin]}
           selectable="true"
           select={this.handleDateSelect}
+          eventClick={this.showEventForm}
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
