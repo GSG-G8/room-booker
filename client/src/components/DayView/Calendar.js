@@ -31,6 +31,20 @@ class Calendar extends React.Component {
     this.setState({ visible: false });
   };
 
+  bookRoom = () => {
+    this.setState({
+      modalData: {
+        roomId: '1',
+        start: new Date(),
+        end: new Date(),
+        readOnly: false,
+        title: '',
+        description: '',
+      },
+    });
+    this.showModal();
+  };
+
   showModal = () => {
     this.setState({ visible: true });
   };
@@ -144,7 +158,7 @@ class Calendar extends React.Component {
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
-              click: this.showModal,
+              click: this.bookRoom,
             },
           }}
           header={{
