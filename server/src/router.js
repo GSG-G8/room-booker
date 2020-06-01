@@ -32,8 +32,6 @@ router.get('/auth', (req, res) => {
   res.json(req.user);
 });
 router.route('/profile').get(getProfile).patch(patchProfile);
-// router.patch('/patchProfile', patchProfile);
-// router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 router.post('/booking', bookingRoom);
 router.delete('/booking/:id', deleteBooking);
