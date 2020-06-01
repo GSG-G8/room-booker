@@ -6,8 +6,11 @@ const {
   getUsers,
   patchProfile,
   getUserWithPassword,
+  activateUser,
+  makeAdmin,
 } = require('../database/queries');
 const profileScema = require('./validation/profileSchema');
+const activateSchema = require('./validation/activateSchema');
 
 exports.deleteUser = (req, res, next) => {
   const { id } = req.params;
@@ -59,5 +62,24 @@ exports.patchProfile = (req, res, next) => {
     .then(() => bcrypt.hash(password, 10))
     .then((hash) => patchProfile(userID, name, hash))
     .then((results) => res.send(results.rows.length !== 0))
+    .catch(next);
+};
+
+exports.activateAccount = (req, res, next) => {
+  const { admin, active } = req.body;
+  const { id } = req.params;
+
+  activateSchema
+    .validateAsync({ active, admin })
+    .catch((error) => {
+      throw Boom.badRequest(error.message);
+    })
+    .then(() => {
+      const promiseArray = [];
+      if (active !== undefined) promiseArray.push(activateUser(id, active));
+      if (admin !== undefined) promiseArray.push(makeAdmin(id, admin));
+      return Promise.all(promiseArray);
+    })
+    .then(() => res.status(200).end())
     .catch(next);
 };
