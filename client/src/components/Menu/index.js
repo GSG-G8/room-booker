@@ -1,4 +1,8 @@
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined,
+  UserOutlined,
+  ClockCircleOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -28,6 +32,11 @@ function AdminMenu() {
       <Menu.Item key="rooms">
         <HomeOutlined />
         <span>Rooms</span>
+      </Menu.Item>
+
+      <Menu.Item key="business-hours">
+        <ClockCircleOutlined />
+        <span>Business Hours</span>
       </Menu.Item>
     </Menu>
   );
