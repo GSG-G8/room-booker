@@ -270,7 +270,7 @@ BookingForm.propTypes = {
     start: PropTypes.any,
     end: PropTypes.any,
     title: PropTypes.string,
-    description: PropTypes.string,
+    description: PropTypes.string.isRequired,
     readOnly: PropTypes.bool,
   }).isRequired,
 };
