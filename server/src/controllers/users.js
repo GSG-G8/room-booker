@@ -1,9 +1,40 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
-const { patchProfile, getUserWithPassword } = require('../database/queries');
+const {
+  deleteUserById,
+  getUserById,
+  getUsers,
+  patchProfile,
+  getUserWithPassword,
+} = require('../database/queries');
 const profileScema = require('./validation/profileSchema');
 
-module.exports = (req, res, next) => {
+exports.deleteUser = (req, res, next) => {
+  const { id } = req.params;
+  deleteUserById(id)
+    .then(() => res.json({ msg: 'The user has delete successfully' }))
+    .catch(next);
+};
+
+exports.getUsers = (req, res, next) => {
+  getUsers()
+    .then((users) => {
+      res.json(users.rows);
+    })
+    .catch((error) => {
+      next(Boom.badImplementation(error.message));
+    });
+};
+
+exports.getProfile = (req, res) => {
+  getUserById(req.user.userID).then((users) => {
+    if (users.rows.length === 0) {
+      res.status(404).end();
+    } else res.json(users.rows[0]);
+  });
+};
+
+exports.patchProfile = (req, res, next) => {
   const { userID } = req.user;
   const { name, oldPassword = '', password } = req.body;
 

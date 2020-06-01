@@ -3,7 +3,7 @@ const connection = require('../src/database/config/connection');
 const dbBuild = require('../src/database/config/build');
 const {
   checkEmail,
-  deleteUser,
+  deleteUserById,
   addNewRoom,
   getRoom,
   deleteBookingById,
@@ -39,7 +39,7 @@ test('add room query', () =>
     }));
 
 test('deleteUserById query', () =>
-  deleteUser('3').then((result) => {
+  deleteUserById('3').then((result) => {
     expect(result.rowCount).toBe(1);
   }));
 

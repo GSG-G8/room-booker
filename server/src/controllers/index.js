@@ -1,18 +1,11 @@
 const { clientError, serverError } = require('./error');
 const signup = require('./signup');
 const login = require('./login');
-const { getRBookingbyDate, bookingRoom } = require('./booking');
+const { getRBookingbyDate, bookingRoom, deleteBooking } = require('./booking');
 const logout = require('./logout');
-const { addRoom } = require('./room');
-const deleteUser = require('./deleteUser');
-const getUsers = require('./getUsers');
-const getRooms = require('./getRooms');
-const deleteRoomByID = require('./deleteRoomByID');
-const patchRoom = require('./patchRoom');
+const { addRoom, getRooms, patchRoom, deleteRoomById } = require('./room');
+const { deleteUser, getUsers, getProfile, patchProfile } = require('./users');
 const activateAccount = require('./activateAccount');
-const patchProfile = require('./patchProfile');
-const deleteBooking = require('./deleteBooking');
-const getProfile = require('./getProfile');
 
 module.exports = {
   clientError,
@@ -29,7 +22,7 @@ module.exports = {
   deleteBooking,
   getProfile,
   getRooms,
-  deleteRoomByID,
+  deleteRoomById,
   patchRoom,
   bookingRoom,
 };

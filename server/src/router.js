@@ -1,4 +1,5 @@
 const router = require('express').Router();
+
 const {
   clientError,
   serverError,
@@ -14,7 +15,7 @@ const {
   deleteBooking,
   getProfile,
   getRooms,
-  deleteRoomByID,
+  deleteRoomById,
   patchRoom,
   bookingRoom,
 } = require('./controllers');
@@ -40,8 +41,9 @@ router.get('/rooms', getRooms);
 router.use(checkAdmin);
 
 router.post('/rooms', addRoom);
-router.delete('/rooms/:id', deleteRoomByID);
+router.delete('/rooms/:id', deleteRoomById);
 router.patch('/rooms/:id', patchRoom);
+// app.route('/api/v1/rooms/:id').delete(deleteRoomById).patch(patchRoom);
 router.delete('/users/:id', deleteUser);
 router.get('/getUsers', getUsers);
 router.patch('/users/:id', activateAccount);
