@@ -1,23 +1,24 @@
  .login {
-   display: flex;
-   justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  height: 100vh;
   }
   .login__form {
     display: flex;
     justify-content: center;
-    margin-top: 10rem;
     flex-direction: column;
     padding-right: 30%;
   }
    .login__header {
     display: flex;
-    margin-top: 18rem;
+    text-align: center;
     font-weight: bold;
     font-size: 35px;
     color: rgb(59, 57, 110);
   }
   .login__image{
-  margin-top: 15rem;
+  margin-top: 17rem;
   margin-left: 15rem;
   width: 70vh;
   height: 50vh;
@@ -41,4 +42,4 @@
     margin-top: 24px;
     background-color: rgb(59, 57, 110);
   } 
-   
+  

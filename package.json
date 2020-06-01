@@ -33,7 +33,6 @@
     "test"
   ],
   "dependencies": {
-    "cross-env": "^7.0.2",
-    "init": "^0.1.2"
+    "cross-env": "^7.0.2"
   }
 }

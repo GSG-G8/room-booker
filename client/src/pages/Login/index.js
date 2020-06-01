@@ -46,11 +46,12 @@ class Login extends React.Component {
           <div className="login">
             {logged && <Redirect to={previousLocation} />}
             <img src={loginImg} alt="loginImage" className="login__image" />
-            <p className="login__header">LOGIN</p>
+
             <Form
               className="login__form"
               onFinish={(values) => this.handleSubmit(values, getAuth)}
             >
+              <p className="login__header">LOGIN</p>
               <Form.Item name="email" className="login__input">
                 <Input placeholder="Email" prefix={<MailOutlined />} />
               </Form.Item>

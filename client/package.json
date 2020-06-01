@@ -5,7 +5,6 @@
   "proxy": "http://localhost:5000",
   "dependencies": {
     "@ant-design/icons": "^4.0.6",
-    "@hapi/joi": "^17.1.1",
     "@fullcalendar/core": "^4.4.0",
     "@fullcalendar/daygrid": "^4.4.0",
     "@fullcalendar/interaction": "^4.4.0",
