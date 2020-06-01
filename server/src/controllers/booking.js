@@ -87,7 +87,12 @@ const bookingRoom = (req, res, next) => {
           'Other bookings already exist in the requested interval',
           overlapsArr
         );
-      return bookRoom(time, roomId, userId, title, description);
+      else {
+        if (req.body.description === undefined) {
+          return bookRoom(time, roomId, userId, title, 'No Description');
+        }
+        return bookRoom(time, roomId, userId, title, description);
+      }
     })
     .then(({ rows }) => {
       bookingData = rows;
