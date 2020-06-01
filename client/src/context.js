@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Spin } from 'antd';
 
-const Context = React.createContext();
+const AuthContext = React.createContext();
 
 class AuthProvider extends React.Component {
   state = {
@@ -39,15 +39,18 @@ class AuthProvider extends React.Component {
   render() {
     const { loading, ...restOfState } = this.state;
     const { children } = this.props;
+    const { getAuth } = this;
     if (loading) return <Spin />;
     return (
-      <Context.Provider value={{ ...restOfState }}>{children}</Context.Provider>
+      <AuthContext.Provider value={{ ...restOfState, getAuth }}>
+        {children}
+      </AuthContext.Provider>
     );
   }
 }
 
 AuthProvider.propTypes = { children: PropTypes.node.isRequired };
 
-const AuthConsumer = Context.Consumer;
+const AuthConsumer = AuthContext.Consumer;
 
-export { AuthProvider, AuthConsumer };
+export { AuthContext, AuthProvider, AuthConsumer };

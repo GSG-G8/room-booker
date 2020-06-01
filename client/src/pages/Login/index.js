@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import loginImg from '../../assets/loginImg.png';
-import { AuthConsumer } from '../../context';
+import { AuthContext } from '../../context';
 import './style.css';
 
 class Login extends React.Component {
@@ -40,46 +40,41 @@ class Login extends React.Component {
     const errorMessage = error ? (
       <p className="error-message">Please correct your email or password</p>
     ) : null;
-    return (
-      <AuthConsumer>
-        {({ logged, getAuth }) => (
-          <div className="login">
-            {logged && <Redirect to={previousLocation} />}
-            <img src={loginImg} alt="loginImage" className="login__image" />
 
-            <Form
-              className="login__form"
-              onFinish={(values) => this.handleSubmit(values, getAuth)}
-            >
-              <p className="login__header">LOGIN</p>
-              <Form.Item name="email" className="login__input">
-                <Input placeholder="Email" prefix={<MailOutlined />} />
-              </Form.Item>
-              <Form.Item name="password" className="login__input">
-                <Input
-                  placeholder="Password"
-                  type="password"
-                  prefix={<LockOutlined />}
-                />
-              </Form.Item>
-              <Link className="link" to="/forgetPassword">
-                Forget password?
-              </Link>
-              {errorMessage}
-              <Button
-                type="primary"
-                htmlType="submit"
-                className="login__button"
-              >
-                LOGIN
-              </Button>
-            </Form>
-          </div>
-        )}
-      </AuthConsumer>
+    const { logged } = this.context;
+    return (
+      <div className="login">
+        {logged && <Redirect to={previousLocation} />}
+        <img src={loginImg} alt="loginImage" className="login__image" />
+
+        <Form
+          className="login__form"
+          onFinish={(values) => this.handleSubmit(values)}
+        >
+          <p className="login__header">LOGIN</p>
+          <Form.Item name="email" className="login__input">
+            <Input placeholder="Email" prefix={<MailOutlined />} />
+          </Form.Item>
+          <Form.Item name="password" className="login__input">
+            <Input
+              placeholder="Password"
+              type="password"
+              prefix={<LockOutlined />}
+            />
+          </Form.Item>
+          <Link className="link" to="/forgetPassword">
+            Forget password?
+          </Link>
+          {errorMessage}
+          <Button type="primary" htmlType="submit" className="login__button">
+            LOGIN
+          </Button>
+        </Form>
+      </div>
     );
   }
 }
+Login.contextType = AuthContext;
 
 Login.propTypes = {
   previousLocation: PropTypes.string,
