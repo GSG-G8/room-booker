@@ -12,19 +12,13 @@ const { Content, Sider } = Layout;
 
 function Dashboard() {
   return (
-    <Layout>
+    <Layout className="layout">
       <Navbar />
       <Layout>
         <Sider>
           <AdminMenu />
         </Sider>
-        <Content
-          style={{
-            padding: 24,
-            margin: 0,
-            minHeight: 280,
-          }}
-        >
+        <Content className="content">
           <Switch>
             <Route path="/dashboard/users">
               <Users />
