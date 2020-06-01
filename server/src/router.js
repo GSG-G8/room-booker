@@ -27,11 +27,13 @@ router.get('/logout', logout);
 
 // only logged in access under this:
 router.use(verifyUser);
+
 router.get('/auth', (req, res) => {
   res.json(req.user);
 });
-router.patch('/patchProfile', patchProfile);
-router.get('/profile', getProfile);
+router.route('/profile').get(getProfile).patch(patchProfile);
+// router.patch('/patchProfile', patchProfile);
+// router.get('/profile', getProfile);
 router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
 router.post('/booking', bookingRoom);
 router.delete('/booking/:id', deleteBooking);
@@ -41,12 +43,9 @@ router.get('/rooms', getRooms);
 router.use(checkAdmin);
 
 router.post('/rooms', addRoom);
-router.delete('/rooms/:id', deleteRoomById);
-router.patch('/rooms/:id', patchRoom);
-// app.route('/api/v1/rooms/:id').delete(deleteRoomById).patch(patchRoom);
-router.delete('/users/:id', deleteUser);
+router.route('/rooms/:id').delete(deleteRoomById).patch(patchRoom);
+router.route('/users/:id').delete(deleteUser).patch(activateAccount);
 router.get('/getUsers', getUsers);
-router.patch('/users/:id', activateAccount);
 
 router.use(clientError);
 router.use(serverError);

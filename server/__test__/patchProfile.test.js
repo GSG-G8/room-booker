@@ -7,9 +7,9 @@ const connection = require('../src/database/config/connection.js');
 
 beforeAll(() => dbBuild());
 
-test('GET /patchProfile, logged in user valid request ', (done) => {
+test('GET /profile, logged in user valid request ', (done) => {
   request(app)
-    .patch('/api/v1/patchProfile')
+    .patch('/api/v1/profile')
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Cookie', [
@@ -29,9 +29,9 @@ test('GET /patchProfile, logged in user valid request ', (done) => {
     });
 });
 
-test('GET /patchProfile, logged in user invalid password', (done) => {
+test('GET /profile, logged in user invalid password', (done) => {
   request(app)
-    .patch('/api/v1/patchProfile')
+    .patch('/api/v1/profile')
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Cookie', [
@@ -50,9 +50,9 @@ test('GET /patchProfile, logged in user invalid password', (done) => {
     });
 });
 
-test('GET /patchProfile, logged in user, name is required', (done) => {
+test('GET /profile, logged in user, name is required', (done) => {
   request(app)
-    .patch('/api/v1/patchProfile')
+    .patch('/api/v1/profile')
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Cookie', [
@@ -70,9 +70,9 @@ test('GET /patchProfile, logged in user, name is required', (done) => {
     });
 });
 
-test('GET /patchProfile, user does not exists', (done) => {
+test('GET /profile, user does not exists', (done) => {
   request(app)
-    .patch('/api/v1/patchProfile')
+    .patch('/api/v1/profile')
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .set('Cookie', [
@@ -91,9 +91,9 @@ test('GET /patchProfile, user does not exists', (done) => {
     });
 });
 
-test('GET /patchProfile, Unauthorized user', (done) => {
+test('GET /profile, Unauthorized user', (done) => {
   request(app)
-    .patch('/api/v1/patchProfile')
+    .patch('/api/v1/profile')
     .set('Content-Type', 'application/json')
     .set('Accept', 'application/json')
     .send({
