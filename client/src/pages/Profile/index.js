@@ -8,12 +8,12 @@ import './style.css';
 
 class Profile extends React.Component {
   state = {
-    // loading: true,
+    loading: true,
     profileData: {},
   };
 
   componentDidMount() {
-    this.fetchProfileData();
+    this.fetchProfileData().then(() => this.setState({ loading: false }));
   }
 
   fetchProfileData = () =>
@@ -35,8 +35,10 @@ class Profile extends React.Component {
   render() {
     const { profileData } = this.state;
     const { name, email } = profileData;
-    // eslint-disable-next-line no-console
-    console.log(profileData);
+    const { loading } = this.state;
+
+    if (loading) return <Spin />;
+
     return (
       <div>
         <Navbar />
