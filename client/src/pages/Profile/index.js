@@ -33,12 +33,10 @@ class Profile extends React.Component {
       });
 
   render() {
-    const { profileData } = this.state;
+    const { profileData, loading } = this.state;
     const { name, email } = profileData;
-    const { loading } = this.state;
 
     if (loading) return <Spin />;
-
     return (
       <div>
         <Navbar />
