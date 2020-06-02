@@ -1,4 +1,5 @@
 import { Button, Checkbox, message, Modal, notification, Table } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import React from 'react';
 
 class Users extends React.Component {
@@ -20,6 +21,7 @@ class Users extends React.Component {
       title: 'Action',
       colSpan: 3,
       dataIndex: 'is_active',
+      width: '128px',
       render: (isActive, row) => (
         <Checkbox
           defaultChecked={isActive}
@@ -34,6 +36,7 @@ class Users extends React.Component {
     {
       colSpan: 0,
       dataIndex: 'is_admin',
+      width: '128px',
       render: (isAdmin, row) => (
         <Checkbox
           defaultChecked={isAdmin}
@@ -48,6 +51,7 @@ class Users extends React.Component {
     {
       colSpan: 0,
       dataIndex: 'id',
+      width: '64px',
       render: (id) => (
         <Button
           danger
@@ -65,7 +69,7 @@ class Users extends React.Component {
             });
           }}
         >
-          Delete
+          <DeleteOutlined />
         </Button>
       ),
     },
@@ -78,7 +82,7 @@ class Users extends React.Component {
   fetchData = () => {
     this.setState({ loading: true });
 
-    fetch(`/api/v1/getUsers`)
+    fetch(`/api/v1/users`)
       .then((res) => {
         if (!res.ok) {
           message.error('faild to fetch data');

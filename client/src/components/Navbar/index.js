@@ -2,7 +2,7 @@ import { UserOutlined } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { AuthConsumer } from '../../context';
+import { AuthContext, AuthConsumer } from '../../context';
 import './style.css';
 
 class Nav extends React.Component {
@@ -41,5 +41,7 @@ class Nav extends React.Component {
     );
   }
 }
+
+Nav.contextType = AuthContext;
 
 export default Nav;
