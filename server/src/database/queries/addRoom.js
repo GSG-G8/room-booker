@@ -1,6 +1,6 @@
 const connection = require('../config/connection');
 
-const getRooms = () => connection.query('SELECT * FROM room');
+const getRooms = () => connection.query('SELECT * FROM room ORDER BY id');
 
 const addNewRoom = (name) =>
   connection.query('INSERT INTO room (name) values ($1)', [name]);
