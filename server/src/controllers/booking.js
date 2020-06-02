@@ -3,8 +3,6 @@ const nodemailer = require('nodemailer');
 const ical = require('ical-generator');
 const Moment = require('moment');
 const moment = require('../utils/moment-range');
-// const { getBookingbydate } = require('../database/queries');
-// const { deleteBookingById, getBooking } = require('../database/queries');
 
 const bookingSchema = require('./validation/bookingSchema');
 const {
@@ -181,5 +179,3 @@ exports.deleteBooking = (req, res, next) => {
     .then(() => res.json({ msg: 'The Booking has delete successfully' }))
     .catch(next);
 };
-
-// module.exports = { getRBookingbyDate, bookingRoom };

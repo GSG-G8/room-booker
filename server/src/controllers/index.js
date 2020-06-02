@@ -1,31 +1,11 @@
-const { clientError, serverError } = require('./error');
-const { signup, login, logout } = require('./auth');
-const { getRBookingbyDate, bookingRoom, deleteBooking } = require('./booking');
-const { addRoom, getRooms, patchRoom, deleteRoomById } = require('./room');
-const {
-  deleteUser,
-  getUsers,
-  getProfile,
-  patchProfile,
-  activateAccount,
-} = require('./users');
+const auth = require('./auth');
+const users = require('./users');
+const booking = require('./booking');
+const room = require('./room');
+const error = require('./error');
 
-module.exports = {
-  clientError,
-  serverError,
-  login,
-  addRoom,
-  signup,
-  logout,
-  getRBookingbyDate,
-  deleteUser,
-  getUsers,
-  activateAccount,
-  patchProfile,
-  deleteBooking,
-  getProfile,
-  getRooms,
-  deleteRoomById,
-  patchRoom,
-  bookingRoom,
-};
+exports.user = users;
+exports.booking = booking;
+exports.room = room;
+exports.auth = auth;
+exports.error = error;
