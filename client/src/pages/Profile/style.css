@@ -1,6 +1,6 @@
 .profile {
   display: flex;
-  margin: 10rem auto;
+  margin: 8rem auto;
   flex-direction: column;
   width: 100vw;
 }
