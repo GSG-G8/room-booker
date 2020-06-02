@@ -128,6 +128,10 @@ class Calendar extends React.Component {
     this.showModal();
   };
 
+  addnewEvent = (events, event) => {
+    this.setState({ events: [...events, event] });
+  };
+
   render() {
     const { loading } = this.state;
 
@@ -143,6 +147,8 @@ class Calendar extends React.Component {
             visible={visible}
             handleHide={this.handleHide}
             modalData={modalData}
+            events={events}
+            addEvent={this.addnewEvent}
           />
         )}
         <FullCalendar

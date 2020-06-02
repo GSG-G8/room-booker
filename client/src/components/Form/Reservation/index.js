@@ -30,6 +30,8 @@ class BookingForm extends React.Component {
     room,
     ...rest
   }) => {
+    const { events, addEvent } = this.props;
+
     const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
@@ -48,7 +50,18 @@ class BookingForm extends React.Component {
         }
         return res.json();
       })
-      .then(() => {
+      .then((res) => {
+        const newEventArr = [];
+        res.newBookings.map((event) =>
+          newEventArr.push({
+            start: event.start_time,
+            end: event.end_time,
+            title: event.title,
+            description: event.description,
+            resourceId: event.room_id,
+          })
+        );
+        addEvent(events, ...newEventArr);
         this.setState({ confirmLoading: false });
       })
       .then(() => message.success('Room booked successfully', 3))
@@ -273,6 +286,8 @@ BookingForm.propTypes = {
     description: PropTypes.string,
     readOnly: PropTypes.bool,
   }).isRequired,
+  events: PropTypes.arrayOf(PropTypes.object).isRequired,
+  addEvent: PropTypes.func.isRequired,
 };
 
 export default BookingForm;
