@@ -7,8 +7,6 @@ const { addRoom } = require('./room');
 const deleteUser = require('./deleteUser');
 const getUsers = require('./getUsers');
 const getRooms = require('./getRooms');
-const deleteRoomByID = require('./deleteRoomByID');
-const patchRoom = require('./patchRoom');
 const activateAccount = require('./activateAccount');
 const patchProfile = require('./patchProfile');
 const deleteBooking = require('./deleteBooking');
@@ -17,6 +15,8 @@ const {
   get: getBusinessHours,
   patch: patchBusinessHours,
 } = require('./businessHours');
+const deleteRoomByID = require('./deleteRoomByID');
+const patchRoom = require('./patchRoom');
 
 module.exports = {
   clientError,
@@ -33,9 +33,9 @@ module.exports = {
   deleteBooking,
   getProfile,
   getRooms,
+  bookingRoom,
   deleteRoomByID,
   patchRoom,
-  bookingRoom,
   getBusinessHours,
   patchBusinessHours,
 };
