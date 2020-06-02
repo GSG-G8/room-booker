@@ -37,7 +37,16 @@ class Profile extends React.Component {
     console.log(profileData);
     return (
       <div className="profile">
-        <Form className="profile__form">
+        <h2 className="profile__header">
+          <span className="profile__header__apan">Profile </span> Page
+        </h2>
+        <Form
+          className="profile__form"
+          labelCol={{
+            span: 6,
+          }}
+          labelAlign="left"
+        >
           <Form.Item name="name" label="Name" className="profile__input">
             <Input disabled placeholder={name} prefix={<EditOutlined />} />
           </Form.Item>
