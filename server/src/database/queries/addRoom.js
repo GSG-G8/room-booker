@@ -1,5 +1,7 @@
 const connection = require('../config/connection');
 
+const getRooms = () => connection.query('SELECT * FROM room');
+
 const addNewRoom = (name) =>
   connection.query('INSERT INTO room (name) values ($1)', [name]);
 
@@ -15,4 +17,4 @@ const patchRoom = (id, name) =>
     values: [id, name],
   });
 
-module.exports = { addNewRoom, getRoom, deleteRoomByID, patchRoom };
+module.exports = { getRooms, addNewRoom, getRoom, deleteRoomByID, patchRoom };
