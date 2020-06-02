@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { useLocation, Route } from 'react-router-dom';
 import { AuthConsumer } from '../context';
+import Login from '../pages/Login';
 
 function ProtectedRoute({ children, adminOnly, ...props }) {
+  const location = useLocation();
   return (
     <AuthConsumer>
       {({ admin, logged }) =>
@@ -11,7 +13,7 @@ function ProtectedRoute({ children, adminOnly, ...props }) {
           // eslint-disable-next-line react/jsx-props-no-spreading
           <Route {...props}>{children}</Route>
         ) : (
-          <Redirect to="/login" />
+          <Login previousLocation={location.pathname} />
         )
       }
     </AuthConsumer>

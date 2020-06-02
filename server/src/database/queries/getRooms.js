@@ -2,5 +2,5 @@ const connection = require('../config/connection');
 
 module.exports = () =>
   connection.query({
-    text: `SELECT * from room;`,
+    text: `SELECT * FROM room ORDER BY id;`,
   });
