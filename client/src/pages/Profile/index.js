@@ -59,10 +59,18 @@ class Profile extends React.Component {
             labelAlign="left"
           >
             <Form.Item name="name" label="Name" className="profile__input">
-              <Input disabled placeholder={name} prefix={<EditOutlined />} />
+              <Input
+                disabled={!isUpdate}
+                placeholder={name}
+                prefix={<EditOutlined />}
+              />
             </Form.Item>
             <Form.Item name="email" label="Email" className="profile__input">
-              <Input disabled placeholder={email} prefix={<MailOutlined />} />
+              <Input
+                disabled={!isUpdate}
+                placeholder={email}
+                prefix={<MailOutlined />}
+              />
             </Form.Item>
             <Form.Item
               name="password"
