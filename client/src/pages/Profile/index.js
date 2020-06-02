@@ -10,11 +10,17 @@ class Profile extends React.Component {
   state = {
     loading: true,
     profileData: {},
+    isUpdate: false,
   };
 
   componentDidMount() {
     this.fetchProfileData().then(() => this.setState({ loading: false }));
   }
+
+  toggleUpdate = () => {
+    const { isUpdate } = this.state;
+    this.setState({ isUpdate: !isUpdate });
+  };
 
   fetchProfileData = () =>
     fetch(`/api/v1/profile`)
@@ -33,7 +39,7 @@ class Profile extends React.Component {
       });
 
   render() {
-    const { profileData, loading } = this.state;
+    const { profileData, loading, isUpdate } = this.state;
     const { name, email } = profileData;
 
     if (loading) return <Spin />;
@@ -72,6 +78,8 @@ class Profile extends React.Component {
             </Form.Item>
             <div className="profile__button">
               <Button
+                onClick={this.toggleUpdate}
+                disabled={isUpdate}
                 type="primary"
                 htmlType="submit"
                 className="profile__button--update"
@@ -79,7 +87,7 @@ class Profile extends React.Component {
                 update profile
               </Button>
               <Button
-                disabled
+                disabled={!isUpdate}
                 type="primary"
                 htmlType="submit"
                 className="profile__button--save"
