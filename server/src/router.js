@@ -15,7 +15,7 @@ router.get('/auth', (req, res) => {
   res.json(req.user);
 });
 router.route('/profile').get(user.getProfile).patch(user.patchProfile);
-router.get('/rooms/:date', booking.getRBookingbyDate); // rooms/2020-04-05
+router.get('/booking/:date', booking.getRBookingbyDate); // rooms/2020-04-05
 router.post('/booking', booking.bookingRoom);
 router.delete('/booking/:id', booking.deleteBooking);
 router.get('/rooms', room.getRooms);
@@ -26,7 +26,7 @@ router.use(checkAdmin);
 router.post('/rooms', room.addRoom);
 router.route('/rooms/:id').delete(room.deleteRoomById).patch(room.patchRoom);
 router.route('/users/:id').delete(user.deleteUser).patch(user.activateAccount);
-router.get('/getUsers', user.getUsers);
+router.get('/users', user.getUsers);
 
 router.use(error.clientError);
 router.use(error.serverError);

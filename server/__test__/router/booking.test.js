@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
 const request = require('supertest');
-const app = require('../src/app');
-const dbBuild = require('../src/database/config/build');
-const connection = require('../src/database/config/connection.js');
+const app = require('../../src/app');
+const dbBuild = require('../../src/database/config/build');
+const connection = require('../../src/database/config/connection.js');
 
 beforeEach(() => dbBuild());
 
@@ -13,7 +13,7 @@ test('make new booking no overlapping', (done) => {
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -43,7 +43,7 @@ test('make new booking no overlapping between 2021-04-14 14:30:00-2021-04-14 16:
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -73,7 +73,7 @@ test('make new booking no overlapping between 2021-04-13 14:30:00-2021-04-13 16:
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -103,7 +103,7 @@ test('make new booking with overlapping between 2020-04-14 16:00:00-2020-04-14 1
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -133,7 +133,7 @@ test('make new booking with overlapping between 2020-04-14 14:00:00-2020-04-14 1
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -163,7 +163,7 @@ test('make new booking with overlapping', (done) => {
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -193,7 +193,7 @@ test('make new booking with expire date ', (done) => {
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -222,7 +222,7 @@ test('test for when the user inputs intersecting times ', (done) => {
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -260,7 +260,7 @@ test('test for 100%  valid input ', (done) => {
       'Content-Type': 'application/json',
     })
     .set('Cookie', [
-      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTgxNTc1MX0.SpdrsYcfCym_CIgCM4nocmHMULnF0yVx2DzkoMRFFqM',
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
     ])
     .send(
       JSON.stringify({
@@ -290,4 +290,75 @@ test('test for 100%  valid input ', (done) => {
       return done();
     });
 });
+
+test('GET /booking/:date with date have not room booked', (done) => {
+  request(app)
+    .get('/api/v1/booking/2020-04-07')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
+    ])
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(Array.isArray(res.body)).toBe(true);
+      return done();
+    });
+});
+test('GET /booking/:date with date have room booked', (done) => {
+  request(app)
+    .get('/api/v1/booking/2020-04-14')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsInVzZXJuYW1lIjoiSW1hZCIsImlhdCI6MTU5MDkyMTI0M30.NorLKiqhAW3T8h1N2TdK8ZZx2tkQZj157lz0GxQSHwI',
+    ])
+    .expect('Content-Type', /json/)
+    .expect(200)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(Array.isArray(res.body)).toBe(true);
+      expect(res.body[0].start_time).toBe('2020-04-14T06:00:00.000Z');
+      return done();
+    });
+});
+
+test('delete booking by id 1 from un authorized user ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .expect(401)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+      expect(res.body.message).toBe('Unauthorized');
+      return done();
+    });
+});
+
+test('delete booking by id "1" from admin ', (done) => {
+  request(app)
+    .delete('/api/v1/booking/1')
+    .set({
+      'Content-Type': 'application/json',
+    })
+    .set('Cookie', [
+      'token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOjIsInJvbGUiOnRydWUsImlhdCI6MTU4NTg3MDgyMH0.DLsC4bCJB61TSmq9dX8wyposTZPUYIG1tDiui4Spo1g',
+    ])
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) return done(err);
+
+      expect(res.body.msg).toBe('The Booking has delete successfully');
+      return done();
+    });
+});
+
 afterAll(() => connection.end());
