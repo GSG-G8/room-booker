@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const express = require('express');
 const { join } = require('path');
 const compression = require('compression');
@@ -20,9 +19,8 @@ const middlewares = [
 ];
 
 app.use(middlewares);
-// eslint-disable-next-line global-require
-// eslint-disable-next-line import/no-extraneous-dependencies
-// eslint-disable-next-line global-require
+
+// eslint-disable-next-line import/no-extraneous-dependencies, global-require
 if (process.env.NODE_ENV === 'development') app.use(require('morgan')('dev'));
 
 app.use('/api/v1/', router);
