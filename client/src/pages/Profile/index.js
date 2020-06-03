@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-state */
 import React from 'react';
 import { LockOutlined, MailOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Form, Input, notification, Spin } from 'antd';
@@ -37,7 +38,7 @@ class Profile extends React.Component {
         return res.json();
       })
       .then((results) => {
-        // this.formRef.current.setFieldsValue(results);
+        this.formRef.current.setFieldsValue(results);
         this.setState({ profileData: results });
       })
       .catch((err) => {
@@ -76,11 +77,8 @@ class Profile extends React.Component {
   };
 
   render() {
-    const { profileData, loading, isUpdate } = this.state;
-    const { name, email } = profileData;
-    // console.log(name, 2222);
+    const { loading, isUpdate } = this.state;
 
-    if (loading) return <Spin />;
     return (
       <div>
         <Navbar />
@@ -89,6 +87,7 @@ class Profile extends React.Component {
           <h2 className="profile__header">
             <span className="profile__header__apan">Profile </span> Page
           </h2>
+          {loading && <Spin />}
           <Form
             className="profile__form"
             labelCol={{
@@ -96,12 +95,12 @@ class Profile extends React.Component {
             }}
             labelAlign="left"
             ref={this.formRef}
-            initialValues={{
-              name,
-              email,
-              // password: '',
-              // oldPassword: '',
-            }}
+            // initialValues={{
+            //   name,
+            //   email,
+            //   // password: '',
+            //   // oldPassword: '',
+            // }}
             onFinish={(values) => this.updateProfile(values)}
           >
             <Form.Item name="name" label="Name" className="profile__input">
@@ -113,11 +112,7 @@ class Profile extends React.Component {
               />
             </Form.Item>
             <Form.Item name="email" label="Email" className="profile__input">
-              <Input
-                disabled
-                // placeholder={email}
-                prefix={<MailOutlined />}
-              />
+              <Input disabled prefix={<MailOutlined />} />
             </Form.Item>
             {isUpdate && (
               <Form.Item
