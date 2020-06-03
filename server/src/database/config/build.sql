@@ -38,7 +38,7 @@ CREATE TABLE businessHours (
 INSERT INTO businessHours
 	(daysOfWeek, startTime, endTime)
 VALUES
-	('{1, 2, 3, 4}', '10:00', '18:00')
+	('{0, 1, 2, 3, 4}', '8:00', '17:00')
 ;
 
 COMMIT;

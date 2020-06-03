@@ -5,6 +5,7 @@ import { message, Spin } from 'antd';
 import moment from 'moment';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
+import { getBusinessHours } from './functions';
 import './style.css';
 
 class Calendar extends React.Component {
@@ -13,11 +14,17 @@ class Calendar extends React.Component {
     rooms: [],
     visible: false,
     modalData: { roomId: 1, start: new Date(), end: new Date() },
+    businessHours: {
+      daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
+      startTime: '00:00',
+      endTime: '24:00',
+    },
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     this.fetchRoomName().then(() => this.setState({ loading: false }));
+    getBusinessHours(this, message);
   }
 
   handleHide = () => {
@@ -88,7 +95,7 @@ class Calendar extends React.Component {
 
     if (loading) return <Spin />;
 
-    const { rooms, events, visible, modalData } = this.state;
+    const { rooms, events, visible, modalData, businessHours } = this.state;
 
     return (
       <div className="container">
@@ -125,6 +132,7 @@ class Calendar extends React.Component {
           refetchResourcesOnNavigate
           events={events}
           allDaySlot={false}
+          businessHours={businessHours}
         />
       </div>
     );
