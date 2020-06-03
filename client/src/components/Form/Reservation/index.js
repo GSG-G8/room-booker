@@ -50,17 +50,7 @@ class BookingForm extends React.Component {
         }
         return res.json();
       })
-      .then((res) => {
-        const newEventArr = [];
-        res.newBookings.map((event) =>
-          newEventArr.push({
-            start: event.start_time,
-            end: event.end_time,
-            title: event.title,
-            description: event.description,
-            resourceId: event.room_id,
-          })
-        );
+      .then(() => {
         addEvent(date.format());
         this.setState({ confirmLoading: false });
         handleHide();
@@ -269,6 +259,13 @@ class BookingForm extends React.Component {
           <Form.Item name="remind" label="Remind me" valuePropName="checked">
             <Switch disabled={confirmLoading || readOnly} />
           </Form.Item>
+          {readOnly && (
+            <p>
+              This Room reserved by{' '}
+              {/* eslint-disable-next-line react/prop-types */}
+              <strong style={{ color: 'red' }}>{modalData.user.name}</strong>
+            </p>
+          )}
         </Form>
       </Modal>
     );
