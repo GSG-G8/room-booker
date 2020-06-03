@@ -14,11 +14,9 @@ class Calendar extends React.Component {
     rooms: [],
     visible: false,
     modalData: { roomId: 1, start: new Date(), end: new Date() },
-    businessHours: {
-      daysOfWeek: [0, 1, 2, 3, 4, 5, 6],
-      startTime: '00:00',
-      endTime: '24:00',
-    },
+    hiddenDays: [0],
+    minTime: '00:00',
+    maxTime: '20:00',
   };
 
   componentDidMount() {
@@ -95,7 +93,15 @@ class Calendar extends React.Component {
 
     if (loading) return <Spin />;
 
-    const { rooms, events, visible, modalData, businessHours } = this.state;
+    const {
+      rooms,
+      events,
+      visible,
+      modalData,
+      hiddenDays,
+      minTime,
+      maxTime,
+    } = this.state;
 
     return (
       <div className="container">
@@ -132,7 +138,9 @@ class Calendar extends React.Component {
           refetchResourcesOnNavigate
           events={events}
           allDaySlot={false}
-          businessHours={businessHours}
+          hiddenDays={hiddenDays}
+          minTime={minTime}
+          maxTime={maxTime}
         />
       </div>
     );

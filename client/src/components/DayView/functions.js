@@ -9,11 +9,11 @@ export const getBusinessHours = (component, message) => {
     })
     .then((results) => {
       component.setState({
-        businessHours: {
-          daysOfWeek: results.daysofweek,
-          startTime: results.starttime,
-          endTime: results.endtime,
-        },
+        minTime: results.starttime,
+        maxTime: results.endtime,
+        hiddenDays: [0, 1, 2, 3, 4, 5, 6].filter(
+          (day) => !results.daysofweek.includes(day)
+        ),
       });
     })
     .catch((error) => {
