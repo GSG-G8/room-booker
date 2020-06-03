@@ -17,6 +17,10 @@ class Profile extends React.Component {
     this.fetchProfileData().then(() => this.setState({ loading: false }));
   }
 
+  nameOnChange = (e) => {
+    this.setState({ profileData: { name: e.target.value } });
+  };
+
   toggleUpdate = () => {
     const { isUpdate } = this.state;
     this.setState({ isUpdate: !isUpdate });
@@ -38,9 +42,33 @@ class Profile extends React.Component {
         notification.error(err);
       });
 
+  updateProfile = (values) => {
+    const { isUpdate } = this.state;
+    const { name, oldPassword, password } = values;
+    // console.log(values);
+
+    fetch(`/api/v1//patchProfile`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, oldPassword, password }),
+    }).then((res) => {
+      if (!res.ok) {
+        notification.error('could not update ');
+      } else {
+        notification.success({
+          message: 'data has been updated',
+        });
+        this.setState({ isUpdate: !isUpdate });
+      }
+    });
+  };
+
   render() {
     const { profileData, loading, isUpdate } = this.state;
     const { name, email } = profileData;
+    // console.log(name, 2222);
 
     if (loading) return <Spin />;
     return (
@@ -54,20 +82,39 @@ class Profile extends React.Component {
           <Form
             className="profile__form"
             labelCol={{
-              span: 6,
+              span: 7,
             }}
             labelAlign="left"
+            initialValues={{
+              name,
+              email,
+            }}
+            onFinish={(values) => this.updateProfile(values)}
           >
             <Form.Item name="name" label="Name" className="profile__input">
               <Input
                 disabled={!isUpdate}
                 placeholder={name}
                 prefix={<EditOutlined />}
+                onChange={this.nameOnChange}
               />
             </Form.Item>
             <Form.Item name="email" label="Email" className="profile__input">
               <Input disabled placeholder={email} prefix={<MailOutlined />} />
             </Form.Item>
+            {isUpdate && (
+              <Form.Item
+                name="oldPassword"
+                label="oldPassword"
+                className="profile__input"
+              >
+                <Input
+                  placeholder="*********"
+                  type="password"
+                  prefix={<LockOutlined />}
+                />
+              </Form.Item>
+            )}
             <Form.Item
               name="password"
               label="Password"
@@ -80,24 +127,27 @@ class Profile extends React.Component {
                 prefix={<LockOutlined />}
               />
             </Form.Item>
+
             <div className="profile__button">
               <Button
                 onClick={this.toggleUpdate}
                 disabled={isUpdate}
                 type="primary"
-                htmlType="submit"
+                // htmlType="submit"
                 className="profile__button--update"
               >
                 update profile
               </Button>
-              <Button
-                disabled={!isUpdate}
-                type="primary"
-                htmlType="submit"
-                className="profile__button--save"
-              >
-                save
-              </Button>
+              {isUpdate && (
+                <Button
+                  disabled={!isUpdate}
+                  type="primary"
+                  htmlType="submit"
+                  className="profile__button--save"
+                >
+                  save
+                </Button>
+              )}
             </div>
           </Form>
         </div>
