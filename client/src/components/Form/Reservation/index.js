@@ -30,7 +30,7 @@ class BookingForm extends React.Component {
     room,
     ...rest
   }) => {
-    const { events, addEvent } = this.props;
+    const { handleHide, addEvent } = this.props;
 
     const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
@@ -61,8 +61,9 @@ class BookingForm extends React.Component {
             resourceId: event.room_id,
           })
         );
-        addEvent(events, ...newEventArr);
+        addEvent(date.format());
         this.setState({ confirmLoading: false });
+        handleHide();
       })
       .then(() => message.success('Room booked successfully', 3))
       .catch(() => {
@@ -286,7 +287,6 @@ BookingForm.propTypes = {
     description: PropTypes.string,
     readOnly: PropTypes.bool,
   }).isRequired,
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
   addEvent: PropTypes.func.isRequired,
 };
 

@@ -147,8 +147,7 @@ class Calendar extends React.Component {
             visible={visible}
             handleHide={this.handleHide}
             modalData={modalData}
-            events={events}
-            addEvent={this.addnewEvent}
+            addEvent={this.fetchRoomEvent}
           />
         )}
         <FullCalendar
