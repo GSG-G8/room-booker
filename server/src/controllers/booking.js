@@ -30,7 +30,7 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 const bookingRoom = (req, res, next) => {
-  const { roomId, time, title, description, remindMe } = req.body;
+  const { roomId, time, title, description = '', remindMe } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
   bookingSchema
@@ -87,7 +87,9 @@ const bookingRoom = (req, res, next) => {
           'Other bookings already exist in the requested interval',
           overlapsArr
         );
-      return bookRoom(time, roomId, userId, title, description);
+      else {
+        return bookRoom(time, roomId, userId, title, description);
+      }
     })
     .then(({ rows }) => {
       bookingData = rows;
