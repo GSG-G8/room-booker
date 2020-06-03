@@ -8,14 +8,17 @@ const bookRoom = (bookings, roomId, userId, title, description) => {
     )
     .join(',');
 
-  const sql = `INSERT INTO booking (room_id, user_id, start_time, end_time, title ,description) VALUES ${values} RETURNING *`;
+  const sql = `INSERT INTO booking
+    (room_id, user_id, start_time, end_time, title ,description)
+    VALUES ${values} RETURNING *`;
 
   return connection.query(sql);
 };
 
 const getBookingByRoomId = (roomId) =>
   connection.query({
-    text: `SELECT id, room_id, user_id, start_time, end_time, description from booking WHERE room_id = $1 AND start_time > CURRENT_TIMESTAMP ;`,
+    text: `SELECT id, room_id, user_id, start_time, end_time, description from
+      booking WHERE room_id = $1 AND start_time > CURRENT_TIMESTAMP ;`,
     values: [roomId],
   });
 const deleteBookingById = (id) => {
@@ -41,10 +44,20 @@ const getBookingByTimeRange = ({ startTime, endTime, roomId }) => {
   return connection.query(sql);
 };
 
+const getBookingbydate = (date) => {
+  const day = new Date(date);
+  day.setDate(day.getDate() + 1); // get the next day
+  return connection.query(
+    'SELECT * FROM booking WHERE start_time >= $1 AND end_time < $2',
+    [date, day]
+  );
+};
+
 module.exports = {
   deleteBookingById,
   getBooking,
   bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
+  getBookingbydate,
 };
