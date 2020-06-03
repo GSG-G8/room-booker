@@ -66,11 +66,7 @@ class Profile extends React.Component {
               />
             </Form.Item>
             <Form.Item name="email" label="Email" className="profile__input">
-              <Input
-                disabled={!isUpdate}
-                placeholder={email}
-                prefix={<MailOutlined />}
-              />
+              <Input disabled placeholder={email} prefix={<MailOutlined />} />
             </Form.Item>
             <Form.Item
               name="password"
@@ -78,7 +74,7 @@ class Profile extends React.Component {
               className="profile__input"
             >
               <Input
-                disabled
+                disabled={!isUpdate}
                 placeholder="*********"
                 type="password"
                 prefix={<LockOutlined />}
