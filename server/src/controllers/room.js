@@ -1,8 +1,13 @@
 const Boom = require('@hapi/boom');
 
 const { roomSchema } = require('./validation/roomSchema');
-const { addNewRoom, getRoom, getRooms } = require('../database/queries');
-const { patchRoom, deleteRoomByID } = require('../database/queries/addRoom');
+const {
+  addNewRoom,
+  getRoom,
+  getRooms,
+  patchRoom,
+  deleteRoomByID,
+} = require('../database/queries');
 
 exports.addRoom = (req, res, next) => {
   const { name } = req.body;
