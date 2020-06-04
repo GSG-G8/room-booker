@@ -19,6 +19,12 @@ class Nav extends React.Component {
           <UserOutlined />
           logout
         </Menu.Item>
+        <Menu.Item key="2">
+          <Link to="/Profile">
+            <UserOutlined />
+            profile
+          </Link>
+        </Menu.Item>
       </Menu>
     );
     return (
