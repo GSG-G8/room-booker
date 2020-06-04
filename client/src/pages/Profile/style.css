@@ -9,15 +9,18 @@
   display: flex;
   flex-direction: column;
   border: 2px solid #186aa5;
+  width: 50%;
   padding: 3%;
   border-radius: 12px;
 }
 .profile__form {
   margin: auto;
   display: flex;
+  justify-content: center;
   flex-direction: column;
   width: 90%;
   padding: 5%;
+  text-align: center;
 }
 .profile__header {
   display: flex;
@@ -43,6 +46,10 @@
 .profile__input input {
   text-align: center;
 }
+/* .profile__input {
+  color: white;
+    width: 80%;
+} */
 .profile__button {
   display: flex;
   justify-content: space-around;
