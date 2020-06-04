@@ -4,22 +4,22 @@ const {
   getRoom,
   deleteRoomByID,
   patchRoom,
-} = require('./addRoom');
+} = require('./room');
 
 const {
-  deleteBookingById,
-  getBooking,
   bookRoom,
   getBookingByRoomId,
-  getBookingByTimeRange,
   getBookingbydate,
+  deleteBookingById,
+  getBooking,
+  getBookingByTimeRange,
 } = require('./booking');
 
 const {
   createUser,
   activateUser,
   makeAdmin,
-  deleteUser,
+  deleteUserById,
   patchProfile,
 } = require('./users');
 
@@ -34,6 +34,7 @@ const {
 const { getBusinessHours, patchBusinessHours } = require('./businessHours');
 
 module.exports = {
+  bookRoom,
   checkEmail,
   addNewRoom,
   getRoom,
@@ -42,7 +43,7 @@ module.exports = {
   getUserById,
   getUserWithPassword,
   patchProfile,
-  deleteUser,
+  deleteUserById,
   activateUser,
   makeAdmin,
   getBooking,
@@ -50,7 +51,6 @@ module.exports = {
   getUser,
   getBookingbydate,
   getRooms,
-  bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
   getBusinessHours,

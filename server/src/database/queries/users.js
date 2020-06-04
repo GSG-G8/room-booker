@@ -1,6 +1,6 @@
 const connection = require('../config/connection');
 
-exports.deleteUser = (id) =>
+exports.deleteUserById = (id) =>
   connection.query({
     text: 'DELETE FROM bookinguser WHERE id = $1',
     values: [id],
