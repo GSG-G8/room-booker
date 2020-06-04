@@ -3,16 +3,19 @@ const nodemailer = require('nodemailer');
 const ical = require('ical-generator');
 const Moment = require('moment');
 const moment = require('../utils/moment-range');
-const { getBookingbydate } = require('../database/queries');
+
 const bookingSchema = require('./validation/bookingSchema');
 const {
   bookRoom,
   getBookingByRoomId,
   getUserById,
+  getBookingbydate,
+  deleteBookingById,
+  getBooking,
 } = require('../database/queries');
 require('env2')('./config.env');
 
-const getRBookingbyDate = (req, res, next) => {
+exports.getRBookingbyDate = (req, res, next) => {
   getBookingbydate(req.params.date)
     .then(({ rows }) => {
       if (rows.length === 0) {
@@ -29,7 +32,7 @@ const checkOverlap = (arrOfIntervals, interval) =>
     existingInterval.overlaps(interval)
   );
 
-const bookingRoom = (req, res, next) => {
+exports.bookingRoom = (req, res, next) => {
   const { roomId, time, title, description = '', remindMe } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
@@ -151,4 +154,30 @@ const bookingRoom = (req, res, next) => {
     })
     .catch(next);
 };
-module.exports = { getRBookingbyDate, bookingRoom };
+exports.deleteBooking = (req, res, next) => {
+  const { id } = req.params;
+  const { role } = req.user;
+
+  getBooking(id)
+    .then(({ rows }) => {
+      if (rows.length !== 0) {
+        return rows[0];
+      }
+      throw Boom.badRequest(
+        'the booking you are trying to delete does not exist'
+      );
+    })
+    .then((result) => {
+      if (role) {
+        return deleteBookingById(id);
+      }
+      // const userId = result.user_id;
+      if (result.user_id === req.user.userID) {
+        return deleteBookingById(id);
+      }
+      throw Boom.forbidden('sorry , you cant delete this booking!!');
+    })
+
+    .then(() => res.json({ msg: 'The Booking has delete successfully' }))
+    .catch(next);
+};
