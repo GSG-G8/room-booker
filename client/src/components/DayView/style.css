@@ -10,3 +10,10 @@
   overflow-y: scroll;
   height: 25rem;
 }
+
+.username{
+  color: rgb(243, 223, 113);
+  font-weight: bolder;
+  font-size: 1em;
+  padding-left: 3% ;
+}

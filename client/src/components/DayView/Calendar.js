@@ -137,6 +137,15 @@ class Calendar extends React.Component {
     this.showModal();
   };
 
+  eventRender = (info) => {
+    const userName = document.createElement('span');
+    userName.textContent = `by ${info.event.extendedProps.userName}`;
+    userName.className = 'username';
+    info.el.firstChild.appendChild(userName);
+
+    return info.el;
+  };
+
   render() {
     const { loading } = this.state;
 
@@ -165,6 +174,7 @@ class Calendar extends React.Component {
           selectable="true"
           select={this.handleDateSelect}
           eventClick={this.showEventForm}
+          eventRender={this.eventRender}
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
