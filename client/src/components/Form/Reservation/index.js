@@ -78,9 +78,9 @@ class BookingForm extends React.Component {
     [startTime, endTime]
   ) => {
     const handleTime = (day, time) =>
-      moment(`${day.format('YYYY-MM-DD')} ${time.format('LTS')}`).toISOString(
-        true
-      );
+      moment(
+        `${day.format('YYYY-MM-DD')}T${time.format('HH:mm:ss.SSSZ')}`
+      ).toISOString(true);
 
     const arr = [];
     if (repeat === 'weekly') {
