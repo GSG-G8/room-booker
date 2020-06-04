@@ -12,7 +12,6 @@ class Calendar extends React.Component {
     events: [],
     rooms: [],
     visible: false,
-    userName: '',
     modalData: {
       roomId: 1,
       start: new Date(),
@@ -77,8 +76,6 @@ class Calendar extends React.Component {
         return res.json();
       })
       .then((results) => {
-        const { userName } = this.state;
-        this.getUserName(results[0].user_id);
         this.setState({
           events: results.map((event) => ({
             start: event.start_time,
@@ -86,10 +83,8 @@ class Calendar extends React.Component {
             title: event.title,
             description: event.description,
             resourceId: event.room_id,
-            user: {
-              id: event.user_id,
-              name: userName,
-            },
+            userid: event.user_id,
+            userName: event.name,
           })),
         });
       })
@@ -104,24 +99,6 @@ class Calendar extends React.Component {
     this.fetchRoomEvent(moment(start).format('YYYY-MM-DD')).catch(
       failureCallback
     );
-  };
-
-  // eslint-disable-next-line no-unused-vars
-  getUserName = (id) => {
-    fetch('/api/v1/profile')
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then(({ name }) => {
-        this.setState({ userName: name });
-      })
-      .catch((err) => {
-        message.error(err);
-      });
   };
 
   handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
@@ -139,15 +116,21 @@ class Calendar extends React.Component {
   };
 
   showEventForm = ({ event }) => {
-    const { start, end, title, extendedProps } = event;
+    const {
+      start,
+      end,
+      title,
+      extendedProps: { description, userName, userid },
+    } = event;
     this.setState({
       modalData: {
         roomId: event.getResources()[0].id,
         start,
         end,
         title,
-        description: extendedProps.description,
-        user: extendedProps.user,
+        description,
+        userName,
+        userid,
         readOnly: true,
       },
     });
