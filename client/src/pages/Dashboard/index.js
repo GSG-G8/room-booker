@@ -6,6 +6,7 @@ import AdminMenu from '../../components/Menu';
 import Navbar from '../../components/Navbar';
 import Rooms from '../../components/Table/Rooms';
 import Users from '../../components/Table/Users';
+import BusinessHours from '../../components/Form/BusinessHours';
 import './style.css';
 
 const { Content, Sider } = Layout;
@@ -25,6 +26,9 @@ function Dashboard() {
             </Route>
             <Route path="/dashboard/rooms">
               <Rooms />
+            </Route>
+            <Route path="/dashboard/business-hours">
+              <BusinessHours />
             </Route>
             <Route path="/">
               <h2>index</h2>
