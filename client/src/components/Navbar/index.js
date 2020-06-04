@@ -1,4 +1,9 @@
-import { UserOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined,
+  IdcardOutlined,
+  UserOutlined,
+  DashboardOutlined,
+} from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
@@ -15,15 +20,28 @@ class Nav extends React.Component {
   render() {
     const menu = (
       <Menu>
-        <Menu.Item key="1" onClick={this.logout}>
-          <UserOutlined />
-          logout
+        <Menu.Item key="1">
+          <Link to="/">
+            <HomeOutlined />
+            Home
+          </Link>
         </Menu.Item>
         <Menu.Item key="2">
           <Link to="/Profile">
-            <UserOutlined />
+            <IdcardOutlined />
             profile
           </Link>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <Link to="/Dashboard">
+            <DashboardOutlined />
+            Dashboard
+          </Link>
+        </Menu.Item>
+
+        <Menu.Item key="4" onClick={this.logout}>
+          <UserOutlined />
+          logout
         </Menu.Item>
       </Menu>
     );
