@@ -88,90 +88,110 @@ class Profile extends React.Component {
             <span className="profile__header__apan">Profile </span> Page
           </h2>
           {loading && <Spin />}
-          <Form
-            className="profile__form"
-            labelCol={{
-              span: 7,
-            }}
-            labelAlign="left"
-            ref={this.formRef}
-            // initialValues={{
-            //   name,
-            //   email,
-            //   // password: '',
-            //   // oldPassword: '',
-            // }}
-            onFinish={(values) => this.updateProfile(values)}
-          >
-            <Form.Item name="name" label="Name" className="profile__input">
-              <Input
-                disabled={!isUpdate}
-                // placeholder={name}
-                prefix={<EditOutlined />}
-                onChange={this.nameOnChange}
-              />
-            </Form.Item>
-            <Form.Item name="email" label="Email" className="profile__input">
-              <Input disabled prefix={<MailOutlined />} />
-            </Form.Item>
-            {isUpdate && (
-              <Form.Item
-                name="oldPassword"
-                label="oldPassword"
-                className="profile__input"
-              >
-                <Input type="password" prefix={<LockOutlined />} />
-              </Form.Item>
-            )}
-            {isUpdate && (
-              <Form.Item
-                name="password"
-                label="Password"
-                className="profile__input"
-              >
+          <div className="profile__header__container">
+            <img
+              className="avatar"
+              src="https://bootdey.com/img/Content/avatar/avatar6.png"
+              alt="avatar"
+            />
+            <Form
+              className="profile__form"
+              labelCol={{
+                span: 7,
+              }}
+              labelAlign="left"
+              ref={this.formRef}
+              // initialValues={{
+              //   name,
+              //   email,
+              //   // password: '',
+              //   // oldPassword: '',
+              // }}
+              onFinish={(values) => this.updateProfile(values)}
+            >
+              {/* <Form.Item
+              name="image"
+              className="avatar"
+              // style={{
+              //   marginBottom: '0px',
+              //   width: 130,
+              //   height: '130',
+              //   borderradius: '63',
+              //   borderwidth: 4,
+              //   bordercolor: 'white',
+              // }}
+            > */}
+
+              <Form.Item name="name" label="Name" className="profile__input">
                 <Input
                   disabled={!isUpdate}
-                  type="password"
-                  prefix={<LockOutlined />}
+                  // placeholder={name}
+                  prefix={<EditOutlined />}
+                  onChange={this.nameOnChange}
                 />
               </Form.Item>
-            )}
-            <div className="profile__button">
-              {isUpdate || (
-                <Button
-                  onClick={this.toggleUpdate}
-                  type="primary"
-                  // htmlType="submit"
-                  className="profile__button--update"
+              <Form.Item name="email" label="Email" className="profile__input">
+                <Input disabled prefix={<MailOutlined />} />
+              </Form.Item>
+              {isUpdate && (
+                <Form.Item
+                  name="oldPassword"
+                  label="oldPassword"
+                  className="profile__input"
                 >
-                  update profile
-                </Button>
+                  <Input type="password" prefix={<LockOutlined />} />
+                </Form.Item>
               )}
               {isUpdate && (
-                <Button
-                  // disabled={!isUpdate}
-                  type="primary"
-                  // htmlType="submit"
-                  className="profile__button--save"
-                  onClick={() => {
-                    this.setState({ isUpdate: false });
-                  }}
+                <Form.Item
+                  name="password"
+                  label="Password"
+                  className="profile__input"
                 >
-                  cancel
-                </Button>
+                  <Input
+                    disabled={!isUpdate}
+                    type="password"
+                    prefix={<LockOutlined />}
+                  />
+                </Form.Item>
               )}
-              {isUpdate && (
-                <Button
-                  // disabled={!isUpdate}
-                  type="primary"
-                  htmlType="submit"
-                  className="profile__button--save"
-                >
-                  save
-                </Button>
-              )}
-            </div>
-          </Form>
+              <div className="profile__button">
+                {isUpdate || (
+                  <Button
+                    onClick={this.toggleUpdate}
+                    type="primary"
+                    // htmlType="submit"
+                    className="profile__button--update"
+                  >
+                    update profile
+                  </Button>
+                )}
+                {isUpdate && (
+                  <Button
+                    // disabled={!isUpdate}
+                    type="primary"
+                    // htmlType="submit"
+                    className="profile__button--save"
+                    onClick={() => {
+                      this.setState({ isUpdate: false });
+                    }}
+                  >
+                    cancel
+                  </Button>
+                )}
+                {isUpdate && (
+                  <Button
+                    // disabled={!isUpdate}
+                    type="primary"
+                    htmlType="submit"
+                    className="profile__button--save"
+                  >
+                    save
+                  </Button>
+                )}
+              </div>
+            </Form>
+          </div>
         </div>
       </div>
     );

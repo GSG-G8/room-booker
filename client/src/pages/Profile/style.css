@@ -4,21 +4,24 @@
   flex-direction: column;
   width: 100vw;
 }
+.profile__header__container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #186aa5;
+  padding: 3%;
+  border-radius: 12px;
+}
 .profile__form {
   margin: auto;
   display: flex;
-  justify-content: center;
   flex-direction: column;
-  background-color: #186aa5;
-  width: 28rem;
-  padding: 3rem;
-  border-radius: 12px;
-  text-align: center;
+  width: 90%;
+  padding: 5%;
 }
 .profile__header {
   display: flex;
   font-family: "Poppins", sans-serif;
-  /* color: #ff7d00; */
   justify-content: center;
   font-size: 35px;
   color: rgb(59, 57, 110);
@@ -26,10 +29,18 @@
 .profile__header__apan {
   color: #ff7d00;
 }
-.profile__input label {
-  color: white;
+.avatar {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  border: 3px solid #186aa5;
+  position: relative;
+  align-self: center;
 }
-.profile__input {
+.profile__input label {
+  color: #ff7d00;
+}
+.profile__input input {
   text-align: center;
 }
 .profile__button {
