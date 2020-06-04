@@ -45,7 +45,7 @@ class Calendar extends React.Component {
       });
 
   fetchRoomEvent = (date) =>
-    fetch(`/api/v1/rooms/${date}`)
+    fetch(`/api/v1/booking/${date}`)
       .then((res) => {
         if (!res.ok) {
           res.json().then(({ message: msg }) => message.error(msg));

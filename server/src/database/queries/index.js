@@ -1,24 +1,38 @@
-const checkEmail = require('./checkEmail');
-const { addNewRoom, getRoom } = require('./addRoom');
-const createUser = require('./createUser');
-const getBookingbydate = require('./getBookingbydate');
-const deleteUser = require('./deleteUserById');
-const getUserById = require('./getUserById');
-const getUserWithPassword = require('./getUserWithPassword');
-const patchProfile = require('./patchProfile');
-const getUsers = require('./getUsers');
-const getRooms = require('./getRooms');
-const { activateUser, makeAdmin } = require('./activeUser');
-const getUser = require('./getUser');
 const {
-  deleteBookingById,
-  getBooking,
+  getRooms,
+  addNewRoom,
+  getRoom,
+  deleteRoomByID,
+  patchRoom,
+} = require('./room');
+
+const {
   bookRoom,
   getBookingByRoomId,
+  getBookingbydate,
+  deleteBookingById,
+  getBooking,
   getBookingByTimeRange,
 } = require('./booking');
 
+const {
+  createUser,
+  activateUser,
+  makeAdmin,
+  deleteUserById,
+  patchProfile,
+} = require('./users');
+
+const {
+  getUsers,
+  getUserById,
+  getUserByEmail: getUser,
+  getUserWithPassword,
+  checkEmail,
+} = require('./userSelect');
+
 module.exports = {
+  bookRoom,
   checkEmail,
   addNewRoom,
   getRoom,
@@ -27,7 +41,7 @@ module.exports = {
   getUserById,
   getUserWithPassword,
   patchProfile,
-  deleteUser,
+  deleteUserById,
   activateUser,
   makeAdmin,
   getBooking,
@@ -35,7 +49,8 @@ module.exports = {
   getUser,
   getBookingbydate,
   getRooms,
-  bookRoom,
   getBookingByRoomId,
   getBookingByTimeRange,
+  deleteRoomByID,
+  patchRoom,
 };

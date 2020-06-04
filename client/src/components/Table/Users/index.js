@@ -82,7 +82,7 @@ class Users extends React.Component {
   fetchData = () => {
     this.setState({ loading: true });
 
-    fetch(`/api/v1/getUsers`)
+    fetch(`/api/v1/users`)
       .then((res) => {
         if (!res.ok) {
           message.error('faild to fetch data');
