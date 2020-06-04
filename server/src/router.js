@@ -1,52 +1,34 @@
 const router = require('express').Router();
-const {
-  clientError,
-  serverError,
-  signup,
-  login,
-  logout,
-  getRBookingbyDate,
-  addRoom,
-  deleteUser,
-  getUsers,
-  activateAccount,
-  patchProfile,
-  deleteBooking,
-  getProfile,
-  getRooms,
-  deleteRoomByID,
-  patchRoom,
-  bookingRoom,
-} = require('./controllers');
+
+const { user, booking, room, auth, error } = require('./controllers');
+
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
 
-router.post('/signup', signup);
-router.post('/login', login);
-router.get('/logout', logout);
+router.post('/signup', auth.signup);
+router.post('/login', auth.login);
+router.get('/logout', auth.logout);
 
 // only logged in access under this:
 router.use(verifyUser);
+
 router.get('/auth', (req, res) => {
   res.json(req.user);
 });
-router.patch('/patchProfile', patchProfile);
-router.get('/profile', getProfile);
-router.get('/rooms/:date', getRBookingbyDate); // rooms/2020-04-05
-router.post('/booking', bookingRoom);
-router.delete('/booking/:id', deleteBooking);
-router.get('/rooms', getRooms);
+router.route('/profile').get(user.getProfile).patch(user.patchProfile);
+router.get('/booking/:date', booking.getRBookingbyDate); // /booking/2020-04-05
+router.post('/booking', booking.bookingRoom);
+router.delete('/booking/:id', booking.deleteBooking);
+router.get('/rooms', room.getRooms);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
 
-router.post('/rooms', addRoom);
-router.delete('/rooms/:id', deleteRoomByID);
-router.patch('/rooms/:id', patchRoom);
-router.delete('/users/:id', deleteUser);
-router.get('/getUsers', getUsers);
-router.patch('/users/:id', activateAccount);
+router.post('/rooms', room.addRoom);
+router.route('/rooms/:id').delete(room.deleteRoomById).patch(room.patchRoom);
+router.route('/users/:id').delete(user.deleteUser).patch(user.activateAccount);
+router.get('/users', user.getUsers);
 
-router.use(clientError);
-router.use(serverError);
+router.use(error.clientError);
+router.use(error.serverError);
 
 module.exports = router;
