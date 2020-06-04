@@ -8,6 +8,8 @@ import { Dropdown, Menu } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext, AuthConsumer } from '../../context';
+import codeacademyLogo from '../../assets/codeacademy-logo.png';
+
 import './style.css';
 
 class Nav extends React.Component {
@@ -48,11 +50,7 @@ class Nav extends React.Component {
     return (
       <div className="navcontainer">
         <Link to="/">
-          <img
-            className="nav__logo"
-            src="https://test.hq-sf.org/wp-content/uploads/2015/06/thumb_375_default_big-480x269.jpg"
-            alt="GSG logo"
-          />
+          <img className="nav__logo" src={codeacademyLogo} alt="GSG logo" />
         </Link>
         <Dropdown.Button
           className="nav__menu"
