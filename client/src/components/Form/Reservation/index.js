@@ -51,7 +51,7 @@ class BookingForm extends React.Component {
         return res.json();
       })
       .then(() => {
-        addEvent(date.format());
+        addEvent(date.format('YYYY-MM-DD'));
         this.setState({ confirmLoading: false });
         handleHide();
       })
