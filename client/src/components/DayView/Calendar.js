@@ -3,6 +3,7 @@ import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 import { message, Spin } from 'antd';
 import moment from 'moment';
+import Tooltip from 'tooltip.js';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
 import './style.css';
@@ -138,20 +139,20 @@ class Calendar extends React.Component {
   };
 
   eventRender = (info) => {
-    const userName = document.createElement('span');
-    userName.textContent = `by ${info.event.extendedProps.userName}`;
-    userName.className = 'username';
-    info.el.firstChild.appendChild(userName);
-
-    return info.el;
+    // eslint-disable-next-line no-new
+    new Tooltip(info.el, {
+      title: `booked by ${info.event.extendedProps.userName}`,
+      placement: 'top',
+      trigger: 'hover',
+      container: 'body',
+    });
   };
 
   render() {
     const { loading } = this.state;
+    const { rooms, events, visible, modalData } = this.state;
 
     if (loading) return <Spin />;
-
-    const { rooms, events, visible, modalData } = this.state;
 
     return (
       <div className="container">

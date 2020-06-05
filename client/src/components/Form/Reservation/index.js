@@ -260,7 +260,9 @@ class BookingForm extends React.Component {
           {readOnly && (
             <p>
               This Room reserved by{' '}
-              <strong style={{ color: 'red' }}>{modalData.userName}</strong>
+              <strong style={{ color: 'rgb(255, 119, 7)' }}>
+                {modalData.userName}
+              </strong>
             </p>
           )}
         </Form>
