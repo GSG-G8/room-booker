@@ -12,6 +12,7 @@ import {
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { AuthContext } from '../../../context';
 
 class BookingForm extends React.Component {
   state = {
@@ -30,7 +31,7 @@ class BookingForm extends React.Component {
     room,
     ...rest
   }) => {
-    const { handleHide, addEvent } = this.props;
+    const { handleHide, fetchEvents } = this.props;
 
     const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
@@ -51,7 +52,7 @@ class BookingForm extends React.Component {
         return res.json();
       })
       .then(() => {
-        addEvent(date.format('YYYY-MM-DD'));
+        fetchEvents(date.format('YYYY-MM-DD'));
         this.setState({ confirmLoading: false });
         handleHide();
       })
@@ -69,6 +70,26 @@ class BookingForm extends React.Component {
   findRoomNameById = (id) => {
     const { rooms } = this.props;
     return rooms.find((room) => room.id === Number(id)).name;
+  };
+
+  cancelBooking = (id, date) => {
+    const { fetchEvents } = this.props;
+    this.setState({ confirmLoading: true });
+    return fetch(`api/v1//booking/${id}`, { method: 'delete' })
+      .then((res) => {
+        if (!res.ok) {
+          res.json().then(({ message: msg }) => message.error(msg));
+          throw res.statusText;
+        }
+        return res.json();
+      })
+      .then(() => {
+        fetchEvents(date.format('YYYY-MM-DD'));
+        this.setState({ confirmLoading: false });
+      })
+      .catch((err) => {
+        message.error(err);
+      });
   };
 
   repeatOnChange = (e) => {
@@ -118,18 +139,24 @@ class BookingForm extends React.Component {
 
     const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
-
     const { start, end, roomId, title, description, readOnly } = modalData;
     const disabled = confirmLoading || readOnly;
+    const { admin, userID } = this.context;
+    const couldCancel = readOnly && (modalData.userid === userID || admin);
+
     return (
       <Modal
         title="Reserve Your Room"
         visible={visible}
         confirmLoading={confirmLoading}
         onCancel={handleHide}
-        okText="Reserve Room"
+        okText={couldCancel ? 'Cancel booking' : 'Reserve Room'}
         cancelText="Cancel"
-        okButtonProps={{ disabled }}
+        okButtonProps={{
+          disabled:
+            confirmLoading ||
+            (readOnly && !(modalData.userid === userID || admin)),
+        }}
         onOk={() => {
           this.formRef.current.submit();
         }}
@@ -145,15 +172,20 @@ class BookingForm extends React.Component {
             room: this.findRoomNameById(roomId),
             title,
             description,
+            repeat: 'once',
             remind: true,
           }}
           ref={this.formRef}
           onFinish={(values) => {
-            this.bookRoom(values)
-              .then(() => {
-                handleHide();
-              })
-              .catch(message.error);
+            if (couldCancel) {
+              this.cancelBooking(modalData.id, moment(start))
+                .then(() => {
+                  handleHide();
+                })
+                .catch(message.error);
+            } else {
+              this.bookRoom(values).catch(message.error);
+            }
           }}
         >
           <Form.Item
@@ -270,21 +302,24 @@ class BookingForm extends React.Component {
     );
   }
 }
+BookingForm.contextType = AuthContext;
 
 BookingForm.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
   visible: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   modalData: PropTypes.shape({
+    id: PropTypes.number,
     roomId: PropTypes.string,
     start: PropTypes.any,
     end: PropTypes.any,
     title: PropTypes.string,
     description: PropTypes.string,
     userName: PropTypes.string,
+    userid: PropTypes.number,
     readOnly: PropTypes.bool,
   }).isRequired,
-  addEvent: PropTypes.func.isRequired,
+  fetchEvents: PropTypes.func.isRequired,
 };
 
 export default BookingForm;
