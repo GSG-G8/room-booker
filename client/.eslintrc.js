@@ -1,5 +1,5 @@
 module.exports = {
-  extends: ["airbnb", "prettier", "prettier/react"],
+  extends: ["airbnb","airbnb/hooks", "prettier", "prettier/react"],
   // babel-eslint parser is used to support experimental features not supported in ESLint itself yet
   parser: "babel-eslint",
   parserOptions: {
