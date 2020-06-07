@@ -157,6 +157,7 @@ class BookingForm extends React.Component {
           disabled:
             confirmLoading ||
             (readOnly && !(modalData.userid === userID || admin)),
+          danger: couldCancel,
         }}
         onOk={() => {
           this.formRef.current.submit();
