@@ -135,8 +135,7 @@ class BookingForm extends React.Component {
   };
 
   render() {
-    const disabledDate = (current) =>
-      current && current < moment().endOf('day');
+    const disabledDate = (current) => current < moment().subtract(1, 'days');
 
     const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
