@@ -3,7 +3,7 @@
 @import "~@fullcalendar/timegrid/main.css";
 
 .container {
-  margin:2% 10%;
+  margin:2% 5%;
 }
 .fc-view-container {
   overflow-x: scroll;
