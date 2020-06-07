@@ -23,23 +23,15 @@
   width: 70vh;
   height: 50vh;
   }
-
-  .link {
-    text-decoration: none;
-    font-family: "Roboto", sans-serif;
-    color: #645B5B;
-    font-size: 12px;
-  }
   .login__input {
     text-align: center;
     margin-bottom: 1rem;
   }
-  
   .login__button {
     height: 2rem;
     width: 15rem;
     display: block;
-    margin-top: 24px;
+    margin-top: 10px;
     background-color: rgb(59, 57, 110);
   } 
   

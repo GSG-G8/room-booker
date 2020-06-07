@@ -65,6 +65,13 @@ class Login extends React.Component {
           <Link className="link" to="/forgetPassword">
             Forget password?
           </Link>
+          <p className="">
+            New User?{' '}
+            <Link className="link" to="/signup">
+              Sign up
+            </Link>
+          </p>
+
           {errorMessage}
           <Button type="primary" htmlType="submit" className="login__button">
             LOGIN
