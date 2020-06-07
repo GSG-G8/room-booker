@@ -6,6 +6,7 @@ import moment from 'moment';
 import Tooltip from 'tooltip.js';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
+import { getBusinessHours } from './functions';
 import './style.css';
 
 class Calendar extends React.Component {
@@ -21,11 +22,15 @@ class Calendar extends React.Component {
       title: '',
       description: '',
     },
+    hiddenDays: [0],
+    minTime: '00:00',
+    maxTime: '20:00',
   };
 
   componentDidMount() {
     this.setState({ loading: true });
     this.fetchRoomName().then(() => this.setState({ loading: false }));
+    getBusinessHours(this, message);
   }
 
   handleHide = () => {
@@ -150,7 +155,15 @@ class Calendar extends React.Component {
 
   render() {
     const { loading } = this.state;
-    const { rooms, events, visible, modalData } = this.state;
+    const {
+      rooms,
+      events,
+      visible,
+      modalData,
+      hiddenDays,
+      minTime,
+      maxTime,
+    } = this.state;
 
     if (loading) return <Spin />;
 
@@ -192,6 +205,9 @@ class Calendar extends React.Component {
           refetchResourcesOnNavigate
           events={events}
           allDaySlot={false}
+          hiddenDays={hiddenDays}
+          minTime={minTime}
+          maxTime={maxTime}
         />
       </div>
     );

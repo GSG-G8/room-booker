@@ -31,6 +31,8 @@ const {
   checkEmail,
 } = require('./userSelect');
 
+const { getBusinessHours, patchBusinessHours } = require('./businessHours');
+
 module.exports = {
   bookRoom,
   checkEmail,
@@ -51,6 +53,8 @@ module.exports = {
   getRooms,
   getBookingByRoomId,
   getBookingByTimeRange,
+  getBusinessHours,
+  patchBusinessHours,
   deleteRoomByID,
   patchRoom,
 };
