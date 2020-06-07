@@ -310,7 +310,7 @@ BookingForm.propTypes = {
   visible: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   modalData: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     roomId: PropTypes.string,
     start: PropTypes.any,
     end: PropTypes.any,
