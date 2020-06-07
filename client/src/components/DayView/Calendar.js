@@ -1,7 +1,7 @@
 import interactionPlugin from '@fullcalendar/interaction'; // needed for dayClick
 import FullCalendar from '@fullcalendar/react';
 import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
-import { message, Spin } from 'antd';
+import { message, Spin, DatePicker } from 'antd';
 import moment from 'moment';
 import Tooltip from 'tooltip.js';
 import React from 'react';
@@ -10,6 +10,8 @@ import { getBusinessHours } from './functions';
 import './style.css';
 
 class Calendar extends React.Component {
+  calendarComponentRef = React.createRef();
+
   state = {
     events: [],
     rooms: [],
@@ -25,6 +27,7 @@ class Calendar extends React.Component {
     hiddenDays: [0],
     minTime: '00:00',
     maxTime: '20:00',
+    currentDate: moment(),
   };
 
   componentDidMount() {
@@ -163,8 +166,8 @@ class Calendar extends React.Component {
       hiddenDays,
       minTime,
       maxTime,
+      currentDate,
     } = this.state;
-
     if (loading) return <Spin />;
 
     return (
@@ -178,6 +181,14 @@ class Calendar extends React.Component {
             addEvent={this.fetchRoomEvent}
           />
         )}
+        <DatePicker
+          value={currentDate}
+          onChange={(value) => {
+            this.setState({ currentDate: value });
+            const calendarApi = this.calendarComponentRef.current.getApi();
+            calendarApi.gotoDate(value.toISOString(true));
+          }}
+        />
         <FullCalendar
           className="calendar"
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
@@ -208,6 +219,7 @@ class Calendar extends React.Component {
           hiddenDays={hiddenDays}
           minTime={minTime}
           maxTime={maxTime}
+          ref={this.calendarComponentRef}
         />
       </div>
     );
