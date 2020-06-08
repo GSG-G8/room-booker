@@ -15,7 +15,7 @@ function App() {
             <Nav />
           </Route>
           <Switch>
-            <ProtectedRoute adminOnly path="/dashboard">
+            <ProtectedRoute adminOnly user path="/dashboard">
               <Dashboard />
             </ProtectedRoute>
             <ProtectedRoute path="/profile">
@@ -27,6 +27,7 @@ function App() {
             <ProtectedRoute path="/">
               <Home />
             </ProtectedRoute>
+            {/* <Redirect from="/dashboard" to="/" /> */}
           </Switch>
         </AuthProvider>
       </Router>
