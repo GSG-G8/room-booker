@@ -8,17 +8,16 @@ function ProtectedRoute({ children, adminOnly, user, ...props }) {
   const location = useLocation();
   return (
     <AuthConsumer>
-      {({ admin, logged }) =>
-        // eslint-disable-next-line no-nested-ternary
-        logged && (admin || !adminOnly) ? (
+      {({ admin, logged }) => {
+        if (logged && (admin || !adminOnly)) {
           // eslint-disable-next-line react/jsx-props-no-spreading
-          <Route {...props}>{children}</Route>
-        ) : user ? (
-          <Redirect to="/" />
-        ) : (
-          <Login previousLocation={location.pathname} />
-        )
-      }
+          return <Route {...props}>{children}</Route>;
+        }
+        if (logged && user) {
+          return <Redirect to="/" />;
+        }
+        return <Login previousLocation={location.pathname} />;
+      }}
     </AuthConsumer>
   );
 }
