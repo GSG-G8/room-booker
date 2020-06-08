@@ -182,9 +182,11 @@ class Calendar extends React.Component {
           />
         )}
         <DatePicker
+          className="date"
           value={currentDate}
           onChange={(value) => {
             this.setState({ currentDate: value });
+            if (!value) return;
             const calendarApi = this.calendarComponentRef.current.getApi();
             calendarApi.gotoDate(value.toISOString(true));
           }}

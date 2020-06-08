@@ -5,6 +5,11 @@
 .container {
   margin:2% 10%;
 }
+.date{
+width: 8rem;
+right: 44rem;
+
+}
 .fc-view-container {
   overflow-x: scroll;
   overflow-y: scroll;
