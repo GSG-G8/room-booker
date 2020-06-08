@@ -4,12 +4,12 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  padding: 35px 70px 0;
 }
 
 .nav__logo {
   margin-left: 20px;
-  width: 170px;
+  width: 260px;
 }
 
 .ant-dropdown-button {
