@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { Form, TimePicker, Checkbox, message, notification } from 'antd';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import moment from 'moment';
 import './style.css';
 
@@ -25,22 +25,25 @@ const BusinessHours = () => {
   const [endTime, setEndTime] = useState(moment('18:00', timeFormat));
   const [form] = Form.useForm();
 
-  const updateBusinessHours = (values) => {
-    const startMoment = moment(values.startTime, timeFormat);
-    const endMoment = moment(values.endTime, timeFormat);
-    setDaysOfWeek(values.daysOfWeek);
-    setStartTime(startMoment);
-    setEndTime(endMoment);
+  const updateBusinessHours = useCallback(
+    (values) => {
+      const startMoment = moment(values.startTime, timeFormat);
+      const endMoment = moment(values.endTime, timeFormat);
+      setDaysOfWeek(values.daysOfWeek);
+      setStartTime(startMoment);
+      setEndTime(endMoment);
 
-    form.setFieldsValue({
-      daysOfWeek: values.daysOfWeek,
-      timeRange: [startMoment, endMoment],
-    });
-  };
+      form.setFieldsValue({
+        daysOfWeek: values.daysOfWeek,
+        timeRange: [startMoment, endMoment],
+      });
+    },
+    [form]
+  );
 
   useEffect(() => {
     getBusinessHours(updateBusinessHours, message);
-  }, []);
+  }, [updateBusinessHours]);
 
   const updateTimeRange = (m, [start, end]) => {
     setStartTime(moment(start, timeFormat));

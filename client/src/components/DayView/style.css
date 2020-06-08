@@ -9,11 +9,11 @@
   overflow-x: scroll;
 }
 
-.username{
+.username {
   color: rgb(243, 223, 113);
   font-weight: bolder;
   font-size: 1em;
-  padding-left: 3% ;
+  padding-left: 3%;
 }
 
 .popper,
@@ -25,16 +25,16 @@
   width: 110px;
   height: 25px;
   border-radius: 3px;
-  box-shadow: 0 0 2px rgba(0,0,0,0.5);
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
   text-align: center;
   font-size: 0.85em;
 }
 .style5 .tooltip {
-  background: #1E252B;
-  color: #FFFFFF;
+  background: #1e252b;
+  color: #ffffff;
   max-width: 200px;
   width: auto;
-  font-size: .1rem;
+  font-size: 0.1rem;
 }
 .popper .popper__arrow,
 .tooltip .tooltip-arrow {
@@ -50,7 +50,7 @@
   border-color: rgb(255, 119, 7);
 }
 .style5 .tooltip .tooltip-arrow {
-  border-color: #1E252B;
+  border-color: #1e252b;
 }
 .popper[x-placement^="top"],
 .tooltip[x-placement^="top"] {

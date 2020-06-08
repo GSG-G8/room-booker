@@ -3,7 +3,6 @@ import { Layout } from 'antd';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AdminMenu from '../../components/Menu';
-import Navbar from '../../components/Navbar';
 import Rooms from '../../components/Table/Rooms';
 import Users from '../../components/Table/Users';
 import BusinessHours from '../../components/Form/BusinessHours';
@@ -14,7 +13,6 @@ const { Content, Sider } = Layout;
 function Dashboard() {
   return (
     <Layout className="layout">
-      <Navbar />
       <Layout>
         <Sider>
           <AdminMenu />

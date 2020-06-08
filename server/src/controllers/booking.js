@@ -107,9 +107,7 @@ exports.bookingRoom = (req, res, next) => {
             name: rows[0].name,
           }))
 
-          // eslint-disable-next-line no-unused-vars
           .then(({ email }) => {
-            // email will used in production but right now, it would case problem by nodemailer
             const cal = ical({
               events: bookingData.map((row) => ({
                 start: Moment(row.start_time),
@@ -128,7 +126,7 @@ exports.bookingRoom = (req, res, next) => {
             });
             const msg = {
               from: `"ROOM BOOKER - Gaza Sky Geeks" <${process.env.EMAIL}>`,
-              to: 'linaebe0@gmail.com',
+              to: email,
               subject: 'Room booking',
               html: 'here is your room booking',
               icalEvent: {
@@ -164,7 +162,7 @@ exports.deleteBooking = (req, res, next) => {
         return rows[0];
       }
       throw Boom.badRequest(
-        'the booking you are trying to delete does not exist'
+        'The booking you are trying to delete does not exist'
       );
     })
     .then((result) => {
@@ -175,9 +173,9 @@ exports.deleteBooking = (req, res, next) => {
       if (result.user_id === req.user.userID) {
         return deleteBookingById(id);
       }
-      throw Boom.forbidden('sorry , you cant delete this booking!!');
+      throw Boom.forbidden("Sorry, you can't delete this booking!!");
     })
 
-    .then(() => res.json({ msg: 'The Booking has delete successfully' }))
+    .then(() => res.json({ msg: 'Room Booking deleted successfully' }))
     .catch(next);
 };

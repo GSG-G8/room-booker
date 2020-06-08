@@ -11,9 +11,7 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-          <Route path="/!(login|signup)">
-            <Nav />
-          </Route>
+          <Route path="*" render={({ history }) => <Nav history={history} />} />
           <Switch>
             <ProtectedRoute adminOnly user path="/dashboard">
               <Dashboard />
@@ -27,7 +25,6 @@ function App() {
             <ProtectedRoute path="/">
               <Home />
             </ProtectedRoute>
-            {/* <Redirect from="/dashboard" to="/" /> */}
           </Switch>
         </AuthProvider>
       </Router>
