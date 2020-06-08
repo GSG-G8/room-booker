@@ -356,7 +356,7 @@ test('delete booking by id "1" from admin ', (done) => {
     .end((err, res) => {
       if (err) return done(err);
 
-      expect(res.body.msg).toBe('The Booking has delete successfully');
+      expect(res.body.msg).toBe('Room Booking deleted successfully');
       return done();
     });
 });
