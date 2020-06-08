@@ -132,7 +132,7 @@ class Profile extends React.Component {
                     type="primary"
                     className="profile__button--update"
                   >
-                    update profile
+                    Edit profile
                   </Button>
                 )}
                 {isUpdate && (
