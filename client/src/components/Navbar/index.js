@@ -6,9 +6,11 @@ import {
 } from '@ant-design/icons';
 import { Dropdown, Menu } from 'antd';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { AuthContext, AuthConsumer } from '../../context';
 import codeacademyLogo from '../../assets/codeacademy-logo.png';
+// import Home from '../../pages/Home';
 
 import './style.css';
 
@@ -20,27 +22,23 @@ class Nav extends React.Component {
     });
 
   render() {
+    const { history } = this.props;
+    const { logged } = this.context;
+    if (!logged) return null;
     const menu = (
       <Menu>
-        <Menu.Item key="1">
-          <Link to="/">
-            <HomeOutlined />
-            Home
-          </Link>
+        <Menu.Item key="1" onClick={() => history.push('/')}>
+          <HomeOutlined />
+          Home
         </Menu.Item>
-        <Menu.Item key="2">
-          <Link to="/Profile">
-            <IdcardOutlined />
-            profile
-          </Link>
+        <Menu.Item key="2" onClick={() => history.push('/profile')}>
+          <IdcardOutlined />
+          Profile
         </Menu.Item>
-        <Menu.Item key="3">
-          <Link to="/Dashboard">
-            <DashboardOutlined />
-            Dashboard
-          </Link>
+        <Menu.Item key="3" onClick={() => history.push('/dashboard')}>
+          <DashboardOutlined />
+          Dashboard
         </Menu.Item>
-
         <Menu.Item key="4" onClick={this.logout}>
           <UserOutlined />
           logout
@@ -65,5 +63,11 @@ class Nav extends React.Component {
 }
 
 Nav.contextType = AuthContext;
+
+Nav.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+};
 
 export default Nav;

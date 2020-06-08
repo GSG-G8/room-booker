@@ -1,8 +1,6 @@
 import React from 'react';
 import { LockOutlined, MailOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Form, Input, notification, Spin } from 'antd';
-import Navbar from '../../components/Navbar';
-
 import './style.css';
 
 class Profile extends React.Component {
@@ -73,8 +71,6 @@ class Profile extends React.Component {
 
     return (
       <div>
-        <Navbar />
-
         <div className="profile">
           <h2 className="profile__header">
             <span className="profile__header__apan">Profile </span> Page
