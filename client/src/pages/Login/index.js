@@ -1,8 +1,9 @@
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
+import { LockOutlined, MailOutlined, GoogleOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login';
 import loginImg from '../../assets/loginImg.png';
 import { AuthContext } from '../../context';
 import './style.css';
@@ -27,6 +28,24 @@ class Login extends React.Component {
         error: !res.ok,
       });
 
+      if (res.ok) {
+        getAuth();
+      }
+    });
+  };
+
+  responseGoogle = (response) => {
+    const { tokenId } = response;
+    const { getAuth } = this.context;
+
+    fetch('/api/v1/google-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tokenId }),
+    }).then((res) => {
+      this.setState({
+        error: !res.ok,
+      });
       if (res.ok) {
         getAuth();
       }
@@ -76,6 +95,23 @@ class Login extends React.Component {
           <Button type="primary" htmlType="submit" className="login__button">
             LOGIN
           </Button>
+          <GoogleLogin
+            clientId="74887933796-4d340jo7e001rcc3djat8upa477f01n2.apps.googleusercontent.com"
+            render={(renderProps) => (
+              <Button
+                type="primary"
+                htmlType="button"
+                className="login__button"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <GoogleOutlined /> Google Login
+              </Button>
+            )}
+            onSuccess={this.responseGoogle}
+            onFailure={console.error}
+            cookiePolicy="single_host_origin"
+          />
         </Form>
       </div>
     );

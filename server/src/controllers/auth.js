@@ -1,7 +1,8 @@
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
+const { OAuth2Client } = require('google-auth-library');
 const signUpSchema = require('./validation/signupSchema');
-const { checkEmail, createUser } = require('../database/queries');
+const { checkEmail, createUser, getUser } = require('../database/queries');
 const { sign } = require('../utils/jwt');
 const loginSchema = require('./validation/loginSchema');
 
@@ -76,6 +77,46 @@ exports.login = (req, res, next) => {
       }
     })
     .catch(next);
+};
+
+exports.GoogleLogin = async (req, res, next) => {
+  const clientID =
+    '74887933796-4d340jo7e001rcc3djat8upa477f01n2.apps.googleusercontent.com';
+  const client = new OAuth2Client(clientID);
+  const { tokenId } = req.body;
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: clientID,
+    });
+    const payload = ticket.getPayload();
+
+    let result = await checkEmail(payload.email);
+    if (result.rows.length === 0) {
+      await createUser({
+        name: payload.name,
+        email: payload.email,
+        password: '',
+      });
+      result = await getUser(payload.email);
+    }
+
+    const [user] = result.rows;
+    if (user) {
+      const token = await sign({
+        userID: user.id,
+        role: user.is_admin,
+        username: user.name,
+      });
+      res.cookie('token', token).end();
+    } else {
+      next();
+    }
+    res.json(payload);
+  } catch (error) {
+    next(error);
+  }
 };
 
 exports.logout = (req, res) => {
