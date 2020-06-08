@@ -21,7 +21,7 @@ class Nav extends React.Component {
 
   render() {
     const { history } = this.props;
-    const { logged } = this.context;
+    const { logged, admin } = this.context;
     if (!logged) return null;
     const menu = (
       <Menu>
@@ -33,10 +33,12 @@ class Nav extends React.Component {
           <IdcardOutlined />
           Profile
         </Menu.Item>
-        <Menu.Item key="3" onClick={() => history.push('/dashboard')}>
-          <DashboardOutlined />
-          Dashboard
-        </Menu.Item>
+        {admin && (
+          <Menu.Item key="3" onClick={() => history.push('/dashboard')}>
+            <DashboardOutlined />
+            Dashboard
+          </Menu.Item>
+        )}
         <Menu.Item key="4" onClick={this.logout}>
           <UserOutlined />
           logout
