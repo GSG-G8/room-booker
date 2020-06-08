@@ -10,8 +10,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { AuthContext, AuthConsumer } from '../../context';
 import codeacademyLogo from '../../assets/codeacademy-logo.png';
-// import Home from '../../pages/Home';
-
 import './style.css';
 
 class Nav extends React.Component {

@@ -5,13 +5,11 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 20px;
-  border-bottom: 1px solid blue;
 }
 
 .nav__logo {
   margin-left: 20px;
   width: 170px;
-  /* margin-bottom: 20px; */
 }
 
 .ant-dropdown-button {
