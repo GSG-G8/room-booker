@@ -3,7 +3,14 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './style.css';
 import Nav from '../components/Navbar';
 import { AuthProvider } from '../context';
-import { Dashboard, Home, Login, Profile } from '../pages';
+import {
+  Dashboard,
+  Home,
+  Login,
+  Profile,
+  Signup,
+  PageNotFound,
+} from '../pages';
 import ProtectedRoute from './ProtectedRoute';
 
 function App() {
@@ -13,7 +20,7 @@ function App() {
         <AuthProvider>
           <Route path="*" render={({ history }) => <Nav history={history} />} />
           <Switch>
-            <ProtectedRoute adminOnly path="/dashboard">
+            <ProtectedRoute adminOnly user path="/dashboard">
               <Dashboard />
             </ProtectedRoute>
             <ProtectedRoute path="/profile">
@@ -22,9 +29,15 @@ function App() {
             <Route path="/login">
               <Login />
             </Route>
-            <ProtectedRoute path="/">
+            <Route path="/signup">
+              <Signup />
+            </Route>
+            <ProtectedRoute exact path="/">
               <Home />
             </ProtectedRoute>
+            <Route path="/">
+              <PageNotFound />
+            </Route>
           </Switch>
         </AuthProvider>
       </Router>

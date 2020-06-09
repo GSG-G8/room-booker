@@ -14,6 +14,7 @@ const { checkAdmin, verifyUser } = require('./controllers/middleware');
 router.post('/signup', auth.signup);
 router.post('/login', auth.login);
 router.get('/logout', auth.logout);
+router.post('/google-login', auth.GoogleLogin);
 
 // only logged in access under this:
 router.use(verifyUser);

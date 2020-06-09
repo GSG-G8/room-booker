@@ -8,7 +8,8 @@ exports.deleteUserById = (id) =>
 
 exports.createUser = ({ name, password, email }) =>
   connection.query({
-    text: 'INSERT INTO bookinguser (name, password, email) values ($1, $2, $3)',
+    text:
+      'INSERT INTO bookinguser (name, password, email) values ($1, $2, $3) RETURNING *',
     values: [name, password, email],
   });
 
