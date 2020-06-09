@@ -1,3 +1,4 @@
+require('env2')('./config.env');
 const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
@@ -79,45 +80,45 @@ exports.login = (req, res, next) => {
     .catch(next);
 };
 
-exports.GoogleLogin = async (req, res, next) => {
-  const clientID =
-    '74887933796-4d340jo7e001rcc3djat8upa477f01n2.apps.googleusercontent.com';
+exports.GoogleLogin = (req, res, next) => {
+  const clientID = process.env.GOOGLE_CLIENT_ID;
   const client = new OAuth2Client(clientID);
   const { tokenId } = req.body;
+  let payload;
+  let user;
 
-  try {
-    const ticket = await client.verifyIdToken({
+  client
+    .verifyIdToken({
       idToken: tokenId,
       audience: clientID,
-    });
-    const payload = ticket.getPayload();
-
-    let result = await checkEmail(payload.email);
-    if (result.rows.length === 0) {
-      await createUser({
-        name: payload.name,
-        email: payload.email,
-        password: '',
-      });
-      result = await getUser(payload.email);
-    }
-
-    const [user] = result.rows;
-    if (user) {
-      if (user.is_active) {
-        const token = await sign({
-          userID: user.id,
-          role: user.is_admin,
-          username: user.name,
+    })
+    .then((ticket) => {
+      payload = ticket.getPayload();
+      return checkEmail(payload.email);
+    })
+    .then((result) => {
+      if (result.rows.length === 0) {
+        return createUser({
+          name: payload.name,
+          email: payload.email,
+          password: '',
         });
-        res.cookie('token', token).json(user);
-      } else res.json(user);
-    } else {
-      next();
-    }
-  } catch (error) {
-    next(error);
-  }
+      }
+      return result;
+    })
+    .then((result) => {
+      [user] = result.rows;
+      if (!user.is_active) return '';
+      return sign({
+        userID: user.id,
+        role: user.is_admin,
+        username: user.name,
+      });
+    })
+    .then((token) => {
+      res.cookie('token', token).json(user);
+    })
+    .catch(next);
 };
 
 exports.logout = (req, res) => {

@@ -1,6 +1,5 @@
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import loginImg from '../../assets/loginImg.png';
@@ -88,12 +87,5 @@ class Signup extends React.Component {
     );
   }
 }
-
-Signup.propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired,
-  }).isRequired,
-  location: PropTypes.shape({ state: PropTypes.string }).isRequired,
-};
 
 export default Signup;

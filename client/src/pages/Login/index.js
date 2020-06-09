@@ -102,7 +102,7 @@ class Login extends React.Component {
             LOGIN
           </Button>
           <GoogleLogin
-            clientId="74887933796-4d340jo7e001rcc3djat8upa477f01n2.apps.googleusercontent.com"
+            clientId={process.env.REACT_APP_CLIENT_ID}
             render={(renderProps) => (
               <Button
                 type="primary"
