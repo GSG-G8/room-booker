@@ -3,6 +3,7 @@ const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 const signUpSchema = require('./validation/signupSchema');
+// eslint-disable-next-line no-unused-vars
 const { checkEmail, createUser, getUser } = require('../database/queries');
 const { sign } = require('../utils/jwt');
 const loginSchema = require('./validation/loginSchema');
