@@ -87,6 +87,7 @@ class Calendar extends React.Component {
       .then((results) => {
         this.setState({
           events: results.map((event) => ({
+            id: event.id,
             start: event.start_time,
             end: event.end_time,
             title: event.title,
@@ -126,6 +127,7 @@ class Calendar extends React.Component {
 
   showEventForm = ({ event }) => {
     const {
+      id,
       start,
       end,
       title,
@@ -133,6 +135,7 @@ class Calendar extends React.Component {
     } = event;
     this.setState({
       modalData: {
+        id,
         roomId: event.getResources()[0].id,
         start,
         end,
@@ -178,7 +181,7 @@ class Calendar extends React.Component {
             visible={visible}
             handleHide={this.handleHide}
             modalData={modalData}
-            addEvent={this.fetchRoomEvent}
+            fetchEvents={this.fetchRoomEvent}
           />
         )}
         <DatePicker
