@@ -115,6 +115,7 @@ class Login extends React.Component {
               </Button>
             )}
             onSuccess={this.responseGoogle}
+            // eslint-disable-next-line no-console
             onFailure={console.error}
             cookiePolicy="single_host_origin"
           />

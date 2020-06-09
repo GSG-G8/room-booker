@@ -3,7 +3,7 @@ const Boom = require('@hapi/boom');
 const bcrypt = require('bcrypt');
 const { OAuth2Client } = require('google-auth-library');
 const signUpSchema = require('./validation/signupSchema');
-const { checkEmail, createUser, getUser } = require('../database/queries');
+const { checkEmail, createUser } = require('../database/queries');
 const { sign } = require('../utils/jwt');
 const loginSchema = require('./validation/loginSchema');
 
