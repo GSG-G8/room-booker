@@ -1,8 +1,9 @@
-import { LockOutlined, MailOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { LockOutlined, MailOutlined, GoogleOutlined } from '@ant-design/icons';
+import { Button, Form, Input, message } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
+import { GoogleLogin } from 'react-google-login';
 import loginImg from '../../assets/loginImg.png';
 import { AuthContext } from '../../context';
 import './style.css';
@@ -29,6 +30,30 @@ class Login extends React.Component {
 
       if (res.ok) {
         getAuth();
+      }
+    });
+  };
+
+  responseGoogle = (response) => {
+    const { tokenId } = response;
+    const { getAuth } = this.context;
+
+    fetch('/api/v1/google-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tokenId }),
+    }).then((res) => {
+      this.setState({
+        error: !res.ok,
+      });
+      if (res.ok) {
+        // console.log(res);
+        res.json().then((user) => {
+          if (user.is_active) getAuth();
+          else {
+            message.success('please wait for admin to activate your account');
+          }
+        });
       }
     });
   };
@@ -65,10 +90,34 @@ class Login extends React.Component {
           <Link className="link" to="/forgetPassword">
             Forget password?
           </Link>
+          <p className="">
+            New User?{' '}
+            <Link className="link" to="/signup">
+              Sign up
+            </Link>
+          </p>
+
           {errorMessage}
           <Button type="primary" htmlType="submit" className="login__button">
             LOGIN
           </Button>
+          <GoogleLogin
+            clientId={process.env.REACT_APP_CLIENT_ID}
+            render={(renderProps) => (
+              <Button
+                type="primary"
+                htmlType="button"
+                className="login__button"
+                onClick={renderProps.onClick}
+                disabled={renderProps.disabled}
+              >
+                <GoogleOutlined /> Google Login
+              </Button>
+            )}
+            onSuccess={this.responseGoogle}
+            onFailure={console.error}
+            cookiePolicy="single_host_origin"
+          />
         </Form>
       </div>
     );

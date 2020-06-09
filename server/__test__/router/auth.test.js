@@ -81,9 +81,7 @@ test('/signup with not valid email ', (done) => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) return done(err);
-      expect(res.body.message).toBe(
-        '"email" with value "lina@gaza.com" fails to match the required pattern: /(\\w*@gazaskygeeks.\\w*)/'
-      );
+      expect(res.body.message).toBe('email domain should be gazaskygeeks');
       return done();
     });
 });

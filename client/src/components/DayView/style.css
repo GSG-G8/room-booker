@@ -15,8 +15,6 @@
 
 .fc-view-container {
   overflow-x: scroll;
-  overflow-y: scroll;
-  height: 25rem;
 }
 
 .username {
