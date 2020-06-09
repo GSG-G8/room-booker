@@ -193,12 +193,18 @@ class Calendar extends React.Component {
             const calendarApi = this.calendarComponentRef.current.getApi();
             calendarApi.gotoDate(value.toISOString(true));
           }}
+          onClick={() =>
+            this.setState({
+              currentDate: moment(
+                this.calendarComponentRef.current.getApi().getDate()
+              ),
+            })
+          }
           allowClear={false}
         />
         <FullCalendar
           className="calendar"
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
-          width="100px"
           height="auto"
           defaultView="resourceTimeGridDay"
           plugins={[resourceTimeGridPlugin, interactionPlugin]}
