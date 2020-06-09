@@ -32,8 +32,13 @@ class BookingForm extends React.Component {
     ...rest
   }) => {
     const { handleHide, fetchEvents } = this.props;
-
-    const roomId = this.findRoomIdByName(room);
+    let roomId;
+    try {
+      roomId = this.findRoomIdByName(room);
+    } catch (e) {
+      this.setState({ confirmLoading: false });
+      return message.error(e.message);
+    }
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
     const body = { roomId, time: timeArr, remindMe, ...rest };
@@ -64,7 +69,11 @@ class BookingForm extends React.Component {
 
   findRoomIdByName = (name) => {
     const { rooms } = this.props;
-    return rooms.find((room) => room.name === name).id;
+    const roomObj = rooms.find((room) => room.name === name);
+    if (roomObj) {
+      return roomObj.id;
+    }
+    throw new Error(`no room by ${name} name`);
   };
 
   findRoomNameById = (id) => {
