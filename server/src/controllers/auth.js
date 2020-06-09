@@ -104,12 +104,14 @@ exports.GoogleLogin = async (req, res, next) => {
 
     const [user] = result.rows;
     if (user) {
-      const token = await sign({
-        userID: user.id,
-        role: user.is_admin,
-        username: user.name,
-      });
-      res.cookie('token', token).end();
+      if (user.is_active) {
+        const token = await sign({
+          userID: user.id,
+          role: user.is_admin,
+          username: user.name,
+        });
+        res.cookie('token', token).json(user);
+      } else res.json(user);
     } else {
       next();
     }

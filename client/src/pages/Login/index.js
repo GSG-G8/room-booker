@@ -1,5 +1,5 @@
 import { LockOutlined, MailOutlined, GoogleOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
@@ -47,7 +47,13 @@ class Login extends React.Component {
         error: !res.ok,
       });
       if (res.ok) {
-        getAuth();
+        // console.log(res);
+        res.json().then((user) => {
+          if (user.is_active) getAuth();
+          else {
+            message.success('please wait for admin to activate your account');
+          }
+        });
       }
     });
   };
