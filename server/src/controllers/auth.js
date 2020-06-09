@@ -115,7 +115,6 @@ exports.GoogleLogin = async (req, res, next) => {
     } else {
       next();
     }
-    res.json(payload);
   } catch (error) {
     next(error);
   }
