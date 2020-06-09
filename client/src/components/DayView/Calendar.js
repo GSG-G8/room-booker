@@ -188,6 +188,9 @@ class Calendar extends React.Component {
           <labeel>Go To Date</labeel>
           <DatePicker
             className="date"
+            disabledDate={(current) =>
+              hiddenDays.includes(Number(current.format('e')))
+            }
             value={currentDate}
             onChange={(value) => {
               this.setState({ currentDate: value });
