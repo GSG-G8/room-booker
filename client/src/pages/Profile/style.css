@@ -1,0 +1,69 @@
+.profile {
+  display: flex;
+  margin: 8rem auto;
+  flex-direction: column;
+  width: 100vw;
+}
+.profile__header__container {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #186aa5;
+  width: 50%;
+  padding: 3%;
+  border-radius: 12px;
+}
+.profile__form {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 90%;
+  padding: 5%;
+  text-align: center;
+}
+.profile__header {
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  justify-content: center;
+  font-size: 35px;
+  color: rgb(59, 57, 110);
+}
+.profile__header__apan {
+  color: #ff7d00;
+}
+.avatar {
+  width: 135px;
+  height: 135px;
+  border-radius: 50%;
+  border: 3px solid #186aa5;
+  position: relative;
+  align-self: center;
+}
+.profile__input label {
+  color: #ff7d00;
+}
+.profile__input input {
+  text-align: center;
+}
+/* .profile__input {
+  color: white;
+    width: 80%;
+} */
+.profile__button {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+.profile__button--save,
+.profile__button--update {
+  width: 8rem;
+  display: block;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+.profile__button--save:hover,
+.profile__button--update:hover {
+  color: white;
+  background-color: #ff7d00;
+}
