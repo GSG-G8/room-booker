@@ -4,12 +4,15 @@
 
 .container {
   margin: 2% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
-.date{
-width: 8rem;
-right: 44rem;
 
+.container > .ant-picker > .ant-picker-input > input {
+  display: none;
 }
+
 .fc-view-container {
   overflow-x: scroll;
   overflow-y: scroll;
