@@ -8,7 +8,21 @@
   flex-direction: column;
   align-items: flex-start;
 }
-
+.date-container {
+  display: flex;
+  justify-content: center;
+  width: 40%;
+  align-items: center;
+  margin: auto;
+  margin-bottom: 10px;
+  border-bottom: 2px solid #3a5a6e;
+}
+.date-container labeel {
+  font-weight: 500;
+  color: #fb7309;
+  font-size: 16px;
+  margin-right: 40px;
+}
 .container > .ant-picker > .ant-picker-input > input {
   display: none;
 }

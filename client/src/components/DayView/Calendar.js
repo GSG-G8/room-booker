@@ -184,24 +184,27 @@ class Calendar extends React.Component {
             fetchEvents={this.fetchRoomEvent}
           />
         )}
-        <DatePicker
-          className="date"
-          value={currentDate}
-          onChange={(value) => {
-            this.setState({ currentDate: value });
-            if (!value) return;
-            const calendarApi = this.calendarComponentRef.current.getApi();
-            calendarApi.gotoDate(value.toISOString(true));
-          }}
-          onClick={() =>
-            this.setState({
-              currentDate: moment(
-                this.calendarComponentRef.current.getApi().getDate()
-              ),
-            })
-          }
-          allowClear={false}
-        />
+        <div className="date-container">
+          <labeel>Go To Date</labeel>
+          <DatePicker
+            className="date"
+            value={currentDate}
+            onChange={(value) => {
+              this.setState({ currentDate: value });
+              if (!value) return;
+              const calendarApi = this.calendarComponentRef.current.getApi();
+              calendarApi.gotoDate(value.toISOString(true));
+            }}
+            onClick={() =>
+              this.setState({
+                currentDate: moment(
+                  this.calendarComponentRef.current.getApi().getDate()
+                ),
+              })
+            }
+            allowClear={false}
+          />
+        </div>
         <FullCalendar
           className="calendar"
           schedulerLicenseKey="GPL-My-Project-Is-Open-Source"
