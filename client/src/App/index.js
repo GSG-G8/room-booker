@@ -13,7 +13,7 @@ function App() {
         <AuthProvider>
           <Route path="*" render={({ history }) => <Nav history={history} />} />
           <Switch>
-            <ProtectedRoute adminOnly path="/dashboard">
+            <ProtectedRoute adminOnly user path="/dashboard">
               <Dashboard />
             </ProtectedRoute>
             <ProtectedRoute path="/profile">
