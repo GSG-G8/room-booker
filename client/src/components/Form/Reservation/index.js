@@ -37,7 +37,7 @@ class BookingForm extends React.Component {
       roomId = this.findRoomIdByName(room);
     } catch (e) {
       this.setState({ confirmLoading: false });
-      return message.error(e.message);
+      return Promise.reject(e.message);
     }
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
