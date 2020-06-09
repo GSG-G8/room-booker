@@ -190,6 +190,7 @@ class Calendar extends React.Component {
             const calendarApi = this.calendarComponentRef.current.getApi();
             calendarApi.gotoDate(value.toISOString(true));
           }}
+          allowClear={false}
         />
         <FullCalendar
           className="calendar"
