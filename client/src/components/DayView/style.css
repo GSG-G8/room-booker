@@ -3,8 +3,16 @@
 @import "~@fullcalendar/timegrid/main.css";
 
 .container {
-  margin:2% 5%;
+  margin: 2% 5%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
+.container > .ant-picker > .ant-picker-input > input {
+  display: none;
+}
+
 .fc-view-container {
   overflow-x: scroll;
 }
