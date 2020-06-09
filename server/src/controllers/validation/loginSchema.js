@@ -7,10 +7,19 @@ const schema = Joi.object({
       tlds: { allow: ['com'] },
     })
     .required()
-    .pattern(/(\w*@gazaskygeeks.\w*)/),
+    .pattern(/(\w*@gazaskygeeks.\w*)/)
+    .messages({
+      'string.empty': `email is a required field`,
+      'string.pattern.base': 'email domain should be gazaskygeeks',
+    }),
   password: Joi.string()
     .regex(/[A-z0-9]{6,}/)
-    .required(),
+    .required()
+    .messages({
+      'string.empty': `Password is a required field`,
+      'string.pattern.base':
+        'Your password has to be at least six characters or numbers',
+    }),
 });
 
 module.exports = schema;
