@@ -53,13 +53,7 @@ class BookingForm extends React.Component {
         }
         return res.json();
       })
-      .then(() => {
-        if (repeat === 'once') {
-          fetchEvents(date.format('YYYY-MM-DD'));
-        } else {
-          fetchEvents(timeArr[0].startTime.split('T')[0]);
-        }
-      })
+      .then(() => fetchEvents(timeArr[0].startTime.split('T')[0]))
       .then(() => {
         this.setState({ confirmLoading: false });
         handleHide();
