@@ -185,9 +185,11 @@ class Calendar extends React.Component {
           />
         )}
         <div className="date-container">
-          <labeel>Go To Date</labeel>
+          <p>Go To Date</p>
+
           <DatePicker
             className="date"
+            id="gg"
             disabledDate={(current) =>
               hiddenDays.includes(Number(current.format('e')))
             }

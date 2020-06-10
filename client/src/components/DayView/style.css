@@ -17,11 +17,12 @@
   margin-bottom: 10px;
   border-bottom: 2px solid #3a5a6e;
 }
-.date-container labeel {
+.date-container p {
   font-weight: 500;
   color: #fb7309;
   font-size: 16px;
   margin-right: 40px;
+  margin-top: 15px;
 }
 .container > .ant-picker > .ant-picker-input > input {
   display: none;
