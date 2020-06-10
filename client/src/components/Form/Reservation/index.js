@@ -36,7 +36,9 @@ class BookingForm extends React.Component {
     const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
+    // console.log(daterange, 'HI DATE');
     const body = { roomId, time: timeArr, remindMe, ...rest };
+    // console.log('hi time range', daterange);
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -52,7 +54,13 @@ class BookingForm extends React.Component {
         return res.json();
       })
       .then(() => {
-        fetchEvents(date.format('YYYY-MM-DD'));
+        if (repeat === 'once') {
+          fetchEvents(date.format('YYYY-MM-DD'));
+        } else {
+          fetchEvents(timeArr[0].startTime.split('T')[0]);
+        }
+      })
+      .then(() => {
         this.setState({ confirmLoading: false });
         handleHide();
       })
