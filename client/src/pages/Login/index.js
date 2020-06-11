@@ -10,7 +10,7 @@ import './style.css';
 
 class Login extends React.Component {
   state = {
-    error: false,
+    errorMessage: '',
   };
 
   handleSubmit = (values) => {
@@ -24,12 +24,17 @@ class Login extends React.Component {
         password,
       }),
     }).then((res) => {
-      this.setState({
-        error: !res.ok,
-      });
-
       if (res.ok) {
+        this.setState({
+          errorMessage: '',
+        });
         getAuth();
+      } else {
+        res.json().then((data) => {
+          this.setState({
+            errorMessage: data.message,
+          });
+        });
       }
     });
   };
@@ -43,11 +48,7 @@ class Login extends React.Component {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tokenId }),
     }).then((res) => {
-      this.setState({
-        error: !res.ok,
-      });
       if (res.ok) {
-        // console.log(res);
         res.json().then((user) => {
           if (user.is_active) getAuth();
           else {
@@ -59,17 +60,13 @@ class Login extends React.Component {
   };
 
   render() {
-    const { error } = this.state;
+    const { errorMessage } = this.state;
     const { previousLocation } = this.props;
-
-    const errorMessage = error ? (
-      <p className="error-message">Please correct your email or password</p>
-    ) : null;
-
     const { logged } = this.context;
+    if (logged) return <Redirect to={previousLocation} />;
+
     return (
       <div className="login">
-        {logged && <Redirect to={previousLocation} />}
         <img src={loginImg} alt="loginImage" className="login__image" />
 
         <Form
@@ -97,7 +94,7 @@ class Login extends React.Component {
             </Link>
           </p>
 
-          {errorMessage}
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
           <Button type="primary" htmlType="submit" className="login__button">
             LOGIN
           </Button>

@@ -34,3 +34,6 @@
   margin-top: 24px;
   background-color: rgb(59, 57, 110);
 }
+.error-message {
+  color: red;
+}
