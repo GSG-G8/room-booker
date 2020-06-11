@@ -56,8 +56,8 @@ class BookingForm extends React.Component {
         }
         return res.json();
       })
+      .then(() => fetchEvents(timeArr[0].startTime.split('T')[0]))
       .then(() => {
-        fetchEvents(date.format('YYYY-MM-DD'));
         this.setState({ confirmLoading: false });
         handleHide();
       })
@@ -143,10 +143,33 @@ class BookingForm extends React.Component {
     return arr;
   };
 
-  render() {
-    const disabledDate = (current) => current < moment().subtract(1, 'days');
+  range = (min, max) => {
+    const start = Number(min.split(':')[0]);
+    const end = Number(max.split(':')[0]);
+    const result = [];
+    for (let i = 0; i < 24; i += 1) {
+      if (i < start || i > end - 1) {
+        result.push(i);
+      }
+    }
+    return result;
+  };
 
-    const { rooms, visible, handleHide, modalData } = this.props;
+  render() {
+    const {
+      rooms,
+      visible,
+      handleHide,
+      hiddenDays,
+      modalData,
+      minTime,
+      maxTime,
+    } = this.props;
+
+    const disabledDate = (current) =>
+      current < moment().subtract(1, 'days') ||
+      hiddenDays.includes(Number(current.format('e')));
+
     const { repeat, confirmLoading } = this.state;
     const { start, end, roomId, title, description, readOnly } = modalData;
     const disabled = confirmLoading || readOnly;
@@ -293,6 +316,8 @@ class BookingForm extends React.Component {
               minuteStep={10}
               disabled={disabled}
               format="HH:mm"
+              disabledHours={() => this.range(minTime, maxTime)}
+              hideDisabledOptions
             />
           </Form.Item>
 
@@ -330,6 +355,9 @@ BookingForm.propTypes = {
     readOnly: PropTypes.bool,
   }).isRequired,
   fetchEvents: PropTypes.func.isRequired,
+  minTime: PropTypes.string.isRequired,
+  maxTime: PropTypes.string.isRequired,
+  hiddenDays: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default BookingForm;

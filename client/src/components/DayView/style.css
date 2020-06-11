@@ -2,8 +2,20 @@
 @import "~@fullcalendar/daygrid/main.css";
 @import "~@fullcalendar/timegrid/main.css";
 
+
+.fc table{
+  table-layout: auto;
+}
+
+.fc-axis{
+  min-width:50px;
+  width:50px; 
+ 
+}
+.fc-day,.fc-resource-cell,.fc-content-col{
+  min-width: 8rem;
+}
 .container {
-  margin: 2% 5%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -24,6 +36,7 @@
 
 .fc-view-container {
   overflow-x: scroll;
+  width: 90vw;
 }
 
 .username {
