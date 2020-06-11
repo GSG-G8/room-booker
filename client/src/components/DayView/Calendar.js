@@ -186,8 +186,12 @@ class Calendar extends React.Component {
             minTime={minTime}
           />
         )}
+
         <DatePicker
           className="date"
+          disabledDate={(current) =>
+            hiddenDays.includes(Number(current.format('e')))
+          }
           value={currentDate}
           onChange={(value) => {
             this.setState({ currentDate: value });
