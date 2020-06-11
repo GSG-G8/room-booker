@@ -184,6 +184,7 @@ class Calendar extends React.Component {
             fetchEvents={this.fetchRoomEvent}
             maxTime={maxTime}
             minTime={minTime}
+            hiddenDays={hiddenDays}
           />
         )}
 

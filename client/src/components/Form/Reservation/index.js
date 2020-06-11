@@ -156,17 +156,20 @@ class BookingForm extends React.Component {
   };
 
   render() {
-    const disabledDate = (current) =>
-      current < moment().subtract(1, 'days') ||
-      [5, 6].includes(Number(current.format('e')));
     const {
       rooms,
       visible,
       handleHide,
+      hiddenDays,
       modalData,
       minTime,
       maxTime,
     } = this.props;
+
+    const disabledDate = (current) =>
+      current < moment().subtract(1, 'days') ||
+      hiddenDays.includes(Number(current.format('e')));
+
     const { repeat, confirmLoading } = this.state;
     const { start, end, roomId, title, description, readOnly } = modalData;
     const disabled = confirmLoading || readOnly;
@@ -354,6 +357,7 @@ BookingForm.propTypes = {
   fetchEvents: PropTypes.func.isRequired,
   minTime: PropTypes.string.isRequired,
   maxTime: PropTypes.string.isRequired,
+  hiddenDays: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
 export default BookingForm;
