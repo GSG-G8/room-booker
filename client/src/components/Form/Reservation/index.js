@@ -36,9 +36,7 @@ class BookingForm extends React.Component {
     const roomId = this.findRoomIdByName(room);
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
-    // console.log(daterange, 'HI DATE');
     const body = { roomId, time: timeArr, remindMe, ...rest };
-    // console.log('hi time range', daterange);
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -137,8 +135,9 @@ class BookingForm extends React.Component {
   };
 
   render() {
-    const disabledDate = (current) => current < moment().subtract(1, 'days');
-
+    const disabledDate = (current) =>
+      current < moment().subtract(1, 'days') ||
+      [5, 6].includes(Number(current.format('e')));
     const { rooms, visible, handleHide, modalData } = this.props;
     const { repeat, confirmLoading } = this.state;
     const { start, end, roomId, title, description, readOnly } = modalData;
