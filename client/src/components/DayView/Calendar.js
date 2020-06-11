@@ -182,6 +182,8 @@ class Calendar extends React.Component {
             handleHide={this.handleHide}
             modalData={modalData}
             fetchEvents={this.fetchRoomEvent}
+            maxTime={maxTime}
+            minTime={minTime}
           />
         )}
         <DatePicker
