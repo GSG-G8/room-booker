@@ -184,8 +184,12 @@ class Calendar extends React.Component {
             fetchEvents={this.fetchRoomEvent}
           />
         )}
+
         <DatePicker
           className="date"
+          disabledDate={(current) =>
+            hiddenDays.includes(Number(current.format('e')))
+          }
           value={currentDate}
           onChange={(value) => {
             this.setState({ currentDate: value });
