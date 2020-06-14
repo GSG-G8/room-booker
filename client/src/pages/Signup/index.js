@@ -56,7 +56,7 @@ class Signup extends React.Component {
           <Form.Item name="email" className="signup__input">
             <Input placeholder="Email" prefix={<MailOutlined />} />
           </Form.Item>
-          <Form.Item name="password" className="signup__input" rules>
+          <Form.Item name="password" className="signup__input">
             <Input
               placeholder="Password"
               type="password"
