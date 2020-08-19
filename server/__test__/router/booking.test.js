@@ -19,6 +19,7 @@ test('make new booking no overlapping', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
         time: [
@@ -49,6 +50,7 @@ test('make new booking no overlapping between 2021-04-14 14:30:00-2021-04-14 16:
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
         time: [
@@ -79,6 +81,7 @@ test('make new booking no overlapping between 2021-04-13 14:30:00-2021-04-13 16:
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
         time: [
@@ -266,6 +269,7 @@ test('test for 100%  valid input ', (done) => {
       JSON.stringify({
         roomId: 1,
         title: 'Meeting',
+        bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
         time: [
