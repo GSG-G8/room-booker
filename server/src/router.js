@@ -7,6 +7,7 @@ const {
   auth,
   error,
   businessHours,
+  bookingTypes,
 } = require('./controllers');
 
 const { checkAdmin, verifyUser } = require('./controllers/middleware');
@@ -28,6 +29,7 @@ router.post('/booking', booking.bookingRoom);
 router.delete('/booking/:id', booking.deleteBooking);
 router.get('/rooms', room.getRooms);
 router.get('/businessHours', businessHours.get);
+router.get('/bookingTypes', bookingTypes.getTypes);
 
 // logged in + admin only acess routes:
 router.use(checkAdmin);
