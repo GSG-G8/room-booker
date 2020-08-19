@@ -39,6 +39,7 @@ router.route('/rooms/:id').delete(room.deleteRoomById).patch(room.patchRoom);
 router.route('/users/:id').delete(user.deleteUser).patch(user.activateAccount);
 router.get('/users', user.getUsers);
 router.patch('/businessHours', businessHours.patch);
+router.post('/bookingTypes', bookingTypes.addType);
 
 router.use(error.clientError);
 router.use(error.serverError);

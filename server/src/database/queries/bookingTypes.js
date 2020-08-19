@@ -2,12 +2,18 @@ const connection = require('../config/connection');
 
 const getBookingTypes = () => connection.query('SELECT * FROM bookingtype ');
 
-const patchBookingTypes = (category) =>
+const addType = (category, color) =>
+  connection.query(
+    'INSERT INTO bookingtype (category, color) values ($1, $2)',
+    [category, color]
+  );
+
+const patchBookingTypes = (category, color) =>
   connection.query({
-    text: `UPDATE bookingtype SET daysOfWeek=$1 ;`,
-    values: [category],
+    text: `UPDATE bookingtype SET category=$1 ,color=$2;`,
+    values: [category, color],
   });
-const getBookingTypeID = (category) =>
+const getBookingTypeByCat = (category) =>
   connection.query('SELECT * FROM bookingtype  WHERE category = $1 ', [
     category,
   ]);
@@ -17,7 +23,8 @@ const deleteBookingTypeByID = (id) =>
 
 module.exports = {
   getBookingTypes,
+  addType,
   patchBookingTypes,
-  getBookingTypeID,
+  getBookingTypeByCat,
   deleteBookingTypeByID,
 };

@@ -20,7 +20,8 @@ CREATE TABLE room (
 
 CREATE TABLE bookingtype (
 	id SERIAL PRIMARY KEY ,
-	category VARCHAR(255) NOT NULL
+	category VARCHAR(255) NOT NULL,
+	color VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE booking (
@@ -49,11 +50,11 @@ VALUES
 ;
 
 INSERT INTO bookingtype
-	(category)
+	(category, color)
 VALUES
-	('training'),
-	('internal meeting'),
-	('external attendees')
+	('training', 'red'),
+	('internal meeting', 'yellow'),
+	('external attendees', 'green')
 ;
 
 COMMIT;
