@@ -8,10 +8,10 @@ const addType = (category, color) =>
     [category, color]
   );
 
-const patchBookingTypes = (category, color) =>
+const patchBookingTypes = (category, color, id) =>
   connection.query({
-    text: `UPDATE bookingtype SET category=$1 ,color=$2;`,
-    values: [category, color],
+    text: `UPDATE bookingtype SET category=$1 ,color=$2 WHERE id=$3 RETURNING *;`,
+    values: [category, color, id],
   });
 const getBookingTypeByCat = (category) =>
   connection.query('SELECT * FROM bookingtype  WHERE category = $1 ', [

@@ -37,6 +37,7 @@ const {
   addType,
   deleteBookingTypeByID,
   getBookingTypeByCat,
+  patchBookingTypes,
 } = require('./bookingTypes');
 
 module.exports = {
@@ -67,4 +68,5 @@ module.exports = {
   addType,
   deleteBookingTypeByID,
   getBookingTypeByCat,
+  patchBookingTypes,
 };
