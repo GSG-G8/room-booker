@@ -6,6 +6,7 @@ const {
   addType,
   getBookingTypeByCat,
   patchBookingTypes,
+  deleteBookingTypeByID,
 } = require('../database/queries');
 
 exports.getTypes = (req, res, next) => {
@@ -53,5 +54,12 @@ exports.patchType = (req, res, next) => {
         throw Boom.notFound(`booking type doesn't exist`);
       }
     })
+    .catch(next);
+};
+
+exports.deleteType = (req, res, next) => {
+  const { id } = req.params;
+  deleteBookingTypeByID(id)
+    .then(() => res.json('booking type deleted successfully'))
     .catch(next);
 };

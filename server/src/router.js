@@ -40,7 +40,10 @@ router.route('/users/:id').delete(user.deleteUser).patch(user.activateAccount);
 router.get('/users', user.getUsers);
 router.patch('/businessHours', businessHours.patch);
 router.post('/bookingTypes', bookingTypes.addType);
-router.route('/bookingType/:id').patch(bookingTypes.patchType);
+router
+  .route('/bookingType/:id')
+  .patch(bookingTypes.patchType)
+  .delete(bookingTypes.deleteType);
 
 router.use(error.clientError);
 router.use(error.serverError);
