@@ -6,6 +6,7 @@ module.exports = Joi.object({
   }),
   title: Joi.string().required(),
   description: Joi.string().allow('').optional(),
+  noOfPeople: Joi.number().required(),
   time: Joi.array()
     .items(
       Joi.object({

@@ -33,7 +33,15 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 exports.bookingRoom = (req, res, next) => {
-  const { roomId, time, title, description = '', remindMe } = req.body;
+  // noOfPeople
+  const {
+    roomId,
+    time,
+    title,
+    description = '',
+    remindMe,
+    noOfPeople,
+  } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
   bookingSchema
@@ -43,6 +51,7 @@ exports.bookingRoom = (req, res, next) => {
         time,
         title,
         description,
+        noOfPeople,
         remindMe,
       },
       { abortEarly: false }
@@ -91,7 +100,7 @@ exports.bookingRoom = (req, res, next) => {
           overlapsArr
         );
       else {
-        return bookRoom(time, roomId, userId, title, description);
+        return bookRoom(time, roomId, userId, title, description, noOfPeople);
       }
     })
     .then(({ rows }) => {
