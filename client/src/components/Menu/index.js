@@ -2,6 +2,7 @@ import {
   HomeOutlined,
   UserOutlined,
   ClockCircleOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -37,6 +38,11 @@ function AdminMenu() {
       <Menu.Item key="business-hours">
         <ClockCircleOutlined />
         <span>Business Hours</span>
+      </Menu.Item>
+
+      <Menu.Item key="booking-types">
+        <SettingOutlined />
+        <span>Booking Types</span>
       </Menu.Item>
     </Menu>
   );

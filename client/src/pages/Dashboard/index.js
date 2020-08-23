@@ -1,4 +1,3 @@
-// import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
@@ -6,6 +5,7 @@ import AdminMenu from '../../components/Menu';
 import Rooms from '../../components/Table/Rooms';
 import Users from '../../components/Table/Users';
 import BusinessHours from '../../components/Form/BusinessHours';
+import BookingTypes from '../../components/Table/BookingTypes';
 import './style.css';
 
 const { Content, Sider } = Layout;
@@ -28,9 +28,10 @@ function Dashboard() {
             <Route path="/dashboard/business-hours">
               <BusinessHours />
             </Route>
-            <Route path="/">
-              <h2>index</h2>
+            <Route path="/dashboard/booking-types">
+              <BookingTypes />
             </Route>
+            <Route path="/" />
           </Switch>
         </Content>
       </Layout>
