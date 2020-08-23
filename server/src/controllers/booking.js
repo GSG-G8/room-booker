@@ -33,13 +33,21 @@ const checkOverlap = (arrOfIntervals, interval) =>
   );
 
 exports.bookingRoom = (req, res, next) => {
-  const { roomId, time, title, description = '', remindMe } = req.body;
+  const {
+    roomId,
+    time,
+    bookingTypeId,
+    title,
+    description = '',
+    remindMe,
+  } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
   bookingSchema
     .validateAsync(
       {
         roomId,
+        bookingTypeId,
         time,
         title,
         description,
@@ -91,7 +99,14 @@ exports.bookingRoom = (req, res, next) => {
           overlapsArr
         );
       else {
-        return bookRoom(time, roomId, userId, title, description);
+        return bookRoom(
+          time,
+          roomId,
+          bookingTypeId,
+          userId,
+          title,
+          description
+        );
       }
     })
     .then(({ rows }) => {
