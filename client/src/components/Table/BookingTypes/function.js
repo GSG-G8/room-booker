@@ -33,4 +33,27 @@ export const deleteType = (id, component, message, notification) => {
   });
 };
 
-// export const editType = (id, component, message)
+export const editType = (values, component, message, notification) => {
+  const { id, category, color } = values;
+  fetch(`/api/v1/bookingType/${id}`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ category, color }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        message.error('could not update the type');
+      } else {
+        notification.success({
+          message: 'type has been updated',
+        });
+        fetchData(component, message);
+        component.setState({
+          visible: false,
+        });
+      }
+    })
+    .catch(() => message.error('could not update the type'));
+};
