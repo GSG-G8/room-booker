@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const fetchData = (component, message) => {
   component.setState({ loading: true });
   fetch('/api/v1/bookingTypes')
@@ -17,3 +16,21 @@ export const fetchData = (component, message) => {
       component.setState({ loading: false });
     });
 };
+
+export const deleteType = (id, component, message, notification) => {
+  fetch(`/api/v1/bookingType/${id}`, {
+    method: 'delete',
+  }).then((res) => {
+    if (!res.ok) {
+      message.error('could not delete this type');
+    } else {
+      notification.success({
+        message: 'type has been deleted',
+      });
+      const { data } = component.state;
+      component.setState({ data: data.filter((row) => row.id !== id) });
+    }
+  });
+};
+
+// export const editType = (id, component, message)
