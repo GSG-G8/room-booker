@@ -1,12 +1,17 @@
 import React from 'react';
 import { Table, message, Button, Modal, notification } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
-import { fetchData, deleteType } from './function';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { fetchData, deleteType, editType } from './function';
+import AddType from '../../Form/AddType';
 
 class BookingTypes extends React.Component {
   state = {
     data: [],
     loading: false,
+    visible: false,
+    updateID: 0,
+    category: '',
+    color: '',
   };
 
   columns = [
@@ -19,7 +24,27 @@ class BookingTypes extends React.Component {
       dataIndex: 'color',
     },
     {
-      title: 'Delete',
+      title: 'Action',
+      dataIndex: 'id',
+      // width: '64px',
+      colSpan: 2,
+      render: (id, row) => (
+        <Button
+          type="link"
+          onClick={() => {
+            this.setState({
+              visible: true,
+              updateID: id,
+              category: row.category,
+              color: row.color,
+            });
+          }}
+        >
+          <EditOutlined />
+        </Button>
+      ),
+    },
+    {
       dataIndex: 'id',
       render: (id) => (
         <Button
@@ -49,11 +74,14 @@ class BookingTypes extends React.Component {
   }
 
   render() {
-    // const { loading, data, visible, updateID, initialName } = this.state;
-    const { data, loading } = this.state;
+    const { data, loading, visible, updateID, category, color } = this.state;
+    const component = this;
 
     return (
       <div className="rooms">
+        <Button onClick={() => this.setState({ visible: true })}>
+          New Type
+        </Button>
         <Table
           bordered
           dataSource={data}
@@ -61,6 +89,23 @@ class BookingTypes extends React.Component {
           pagination={{ hideOnSinglePage: true }}
           loading={loading}
         />
+        <AddType
+          visible={visible}
+          onCreate={() => console.log('hi create')}
+          onCancel={() => {
+            this.setState({ visible: false });
+          }}
+          onClick={() => {
+            this.setState({ visible: true, updateID: 0 });
+          }}
+          onUpdate={(values) =>
+            editType(values, component, message, notification)
+          }
+          updateID={updateID}
+          category={category}
+          color={color}
+        />
+        {/* {visible ? <AddType /> : null} */}
       </div>
     );
   }
