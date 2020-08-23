@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, message, Button, Modal, notification } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { fetchData, deleteType, editType } from './function';
+import { fetchData, deleteType, editType, addType } from './function';
 import AddType from '../../Form/AddType';
 
 class BookingTypes extends React.Component {
@@ -26,7 +26,7 @@ class BookingTypes extends React.Component {
     {
       title: 'Action',
       dataIndex: 'id',
-      // width: '64px',
+      width: '64px',
       colSpan: 2,
       render: (id, row) => (
         <Button
@@ -46,6 +46,8 @@ class BookingTypes extends React.Component {
     },
     {
       dataIndex: 'id',
+      colSpan: 0,
+      width: '64px',
       render: (id) => (
         <Button
           danger
@@ -78,11 +80,12 @@ class BookingTypes extends React.Component {
     const component = this;
 
     return (
-      <div className="rooms">
-        <Button onClick={() => this.setState({ visible: true })}>
+      <div style={{ textAlign: 'left', width: '80%' }}>
+        <Button onClick={() => this.setState({ visible: true, updateID: 0 })}>
           New Type
         </Button>
         <Table
+          style={{ marginTop: '5%' }}
           bordered
           dataSource={data}
           columns={this.columns}
@@ -91,9 +94,11 @@ class BookingTypes extends React.Component {
         />
         <AddType
           visible={visible}
-          onCreate={() => console.log('hi create')}
+          onCreate={(values) =>
+            addType(values, component, message, notification)
+          }
           onCancel={() => {
-            this.setState({ visible: false });
+            this.setState({ visible: false, updateID: 0 });
           }}
           onClick={() => {
             this.setState({ visible: true, updateID: 0 });
@@ -105,7 +110,6 @@ class BookingTypes extends React.Component {
           category={category}
           color={color}
         />
-        {/* {visible ? <AddType /> : null} */}
       </div>
     );
   }

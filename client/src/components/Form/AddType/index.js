@@ -28,6 +28,11 @@ function AddType({
       category,
       color,
     });
+  } else if (updateID === 0) {
+    form.setFieldsValue({
+      category: '',
+      color: '',
+    });
   }
   return (
     <Modal

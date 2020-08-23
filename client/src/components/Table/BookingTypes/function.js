@@ -32,6 +32,30 @@ export const deleteType = (id, component, message, notification) => {
     }
   });
 };
+export const addType = (values, component, message, notification) => {
+  const { category, color } = values;
+  fetch(`/api/v1/bookingTypes`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ category, color }),
+  })
+    .then((res) => {
+      if (!res.ok) {
+        message.error('could not add this type');
+      } else {
+        notification.success({
+          message: 'type has been added successfully',
+        });
+        fetchData(component, message);
+        component.setState({
+          visible: false,
+        });
+      }
+    })
+    .catch(() => message.error('could not add the type'));
+};
 
 export const editType = (values, component, message, notification) => {
   const { id, category, color } = values;
