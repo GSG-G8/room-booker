@@ -22,6 +22,7 @@ test('make new booking no overlapping', (done) => {
         bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
+        noOfPeople:5,
         time: [
           {
             startTime: '2021-04-14 12:00:00',
@@ -53,6 +54,7 @@ test('make new booking no overlapping between 2021-04-14 14:30:00-2021-04-14 16:
         bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
+        noOfPeople:6,
         time: [
           {
             startTime: '2021-04-14 14:30:00',
@@ -84,6 +86,7 @@ test('make new booking no overlapping between 2021-04-13 14:30:00-2021-04-13 16:
         bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
+        noOfPeople:5,
         time: [
           {
             startTime: '2021-04-13 14:30:00',
@@ -272,6 +275,7 @@ test('test for 100%  valid input ', (done) => {
         bookingTypeId: 2,
         remindMe: false,
         description: 'New Meeting',
+        noOfPeople:5,
         time: [
           {
             startTime: '2021-04-13 12:00:00',
