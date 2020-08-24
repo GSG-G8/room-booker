@@ -7,7 +7,6 @@ const onModalOk = (form, updateID, onUpdate, onCreate) => {
   form
     .validateFields()
     .then((values) => {
-      // form.resetFields();
       if (updateID > 0) onUpdate({ id: updateID, ...values });
       else onCreate(values);
     })
@@ -36,7 +35,7 @@ function AddType({
   const handleChangeComplete = (result) => {
     setColorSlide(result.hex);
     form.setFieldsValue({
-      color: color.hex,
+      color: result.hex,
     });
   };
   return (
@@ -46,7 +45,10 @@ function AddType({
       okText={updateID > 0 ? 'Update' : 'Create'}
       cancelText="Cancel"
       onCancel={onCancel}
-      onOk={() => onModalOk(form, updateID, onUpdate, onCreate)}
+      onOk={() => {
+        onModalOk(form, updateID, onUpdate, onCreate);
+        setColorSlide('');
+      }}
     >
       <Form form={form}>
         <Form.Item

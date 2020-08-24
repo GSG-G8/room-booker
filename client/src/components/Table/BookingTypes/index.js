@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, message, Button, Modal, notification } from 'antd';
+import { Table, message, Button, Modal, notification, Tag } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { fetchData, deleteType, editType, addType } from './function';
 import AddType from '../../Form/AddType';
@@ -22,6 +22,11 @@ class BookingTypes extends React.Component {
     {
       title: 'Color',
       dataIndex: 'color',
+      render: (color) => (
+        <Tag color={color} key={color}>
+          {color}
+        </Tag>
+      ),
     },
     {
       title: 'Action',
