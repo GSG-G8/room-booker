@@ -87,6 +87,7 @@ class Calendar extends React.Component {
         return res.json();
       })
       .then((results) => {
+        const { types } = this.state;
         this.setState({
           events: results.map((event) => ({
             id: event.id,
@@ -97,6 +98,7 @@ class Calendar extends React.Component {
             resourceId: event.room_id,
             userid: event.user_id,
             userName: event.name,
+            color: types.find((e) => e.id === event.bookingtype_id).color,
           })),
         });
       })
