@@ -1,6 +1,6 @@
 BEGIN;
 
-DROP TABLE IF EXISTS bookinguser , booking , businessHours , room CASCADE;
+DROP TABLE IF EXISTS bookinguser, bookingtype, booking , businessHours , room CASCADE;
 
 CREATE TABLE bookinguser (
 	id SERIAL PRIMARY KEY,
@@ -18,10 +18,17 @@ CREATE TABLE room (
 	date_created DATE NOT NULL DEFAULT CURRENT_DATE
 );
 
+CREATE TABLE bookingtype (
+	id SERIAL PRIMARY KEY ,
+	category VARCHAR(255) NOT NULL,
+	color VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE booking (
 	id SERIAL PRIMARY KEY ,
-	room_id INTEGER NOT NULL REFERENCES room(id),
-	user_id INTEGER NOT NULL REFERENCES bookinguser(id),
+	room_id INTEGER NOT NULL REFERENCES room(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	user_id INTEGER NOT NULL REFERENCES bookinguser(id) ON UPDATE CASCADE ON DELETE CASCADE,
+	bookingtype_id INTEGER NOT NULL REFERENCES bookingtype(id) ON UPDATE CASCADE ON DELETE CASCADE,
 	start_time TIMESTAMPTZ NOT NULL,
 	end_time TIMESTAMPTZ NOT NULL,
 	title TEXT NOT NULL,
@@ -36,10 +43,19 @@ CREATE TABLE businessHours (
 	endTime VARCHAR(8) NOT NULL
 );
 
+
 INSERT INTO businessHours
 	(daysOfWeek, startTime, endTime)
 VALUES
 	('{0, 1, 2, 3, 4}', '8:00', '17:00')
+;
+
+INSERT INTO bookingtype
+	(category, color)
+VALUES
+	('training', 'red'),
+	('internal meeting', 'yellow'),
+	('external attendees', 'green')
 ;
 
 COMMIT;

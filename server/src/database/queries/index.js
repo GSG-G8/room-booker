@@ -32,6 +32,13 @@ const {
 } = require('./userSelect');
 
 const { getBusinessHours, patchBusinessHours } = require('./businessHours');
+const {
+  getBookingTypes,
+  addType,
+  deleteBookingTypeByID,
+  getBookingTypeByCat,
+  patchBookingTypes,
+} = require('./bookingTypes');
 
 module.exports = {
   bookRoom,
@@ -57,4 +64,9 @@ module.exports = {
   patchBusinessHours,
   deleteRoomByID,
   patchRoom,
+  getBookingTypes,
+  addType,
+  deleteBookingTypeByID,
+  getBookingTypeByCat,
+  patchBookingTypes,
 };
