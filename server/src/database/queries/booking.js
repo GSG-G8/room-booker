@@ -1,6 +1,14 @@
 const connection = require('../config/connection');
 
-const bookRoom = (bookings, roomId,  bookingTypeId, userId, title, description, noOfPeople) => {
+const bookRoom = (
+  bookings,
+  roomId,
+  bookingTypeId,
+  userId,
+  title,
+  description,
+  noOfPeople
+) => {
   const values = bookings
     .map(
       ({ startTime, endTime }) =>

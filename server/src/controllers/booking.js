@@ -101,7 +101,15 @@ exports.bookingRoom = (req, res, next) => {
           overlapsArr
         );
       else {
-        return bookRoom(time, roomId,bookingTypeId,userId, title, description, noOfPeople);
+        return bookRoom(
+          time,
+          roomId,
+          bookingTypeId,
+          userId,
+          title,
+          description,
+          noOfPeople
+        );
       }
     })
     .then(({ rows }) => {
