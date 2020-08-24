@@ -33,6 +33,7 @@ CREATE TABLE booking (
 	end_time TIMESTAMPTZ NOT NULL,
 	title TEXT NOT NULL,
 	description TEXT NOT NULL,
+	noOfPeople INTEGER NOT NULL,
 	date_created DATE NOT NULL DEFAULT CURRENT_DATE
 );
 

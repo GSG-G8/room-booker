@@ -6,6 +6,7 @@ module.exports = Joi.object({
   }),
   title: Joi.string().required(),
   description: Joi.string().allow('').optional(),
+  noOfPeople: Joi.number().required(),
   bookingTypeId: Joi.number().required().messages({
     'number.base': 'booking type ID should be number',
   }),

@@ -6,17 +6,18 @@ const bookRoom = (
   bookingTypeId,
   userId,
   title,
-  description
+  description,
+  noOfPeople
 ) => {
   const values = bookings
     .map(
       ({ startTime, endTime }) =>
-        `(${roomId}, ${userId},${bookingTypeId}, '${startTime}', '${endTime}', '${title}', '${description}')`
+        `(${roomId}, ${userId}, ${bookingTypeId},'${startTime}', '${endTime}', '${title}', '${description}','${noOfPeople}')`
     )
     .join(',');
 
   const sql = `INSERT INTO booking
-    (room_id, user_id, bookingtype_id, start_time, end_time, title ,description)
+    (room_id, user_id, bookingtype_id, start_time, end_time, title ,description,noOfPeople)
     VALUES ${values} RETURNING *`;
 
   return connection.query(sql);
@@ -24,7 +25,7 @@ const bookRoom = (
 
 const getBookingByRoomId = (roomId) =>
   connection.query({
-    text: `SELECT id, room_id, user_id, bookingtype_id, start_time, end_time, description from
+    text: `SELECT id, room_id, bookingtype_id, user_id, start_time, end_time, description,noOfPeople from
       booking WHERE room_id = $1 AND start_time > CURRENT_TIMESTAMP ;`,
     values: [roomId],
   });
@@ -55,7 +56,7 @@ const getBookingbydate = (date) => {
   const day = new Date(date);
   day.setDate(day.getDate() + 1); // get the next day
   return connection.query(
-    'SELECT booking.id, booking.room_id, booking.user_id,booking.bookingtype_id, booking.start_time, booking.end_time, booking.title, booking.description, bookinguser.name FROM booking INNER JOIN bookinguser ON bookinguser.id = booking.user_id WHERE booking.start_time >= $1 AND booking.end_time < $2',
+    'SELECT booking.id, booking.room_id, booking.user_id,booking.bookingtype_id, booking.start_time, booking.end_time, booking.title, booking.description,booking.noOfPeople, bookinguser.name FROM booking INNER JOIN bookinguser ON bookinguser.id = booking.user_id WHERE booking.start_time >= $1 AND booking.end_time < $2',
     [date, day]
   );
 };

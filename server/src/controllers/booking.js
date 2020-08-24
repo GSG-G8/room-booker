@@ -40,6 +40,7 @@ exports.bookingRoom = (req, res, next) => {
     title,
     description = '',
     remindMe,
+    noOfPeople,
   } = req.body;
   const { userID: userId } = req.user;
   let bookingData = [];
@@ -51,6 +52,7 @@ exports.bookingRoom = (req, res, next) => {
         time,
         title,
         description,
+        noOfPeople,
         remindMe,
       },
       { abortEarly: false }
@@ -105,7 +107,8 @@ exports.bookingRoom = (req, res, next) => {
           bookingTypeId,
           userId,
           title,
-          description
+          description,
+          noOfPeople
         );
       }
     })
