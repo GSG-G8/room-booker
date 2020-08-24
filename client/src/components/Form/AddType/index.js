@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { message, Modal, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
+import { SliderPicker } from 'react-color';
 
 const onModalOk = (form, updateID, onUpdate, onCreate) => {
   form
     .validateFields()
     .then((values) => {
-      form.resetFields();
+      // form.resetFields();
       if (updateID > 0) onUpdate({ id: updateID, ...values });
       else onCreate(values);
     })
+    .then(() => form.resetFields())
     .catch((error) => message.error(error));
 };
 
@@ -22,18 +24,21 @@ function AddType({
   category,
   color,
 }) {
+  const [colorSlide, setColorSlide] = useState('');
   const [form] = Form.useForm();
   if (updateID > 0) {
     form.setFieldsValue({
       category,
       color,
     });
-  } else if (updateID === 0) {
-    form.setFieldsValue({
-      category: '',
-      color: '',
-    });
   }
+
+  const handleChangeComplete = (result) => {
+    setColorSlide(result.hex);
+    form.setFieldsValue({
+      color: color.hex,
+    });
+  };
   return (
     <Modal
       visible={visible}
@@ -66,7 +71,10 @@ function AddType({
             },
           ]}
         >
-          <Input />
+          <SliderPicker
+            color={colorSlide || color}
+            onChange={handleChangeComplete}
+          />
         </Form.Item>
       </Form>
     </Modal>
