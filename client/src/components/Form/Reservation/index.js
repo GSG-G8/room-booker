@@ -8,6 +8,7 @@ import {
   Radio,
   Switch,
   TimePicker,
+  Select,
 } from 'antd';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -41,7 +42,7 @@ class BookingForm extends React.Component {
     }
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
-    const body = { roomId, time: timeArr, remindMe, ...rest };
+    const body = { roomId, time: timeArr, noOfPeople: 15, remindMe, ...rest };
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -158,6 +159,7 @@ class BookingForm extends React.Component {
   render() {
     const {
       rooms,
+      types,
       visible,
       handleHide,
       hiddenDays,
@@ -253,6 +255,19 @@ class BookingForm extends React.Component {
           </Form.Item>
 
           <Form.Item
+            name="bookingTypeId"
+            label="Booking Type"
+            rules={[{ required: true, message: 'Choose booking type' }]}
+          >
+            <Select>
+              {types.map((type) => (
+                <Select.Option key={type.id} value={type.id}>
+                  {type.category}
+                </Select.Option>
+              ))}
+            </Select>
+          </Form.Item>
+          <Form.Item
             name="repeat"
             label="Repeat"
             rules={[
@@ -341,6 +356,7 @@ BookingForm.contextType = AuthContext;
 
 BookingForm.propTypes = {
   rooms: PropTypes.arrayOf(PropTypes.object).isRequired,
+  types: PropTypes.arrayOf(PropTypes.object).isRequired,
   visible: PropTypes.bool.isRequired,
   handleHide: PropTypes.func.isRequired,
   modalData: PropTypes.shape({
