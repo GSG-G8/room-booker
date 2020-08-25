@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { message, Modal, Form, Input } from 'antd';
 import PropTypes from 'prop-types';
 import { SliderPicker } from 'react-color';
@@ -10,7 +10,10 @@ const onModalOk = (form, updateID, onUpdate, onCreate) => {
       if (updateID > 0) onUpdate({ id: updateID, ...values });
       else onCreate(values);
     })
-    .then(() => form.resetFields())
+    .then(() => {
+      form.resetFields();
+      form.setFieldsValue({ color: '', category: '' });
+    })
     .catch((error) => message.error(error));
 };
 
@@ -25,12 +28,6 @@ function AddType({
 }) {
   const [colorSlide, setColorSlide] = useState('');
   const [form] = Form.useForm();
-  if (updateID > 0) {
-    form.setFieldsValue({
-      category,
-      color,
-    });
-  }
 
   const handleChangeComplete = (result) => {
     setColorSlide(result.hex);
@@ -38,6 +35,8 @@ function AddType({
       color: result.hex,
     });
   };
+  useEffect(() => form.resetFields(), [form, color, category]);
+
   return (
     <Modal
       visible={visible}
@@ -50,7 +49,7 @@ function AddType({
         setColorSlide('');
       }}
     >
-      <Form form={form}>
+      <Form form={form} initialValues={{ category, color }}>
         <Form.Item
           name="category"
           label="Booking Type"

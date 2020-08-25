@@ -103,7 +103,12 @@ class BookingTypes extends React.Component {
             addType(values, component, message, notification)
           }
           onCancel={() => {
-            this.setState({ visible: false, updateID: 0 });
+            this.setState({
+              visible: false,
+              updateID: 0,
+              color: '',
+              category: '',
+            });
           }}
           onClick={() => {
             this.setState({ visible: true, updateID: 0 });
