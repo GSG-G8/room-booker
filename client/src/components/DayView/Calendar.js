@@ -23,6 +23,7 @@ class Calendar extends React.Component {
       readOnly: false,
       title: '',
       description: '',
+      noOfPeople: null,
     },
     hiddenDays: [0],
     minTime: '00:00',
@@ -49,6 +50,7 @@ class Calendar extends React.Component {
         readOnly: false,
         title: '',
         description: '',
+        noOfPeople: null,
       },
     });
     this.showModal();
@@ -95,6 +97,7 @@ class Calendar extends React.Component {
             resourceId: event.room_id,
             userid: event.user_id,
             userName: event.name,
+            noOfPeople: event.noofpeople,
           })),
         });
       })
@@ -120,6 +123,7 @@ class Calendar extends React.Component {
         title: '',
         description: '',
         readOnly: false,
+        noOfPeople: null,
       },
     });
     this.showModal();
@@ -131,7 +135,7 @@ class Calendar extends React.Component {
       start,
       end,
       title,
-      extendedProps: { description, userName, userid },
+      extendedProps: { description, userName, userid, noOfPeople },
     } = event;
     this.setState({
       modalData: {
@@ -144,6 +148,7 @@ class Calendar extends React.Component {
         userName,
         userid,
         readOnly: true,
+        noOfPeople,
       },
     });
     this.showModal();
