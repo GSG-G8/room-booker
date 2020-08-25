@@ -42,7 +42,7 @@ class BookingForm extends React.Component {
     }
     const timeArr = this.makeBookingArr(repeat, date, daterange, time);
     this.setState({ confirmLoading: true });
-    const body = { roomId, time: timeArr, noOfPeople: 15, remindMe, ...rest };
+    const body = { roomId, time: timeArr, remindMe, ...rest };
     return fetch('/api/v1/booking', {
       method: 'POST',
       headers: {
@@ -173,7 +173,15 @@ class BookingForm extends React.Component {
       hiddenDays.includes(Number(current.format('e')));
 
     const { repeat, confirmLoading } = this.state;
-    const { start, end, roomId, title, description, readOnly } = modalData;
+    const {
+      start,
+      end,
+      roomId,
+      title,
+      description,
+      readOnly,
+      noOfPeople,
+    } = modalData;
     const disabled = confirmLoading || readOnly;
     const { admin, userID } = this.context;
     const couldCancel = readOnly && (modalData.userid === userID || admin);
@@ -198,7 +206,7 @@ class BookingForm extends React.Component {
       >
         <Form
           labelCol={{
-            span: 5,
+            span: 8,
           }}
           labelAlign="left"
           initialValues={{
@@ -209,6 +217,7 @@ class BookingForm extends React.Component {
             description,
             repeat: 'once',
             remind: true,
+            noOfPeople,
           }}
           ref={this.formRef}
           onFinish={(values) => {
@@ -250,6 +259,13 @@ class BookingForm extends React.Component {
             <Input disabled={disabled} />
           </Form.Item>
 
+          <Form.Item
+            name="noOfPeople"
+            label="Number of attendees:"
+            rules={[{ required: true, message: 'Add People Number' }]}
+          >
+            <Input disabled={disabled} />
+          </Form.Item>
           <Form.Item name="description" label="Description">
             <Input.TextArea disabled={disabled} />
           </Form.Item>
@@ -369,6 +385,7 @@ BookingForm.propTypes = {
     userName: PropTypes.string,
     userid: PropTypes.number,
     readOnly: PropTypes.bool,
+    noOfPeople: PropTypes.number,
   }).isRequired,
   fetchEvents: PropTypes.func.isRequired,
   minTime: PropTypes.string.isRequired,
