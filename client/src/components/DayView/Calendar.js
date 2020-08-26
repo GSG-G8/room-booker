@@ -85,6 +85,7 @@ class Calendar extends React.Component {
             userName: event.name,
             color: event.color,
             noOfPeople: event.noofpeople,
+            typeID: event.bookingtype_id,
           })),
         });
       })
@@ -98,7 +99,7 @@ class Calendar extends React.Component {
       start,
       end,
       title,
-      extendedProps: { description, userName, userid, noOfPeople },
+      extendedProps: { description, userName, userid, noOfPeople, typeID },
     } = event;
     this.setState({
       modalData: {
@@ -112,6 +113,7 @@ class Calendar extends React.Component {
         userid,
         readOnly: true,
         noOfPeople,
+        typeID,
       },
     });
     this.showModal();

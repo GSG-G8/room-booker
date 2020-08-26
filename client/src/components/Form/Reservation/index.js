@@ -53,6 +53,7 @@ class BookingForm extends React.Component {
       description,
       readOnly,
       noOfPeople,
+      typeID,
     } = modalData;
     const disabled = confirmLoading || readOnly;
     const { admin, userID } = this.context;
@@ -90,6 +91,7 @@ class BookingForm extends React.Component {
             repeat: 'once',
             remind: true,
             noOfPeople,
+            bookingTypeId: typeID,
           }}
           ref={this.formRef}
           onFinish={(values) => {
@@ -147,7 +149,7 @@ class BookingForm extends React.Component {
             label="Booking Type"
             rules={[{ required: true, message: 'Choose booking type' }]}
           >
-            <Select>
+            <Select disabled={disabled}>
               {types.map((type) => (
                 <Select.Option key={type.id} value={type.id}>
                   {type.category}
@@ -255,6 +257,7 @@ BookingForm.propTypes = {
     title: PropTypes.string,
     description: PropTypes.string,
     userName: PropTypes.string,
+    typeID: PropTypes.string,
     userid: PropTypes.number,
     readOnly: PropTypes.bool,
     noOfPeople: PropTypes.number,
