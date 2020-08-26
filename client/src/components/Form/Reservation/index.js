@@ -14,6 +14,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { AuthContext } from '../../../context';
+import { findRoomNameById, cancelBooking, range, bookRoom } from './functions';
 
 class BookingForm extends React.Component {
   state = {
@@ -23,137 +24,8 @@ class BookingForm extends React.Component {
 
   formRef = React.createRef();
 
-  bookRoom = ({
-    repeat,
-    date,
-    daterange,
-    time,
-    remind: remindMe = true,
-    room,
-    ...rest
-  }) => {
-    const { handleHide, fetchEvents } = this.props;
-    let roomId;
-    try {
-      roomId = this.findRoomIdByName(room);
-    } catch (e) {
-      this.setState({ confirmLoading: false });
-      return Promise.reject(e.message);
-    }
-    const timeArr = this.makeBookingArr(repeat, date, daterange, time);
-    this.setState({ confirmLoading: true });
-    const body = { roomId, time: timeArr, remindMe, ...rest };
-    return fetch('/api/v1/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then(() => fetchEvents(timeArr[0].startTime.split('T')[0]))
-      .then(() => {
-        this.setState({ confirmLoading: false });
-        handleHide();
-      })
-      .then(() => message.success('Room booked successfully', 3))
-      .catch(() => {
-        this.setState({ confirmLoading: false });
-      });
-  };
-
-  findRoomIdByName = (name) => {
-    const { rooms } = this.props;
-    const roomObj = rooms.find((room) => room.name === name);
-    if (roomObj) {
-      return roomObj.id;
-    }
-    throw new Error(`no room by ${name} name`);
-  };
-
-  findRoomNameById = (id) => {
-    const { rooms } = this.props;
-    return rooms.find((room) => room.id === Number(id)).name;
-  };
-
-  cancelBooking = (id, date) => {
-    const { fetchEvents } = this.props;
-    this.setState({ confirmLoading: true });
-    return fetch(`api/v1//booking/${id}`, { method: 'delete' })
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then(({ msg }) => {
-        message.success(msg);
-        fetchEvents(date.format('YYYY-MM-DD'));
-        this.setState({ confirmLoading: false });
-      })
-      .catch((err) => {
-        message.error(err);
-      });
-  };
-
   repeatOnChange = (e) => {
     this.setState({ repeat: e.target.value });
-  };
-
-  makeBookingArr = (
-    repeat,
-    date,
-    [startDate, endDate] = [],
-    [startTime, endTime]
-  ) => {
-    const handleTime = (day, time) =>
-      moment(
-        `${day.format('YYYY-MM-DD')}T${time.format('HH:mm:ss.SSSZ')}`
-      ).toISOString(true);
-
-    const arr = [];
-    if (repeat === 'weekly') {
-      for (let i = startDate; i <= endDate; i = i.add(1, 'week')) {
-        arr.push({
-          startTime: handleTime(i, startTime),
-          endTime: handleTime(i, endTime),
-        });
-      }
-    } else if (repeat === 'daily') {
-      for (let i = startDate; i <= endDate; i = i.add(1, 'day')) {
-        if (i.format('dddd') !== 'Friday' && i.format('dddd') !== 'Saturday') {
-          arr.push({
-            startTime: handleTime(i, startTime),
-            endTime: handleTime(i, endTime),
-          });
-        }
-      }
-    } else if (repeat === 'once') {
-      arr.push({
-        startTime: handleTime(date, startTime),
-        endTime: handleTime(date, endTime),
-      });
-    }
-    return arr;
-  };
-
-  range = (min, max) => {
-    const start = Number(min.split(':')[0]);
-    const end = Number(max.split(':')[0]);
-    const result = [];
-    for (let i = 0; i < 24; i += 1) {
-      if (i < start || i > end - 1) {
-        result.push(i);
-      }
-    }
-    return result;
   };
 
   render() {
@@ -212,7 +84,7 @@ class BookingForm extends React.Component {
           initialValues={{
             time: [moment(start), moment(end)],
             date: moment(start),
-            room: this.findRoomNameById(roomId),
+            room: findRoomNameById(roomId, this),
             title,
             description,
             repeat: 'once',
@@ -222,13 +94,13 @@ class BookingForm extends React.Component {
           ref={this.formRef}
           onFinish={(values) => {
             if (couldCancel) {
-              this.cancelBooking(modalData.id, moment(start))
+              cancelBooking(modalData.id, moment(start), message, this)
                 .then(() => {
                   handleHide();
                 })
                 .catch(message.error);
             } else {
-              this.bookRoom(values).catch(message.error);
+              bookRoom(values, message, this).catch(message.error);
             }
           }}
         >
@@ -347,7 +219,7 @@ class BookingForm extends React.Component {
               minuteStep={10}
               disabled={disabled}
               format="HH:mm"
-              disabledHours={() => this.range(minTime, maxTime)}
+              disabledHours={() => range(minTime, maxTime)}
               hideDisabledOptions
             />
           </Form.Item>
@@ -387,7 +259,6 @@ BookingForm.propTypes = {
     readOnly: PropTypes.bool,
     noOfPeople: PropTypes.number,
   }).isRequired,
-  fetchEvents: PropTypes.func.isRequired,
   minTime: PropTypes.string.isRequired,
   maxTime: PropTypes.string.isRequired,
   hiddenDays: PropTypes.arrayOf(PropTypes.number).isRequired,
