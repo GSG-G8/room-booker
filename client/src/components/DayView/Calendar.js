@@ -6,7 +6,7 @@ import moment from 'moment';
 import Tooltip from 'tooltip.js';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
-import { getBusinessHours, getBookingTypes } from './functions';
+import { getBusinessHours, getBookingTypes, fetchRoomName } from './functions';
 import './style.css';
 
 class Calendar extends React.Component {
@@ -34,7 +34,7 @@ class Calendar extends React.Component {
 
   componentDidMount() {
     this.setState({ loading: true });
-    this.fetchRoomName().then(() => this.setState({ loading: false }));
+    fetchRoomName(this, message).then(() => this.setState({ loading: false }));
     getBusinessHours(this, message);
     getBookingTypes(this, message);
   }
@@ -43,7 +43,7 @@ class Calendar extends React.Component {
     this.setState({ visible: false });
   };
 
-  bookRoom = () => {
+  clearData = () => {
     this.setState({
       modalData: {
         roomId: '1',
@@ -61,22 +61,6 @@ class Calendar extends React.Component {
   showModal = () => {
     this.setState({ visible: true });
   };
-
-  fetchRoomName = () =>
-    fetch(`/api/v1/rooms`)
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then((results) => {
-        this.setState({ rooms: results });
-      })
-      .catch((err) => {
-        message.error(err);
-      });
 
   fetchRoomEvent = (date) =>
     fetch(`/api/v1/booking/${date}`)
@@ -108,30 +92,6 @@ class Calendar extends React.Component {
         message.error(err);
       });
 
-  resourcesFunc = ({ start }, successCallback, failureCallback) => {
-    const { rooms } = this.state;
-    successCallback(rooms.map((room) => ({ id: room.id, title: room.name })));
-
-    this.fetchRoomEvent(moment(start).format('YYYY-MM-DD')).catch(
-      failureCallback
-    );
-  };
-
-  handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
-    this.setState({
-      modalData: {
-        roomId,
-        start,
-        end,
-        title: '',
-        description: '',
-        readOnly: false,
-        noOfPeople: null,
-      },
-    });
-    this.showModal();
-  };
-
   showEventForm = ({ event }) => {
     const {
       id,
@@ -152,6 +112,30 @@ class Calendar extends React.Component {
         userid,
         readOnly: true,
         noOfPeople,
+      },
+    });
+    this.showModal();
+  };
+
+  resourcesFunc = ({ start }, successCallback, failureCallback) => {
+    const { rooms } = this.state;
+    successCallback(rooms.map((room) => ({ id: room.id, title: room.name })));
+
+    this.fetchRoomEvent(moment(start).format('YYYY-MM-DD')).catch(
+      failureCallback
+    );
+  };
+
+  handleDateSelect = ({ resource: { id: roomId }, start, end }) => {
+    this.setState({
+      modalData: {
+        roomId,
+        start,
+        end,
+        title: '',
+        description: '',
+        readOnly: false,
+        noOfPeople: null,
       },
     });
     this.showModal();
@@ -232,7 +216,7 @@ class Calendar extends React.Component {
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
-              click: this.bookRoom,
+              click: this.clearData,
             },
           }}
           header={{

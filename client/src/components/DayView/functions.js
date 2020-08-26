@@ -39,3 +39,19 @@ export const getBookingTypes = (component, message) => {
       component.setState({ loading: false });
     });
 };
+
+export const fetchRoomName = (component, message) =>
+  fetch(`/api/v1/rooms`)
+    .then((res) => {
+      if (!res.ok) {
+        res.json().then(({ message: msg }) => message.error(msg));
+        throw res.statusText;
+      }
+      return res.json();
+    })
+    .then((results) => {
+      component.setState({ rooms: results });
+    })
+    .catch((err) => {
+      message.error(err);
+    });
