@@ -6,7 +6,7 @@ import moment from 'moment';
 import Tooltip from 'tooltip.js';
 import React from 'react';
 import BookingForm from '../Form/Reservation';
-import { getBusinessHours } from './functions';
+import { getBusinessHours, getBookingTypes, fetchRoomName } from './functions';
 import './style.css';
 
 class Calendar extends React.Component {
@@ -29,19 +29,21 @@ class Calendar extends React.Component {
     minTime: '00:00',
     maxTime: '20:00',
     currentDate: moment(),
+    types: [],
   };
 
   componentDidMount() {
     this.setState({ loading: true });
-    this.fetchRoomName().then(() => this.setState({ loading: false }));
+    fetchRoomName(this, message).then(() => this.setState({ loading: false }));
     getBusinessHours(this, message);
+    getBookingTypes(this, message);
   }
 
   handleHide = () => {
     this.setState({ visible: false });
   };
 
-  bookRoom = () => {
+  clearData = () => {
     this.setState({
       modalData: {
         roomId: '1',
@@ -59,22 +61,6 @@ class Calendar extends React.Component {
   showModal = () => {
     this.setState({ visible: true });
   };
-
-  fetchRoomName = () =>
-    fetch(`/api/v1/rooms`)
-      .then((res) => {
-        if (!res.ok) {
-          res.json().then(({ message: msg }) => message.error(msg));
-          throw res.statusText;
-        }
-        return res.json();
-      })
-      .then((results) => {
-        this.setState({ rooms: results });
-      })
-      .catch((err) => {
-        message.error(err);
-      });
 
   fetchRoomEvent = (date) =>
     fetch(`/api/v1/booking/${date}`)
@@ -97,13 +83,41 @@ class Calendar extends React.Component {
             resourceId: event.room_id,
             userid: event.user_id,
             userName: event.name,
+            color: event.color,
             noOfPeople: event.noofpeople,
+            typeID: event.bookingtype_id,
           })),
         });
       })
       .catch((err) => {
         message.error(err);
       });
+
+  showEventForm = ({ event }) => {
+    const {
+      id,
+      start,
+      end,
+      title,
+      extendedProps: { description, userName, userid, noOfPeople, typeID },
+    } = event;
+    this.setState({
+      modalData: {
+        id,
+        roomId: event.getResources()[0].id,
+        start,
+        end,
+        title,
+        description,
+        userName,
+        userid,
+        readOnly: true,
+        noOfPeople,
+        typeID,
+      },
+    });
+    this.showModal();
+  };
 
   resourcesFunc = ({ start }, successCallback, failureCallback) => {
     const { rooms } = this.state;
@@ -129,31 +143,6 @@ class Calendar extends React.Component {
     this.showModal();
   };
 
-  showEventForm = ({ event }) => {
-    const {
-      id,
-      start,
-      end,
-      title,
-      extendedProps: { description, userName, userid, noOfPeople },
-    } = event;
-    this.setState({
-      modalData: {
-        id,
-        roomId: event.getResources()[0].id,
-        start,
-        end,
-        title,
-        description,
-        userName,
-        userid,
-        readOnly: true,
-        noOfPeople,
-      },
-    });
-    this.showModal();
-  };
-
   eventRender = (info) => {
     // eslint-disable-next-line no-new
     new Tooltip(info.el, {
@@ -168,6 +157,7 @@ class Calendar extends React.Component {
     const { loading } = this.state;
     const {
       rooms,
+      types,
       events,
       visible,
       modalData,
@@ -190,6 +180,7 @@ class Calendar extends React.Component {
             maxTime={maxTime}
             minTime={minTime}
             hiddenDays={hiddenDays}
+            types={types}
           />
         )}
 
@@ -227,7 +218,7 @@ class Calendar extends React.Component {
           customButtons={{
             myCustomButton: {
               text: 'Book Your Room',
-              click: this.bookRoom,
+              click: this.clearData,
             },
           }}
           header={{

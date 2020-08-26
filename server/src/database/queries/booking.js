@@ -56,7 +56,7 @@ const getBookingbydate = (date) => {
   const day = new Date(date);
   day.setDate(day.getDate() + 1); // get the next day
   return connection.query(
-    'SELECT booking.id, booking.room_id, booking.user_id,booking.bookingtype_id, booking.start_time, booking.end_time, booking.title, booking.description,booking.noOfPeople, bookinguser.name FROM booking INNER JOIN bookinguser ON bookinguser.id = booking.user_id WHERE booking.start_time >= $1 AND booking.end_time < $2',
+    'SELECT B.id, B.room_id, B.user_id,B.bookingtype_id, T.color, B.start_time, B.end_time, B.title, B.description,B.noOfPeople, U.name FROM booking B INNER JOIN bookinguser U ON U.id = B.user_id INNER JOIN bookingtype T ON T.id = B.bookingtype_id  WHERE B.start_time >= $1 AND B.end_time < $2',
     [date, day]
   );
 };
